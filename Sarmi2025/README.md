@@ -13,5 +13,3 @@ Folder ini berisi penggabungan repository bertema **sarmi** ke dalam satu strukt
 - `sarmi_meet3`
 - `sarmi_meet2`
 - `sarmi_posttest`
-
-Setiap folder di atas memiliki file `index.html` sebagai entry point konten yang dipindahkan.

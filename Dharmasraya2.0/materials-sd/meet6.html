@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 6: Gerak Dasar (Motion) - Langkah Pertama si Sprite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset dan Global Styles */
+        body { margin: 0; padding: 0; font-family: 'Fredoka', sans-serif; background: url('https://i.imgur.com/z221jXz.png') center/cover fixed no-repeat; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .presentation-container { width: 77vw; height: 75.5vh; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; position: relative; background-color: transparent; }
+        .slide { width: 100%; height: 100%; padding: 40px 60px; box-sizing: border-box; color: #333; display: flex; flex-direction: column; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out; background-color: rgba(255, 255, 255, 0.95); visibility: hidden; overflow-y: auto; opacity: 0; }
+        .slide.active { opacity: 1; visibility: visible; z-index: 10; transform: translateX(0); }
+        .slide.is-next { transform: translateX(100%); visibility: visible; opacity: 1; z-index: 11; }
+        .slide.is-exiting { transform: translateX(100%); opacity: 1; z-index: 11; }
+        
+        #slide1 { background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://i.imgur.com/z221jXz.png') center/cover no-repeat; color: white; }
+        .solid-teal-bg { background-color: #008080; color: white; }
+        .starburst { position: absolute; width: 100px; height: 100px; z-index: 2; }
+        
+        /* Logos */
+        .slide-logo-left { position: fixed; top: 0; left: 0; background-color: white; padding: 10px 20px 10px 40px; border-bottom-right-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; transition: opacity 0.3s ease; gap: 15px; }
+        .slide-logo-left img { height: 45px; width: auto; }
+        .slide-logo-right { position: fixed; top: 0; right: 0; background-color: white; padding: 10px 40px 10px 20px; border-bottom-left-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; transition: opacity 0.3s ease; }
+        .slide-logo-right img { height: 45px; width: auto; }
+
+        .nav-button { background-color: rgba(0, 128, 128, 0.8); color: white; border: none; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 900; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
+        #prevBtn { left: 20px; } #nextBtn { right: 20px; }
+        .nav-button:hover { background-color: #f2c140; color: #333; transform: scale(1.1); }
+        .nav-button:disabled { background-color: #ccc; cursor: not-allowed; transform: scale(1); }
+        
+        .cover-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; line-height: 1.1; z-index: 3; text-align: center; }
+        .cover-subtitle { font-size: 1.8rem; font-weight: 400; margin-bottom: 20px; border-bottom: 3px solid #f2c140; padding-bottom: 10px; display: inline-block; z-index: 3; color: white; }
+        .agenda-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #008080; line-height: 1.2; margin-bottom: 30px; width: 100%; text-align: center; }
+        
+        /* Blocks Styling */
+        .block-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+        .block { padding: 10px 18px; border-radius: 4px 12px 12px 4px; color: white; font-weight: 600; font-size: 1.1rem; position: relative; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .block-blue { background: #4c97ff; }
+        .block-yellow { background: #ffbf00; color: #333; }
+        .block-purple { background: #9966ff; }
+        .block-event { background: #ffbf00; color: #333; border-radius: 20px 20px 4px 4px; padding-top: 15px; }
+        
+        .block.highlight { outline: 4px solid #fff; z-index: 5; box-shadow: 0 0 20px rgba(255,255,255,0.8); transform: scale(1.05); transition: all 0.2s; }
+        
+        /* Modern Utilities */
+        .txt-blue { color: #4c97ff; font-weight: 800; }
+        .txt-purple { color: #9966ff; font-weight: 800; }
+        .txt-green { color: #a8c368; font-weight: 800; }
+        .txt-teal { color: #008080; font-weight: 800; }
+        .txt-yellow { color: #f2c140; font-weight: 800; }
+
+        /* Agenda / Summary Grid */
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; max-width: 900px; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); border: 2px solid #f0f0f0; transition: transform 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .card-icon { font-size: 3rem; margin-bottom: 15px; }
+
+        /* Refresher Slide Side-by-Side */
+        .refresher-split { display: flex; gap: 30px; width: 100%; height: 350px; }
+        .refresher-panel { flex: 1; background: #f9f9f9; border-radius: 25px; padding: 20px; border: 3px dashed #ddd; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+        .refresher-display { width: 100%; height: 180px; background: white; border-radius: 15px; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        
+        /* Motion Demo Layout */
+        .demo-layout { display: flex; gap: 40px; width: 100%; max-width: 1000px; align-items: stretch; }
+        .demo-code-panel { width: 350px; background: #e0f2fe; border-radius: 25px; padding: 30px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 4px solid #4c97ff; }
+        .demo-canvas { flex: 1; background: white; border-radius: 25px; border: 4px solid #008080; position: relative; display: flex; align-items: center; min-height: 400px; overflow: hidden; background-image: linear-gradient(#eee 1px, transparent 1px), linear-gradient(90deg, #eee 1px, transparent 1px); background-size: 20px 20px; }
+        .demo-sprite { width: 120px; position: absolute; left: 50px; transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.5s ease-in-out; cursor: pointer; }
+        
+        /* Comparison Box Styling */
+        .comparison-box { background: #f0f7ff; border: 4px dashed #4c97ff; border-radius: 25px; padding: 25px; width: 100%; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .track-container { position: relative; width: 100%; height: 80px; background: #fff; border-radius: 15px; border: 2px solid #e0e0e0; display: flex; align-items: center; padding: 0 20px; overflow: hidden; }
+        .track-label { position: absolute; left: 15px; top: 5px; font-size: 0.8rem; font-weight: bold; color: #4c97ff; z-index: 2; }
+        .sprite-small { width: 60px; position: absolute; left: 20px; transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        
+        .flag-btn { cursor: pointer; transition: transform 0.2s; background: none; border: none; }
+        .flag-btn:hover { transform: scale(1.2); }
+
+        .huge-btn { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(to right, #008080, #f2c140); color: white; text-decoration: none; font-size: 1.5rem; font-weight: 700; padding: 15px 40px; border-radius: 50px; cursor: pointer; border: none; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,128,128,0.3); }
+        .huge-btn:hover { transform: scale(1.05); }
+
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+    </style>
+</head>
+<body>
+    <!-- Definisi SVG -->
+    <svg width="0" height="0" style="position:absolute;">
+      <defs>
+        <symbol id="starburst-svg" viewBox="0 0 100 100">
+          <path d="M50 0 L55.9 34.5 L85.35 14.65 L65.5 44.1 L100 50 L65.5 55.9 L85.35 85.35 L55.9 65.5 L50 100 L44.1 65.5 L14.65 85.35 L34.5 55.9 L0 50 L34.5 44.1 L14.65 14.65 L44.1 34.5 Z" fill="currentColor"/>
+        </symbol>
+      </defs>
+    </svg>
+    
+    <!-- Logos -->
+    <div class="slide-logo-left" id="globalLogoLeft">
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/hs/1%20Homepage%20RG/logo%20ruangguru.png" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=RG'" alt="Logo Ruangguru">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Lambang_Kabupaten_Dharmasraya.png" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DH'" alt="Logo Kabupaten Dharmasraya">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DS'" alt="Logo Disdik Dharmasraya">
+    </div>
+    <div class="slide-logo-right" id="globalLogoRight">
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" onerror="this.onerror=null; this.src='https://placehold.co/80x40/ffffff/000000?text=RG+Coding'" alt="Logo Ruangguru Coding">
+    </div>
+
+    <div class="presentation-container" id="mainContainer">
+        <!-- Slide 1: Cover -->
+        <div class="slide active" id="slide1">
+            <svg class="starburst" style="top: 15%; left: 10%; width:100px; height:100px; color: #008080; transform: rotate(20deg); opacity: 0.7;"><use xlink:href="#starburst-svg"></use></svg>
+            <svg class="starburst" style="bottom: 20%; right: 15%; transform: rotate(-15deg); color: #f2c140; opacity: 0.8;"><use xlink:href="#starburst-svg"></use></svg>
+            <h1 class="cover-title">
+                <span>PERKENALAN KODING BERSAMA</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Scratchlogo.svg/3840px-Scratchlogo.svg.png" alt="Scratch" style="height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); z-index: 3; margin: 10px auto; display: block;">
+            </h1>
+            <p class="cover-subtitle">SESI 6: Langkah Pertama si Sprite (Gerak Dasar)</p>
+            <div style="font-size: 8rem; z-index: 3;">🏃‍♂️💨✨</div>
+        </div>
+
+        <!-- Slide 2: Hari Ini Kita Belajar -->
+        <div class="slide" id="slide2">
+            <h2 class="agenda-title">Hari Ini Kita Belajar... 🚀</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-icon">🟦</div>
+                    <h3 class="txt-blue">Blok Motion</h3>
+                    <p>Mencoba blok biru [Move 10 steps] agar karakter bergerak maju.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🏗️</div>
+                    <h3 class="txt-teal">Merakit Gerakan</h3>
+                    <p>Menggabungkan gerak, ganti gaya, dan jeda waktu.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🕊️</div>
+                    <h3 class="txt-blue">Blok Glide</h3>
+                    <p>Belajar cara membuat sprite meluncur dengan halus.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🏎️</div>
+                    <h3 class="txt-yellow">Kecepatan</h3>
+                    <p>Mengatur seberapa cepat atau jauh sprite berpindah tempat.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Refreshment Side-by-Side -->
+        <div class="slide" id="slide3">
+            <h2 class="agenda-title">Refreshment: Masih Ingat Ini? 🎭</h2>
+            <div class="refresher-split">
+                <!-- Sprite Costume Panel -->
+                <div class="refresher-panel" style="border-color: #9966ff;">
+                    <h4 class="txt-purple">1. Kostum Sprite</h4>
+                    <div class="refresher-display">
+                        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/21e3b527-aa3a-48ca-b39c-6607d01b7b48.png" id="ref-sprite" style="width: 100px;">
+                    </div>
+                    <button class="nav-button" style="position:static; transform:none; width:auto; padding: 5px 15px; border-radius: 10px; font-size: 0.9rem;" onclick="toggleRefSprite()">GANTI GAYANYA!</button>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">Gunakan blok <span class="txt-purple">Next Costume</span> untuk ganti gaya karakter.</p>
+                </div>
+                <!-- Backdrop Costume Panel -->
+                <div class="refresher-panel" style="border-color: #a8c368;">
+                    <h4 class="txt-green">2. Kostum Backdrop</h4>
+                    <div class="refresher-display" id="ref-bg" style="background: url('https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/ad1d161e-2707-4f37-bb53-565ad87603af.png') center/cover;"></div>
+                    <button class="nav-button" style="position:static; transform:none; width:auto; padding: 5px 15px; border-radius: 10px; font-size: 0.9rem; background-color: #a8c368;" onclick="toggleRefBG()">GANTI TEMPATNYA!</button>
+                    <p style="font-size: 0.9rem; margin-top: 10px;">Gunakan blok <span class="txt-purple">Next Backdrop</span> untuk ganti suasana.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Intro to Motion -->
+        <div class="slide" id="slide4">
+            <h2 class="agenda-title">Kenapa Kita Butuh Gerakan? 🗺️</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
+                <div style="flex: 1; text-align: center;">
+                    <div style="font-size: 10rem; animation: bounce 1s infinite alternate;">🏃‍♂️💨</div>
+                </div>
+                <div style="flex: 1; max-width: 500px;">
+                    <p style="font-size: 2rem; font-weight: 700; color: #4c97ff; line-height: 1.2;">Bosan kalau Sprite cuma diam di tempat?</p>
+                    <p style="font-size: 1.3rem; color: #555; line-height: 1.5; margin-top: 20px;">
+                        Kemarin kita sudah bisa bikin Sprite <span class="txt-teal">berbicara</span> dan <span class="txt-teal">berganti gaya</span>. <br><br>
+                        Sekarang, ayo kita bikin Sprite <span class="txt-teal">menjelajahi panggung</span> menggunakan blok biru <span class="txt-blue">MOTION</span>!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Move 10 Steps Demo -->
+        <div class="slide" id="slide5">
+            <h2 class="agenda-title">Blok [Move 10 Steps] 🚶‍♂️</h2>
+            <div class="demo-layout">
+                <div class="demo-code-panel">
+                    <div style="margin-bottom: 20px; text-align: center;">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/034/974/435/small/green-flag-on-stick-3d-icon-illustration-png.png" class="flag-btn" onclick="runMoveDemo()" style="width: 60px;">
+                        <p style="font-size: 0.8rem; font-weight: bold; color: #333;">Klik Bendera Hijau!</p>
+                    </div>
+                    <div class="block-stack">
+                        <div class="block block-event">when green flag clicked</div>
+                        <div class="block block-blue" id="b1-move">move 10 steps</div>
+                        <div class="block block-yellow" id="b1-wait">wait 0.2 seconds</div>
+                        <div class="block block-blue" id="b2-move">move 10 steps</div>
+                        <div class="block block-yellow" id="b2-wait">wait 0.2 seconds</div>
+                        <div class="block block-blue" id="b3-move">move 10 steps</div>
+                    </div>
+                </div>
+                <div class="demo-canvas">
+                    <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="moveSprite" class="demo-sprite">
+                    <p style="position: absolute; bottom: 20px; left: 20px; color: #999; font-size: 0.9rem;">Klik bendera untuk melihat Sprite melangkah!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Glide Demo -->
+        <div class="slide" id="slide6">
+            <h2 class="agenda-title">Blok [Glide]: Meluncur Halus 🕊️</h2>
+            <div class="demo-layout">
+                <div class="demo-code-panel" style="border-color: #4c97ff; background: #f0f7ff;">
+                   <div style="margin-bottom: 20px; text-align: center;">
+                       <div style="font-size: 3rem;">🖱️</div>
+                       <p style="font-size: 0.8rem; font-weight: bold; color: #333;">Klik Sprite-nya!</p>
+                   </div>
+                    <div class="block-stack">
+                        <div class="block block-event" style="background: #ffbf00;">when this sprite clicked</div>
+                        <div class="block block-blue" id="glide-block">glide 1 secs to random position</div>
+                    </div>
+                </div>
+                <div class="demo-canvas">
+                    <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="glideSprite" class="demo-sprite" style="left: auto; top: 150px; left: 150px;" onclick="runGlideDemo()">
+                    <p style="position: absolute; bottom: 20px; left: 20px; color: #999; font-size: 0.9rem;">Klik Sprite untuk membuatnya meluncur ke posisi baru!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Fine Tuning -->
+        <div class="slide" id="slide7">
+            <h2 class="agenda-title">Tips: Jauh atau Dekat? 📏</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
+                <div style="flex: 1; max-width: 500px;">
+                    <div style="background: white; padding: 30px; border-radius: 25px; border: 4px solid #4c97ff; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                        <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
+                            <div class="block block-blue" style="min-width: 150px;">move 10 steps</div>
+                            <p style="font-weight: bold; color: #555;">➡ Melangkah dikit saja.</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <div class="block block-blue" style="min-width: 150px;">move 50 steps</div>
+                            <p style="font-weight: bold; color: #555;">➡ Melangkah jauh!</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 1.2rem; color: #777; margin-top: 30px; line-height: 1.4;">
+                        Semakin <span class="txt-teal">besar angka</span> yang kamu ketik, semakin <span class="txt-teal">jauh</span> Sprite-mu akan terbang atau berjalan! 🚀
+                    </p>
+                </div>
+                <div style="flex: 1; text-align: center;">
+                    <div class="comparison-box">
+                        <div class="track-container">
+                            <span class="track-label">Move 10 Steps</span>
+                            <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" class="sprite-small" id="compSprite10">
+                        </div>
+                        <div class="track-container">
+                            <span class="track-label">Move 50 Steps</span>
+                            <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" class="sprite-small" id="compSprite50">
+                        </div>
+                        <button class="nav-button" style="position:static; transform:none; width:auto; padding: 10px 25px; border-radius: 15px; font-size: 1rem; margin-top: 10px;" onclick="runComparison()">COBA BANDINGKAN!</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide" id="slide9">
+            <h2 class="agenda-title" style="text-align: center; margin-bottom: 20px;">Lihat Apa yang Bisa Kamu Buat! 🚶‍➡️✨</h2>
+            <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px;">
+                <div style="width: 500px; height: 415px; background: #ffffff; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); border: 5px solid #008080;">
+                    <iframe src="https://scratch.mit.edu/projects/1309262937/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; background: white;"></iframe>
+                </div>
+                <div style="max-width: 1000px; text-align: center;">
+                    <!-- <p style="font-size: 1.4rem; color: #333; font-weight: bold; margin-bottom: 10px;">
+                        Wow! Lihat si Pico sedang menari dengan lincah! 🎶
+                    </p> -->
+                    <p style="font-size: 1.2rem; color: #555; line-height: 1.5; background: #f0fdf4; padding: 15px 25px; border-radius: 20px; border: 2px dashed #a8c368;">
+                        Kira-kira, blok apa saja ya yang digunakan supaya sprite bisa berjalan? Apakah dia cuma pakai 1 kostum saja? Yuk, perhatikan baik-baik gerakannya!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Let's Practice -->
+        <div class="slide" id="slide8">
+            <h2 class="agenda-title">Siap Mencoba Sendiri? 💻</h2>
+            <div style="text-align: center;">
+                <img src="https://media0.giphy.com/avatars/scratchfoundation/TRGiyW3EqeCF.GIF" style="width: 150px; margin-bottom: 30px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));">
+                <br>
+                <a href="https://scratch.mit.edu" target="_blank" class="huge-btn">👉 BUKA SCRATCH DI SINI 👈</a>
+                <p style="font-size: 1.5rem; color: #555; margin-top: 40px; font-weight: 500; line-height: 1.5;">
+                    Coba pasang blok <span class="txt-blue">Move 10 Steps</span> <br> 
+                    dan gabungkan dengan blok <span class="txt-purple">Next Costume</span>!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Ringkasan -->
+        <div class="slide" id="slide9">
+            <h2 class="agenda-title">Ringkasan Hari Ini 📝</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-icon">🔵</div>
+                    <p><strong>Blok Biru (Motion)</strong> adalah pusat segala gerakan untuk Sprite kita.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🐾</div>
+                    <p><strong>Move 10 steps</strong> membuat Sprite maju ke depan sedikit demi sedikit.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🕊️</div>
+                    <p><strong>Glide</strong> membuat Sprite meluncur halus seperti burung yang terbang.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🧩</div>
+                    <p>Gabungkan <strong>Gerak + Kostum</strong> agar Sprite terlihat seperti benar-benar berjalan!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Quiz -->
+        <div class="slide solid-teal-bg" id="slide17">
+            <style>
+                @keyframes bounceCat {
+                    from {
+                        transform: translateY(0);
+                    }
+        
+                    to {
+                        transform: translateY(-10px);
+                    }
+                }
+        
+                @keyframes thinkBubble {
+                    0% {
+                        opacity: 0;
+                        transform: scale(0.8);
+                    }
+        
+                    50% {
+                        opacity: 1;
+                        transform: scale(1.1);
+                    }
+        
+                    100% {
+                        opacity: 0.8;
+                        transform: scale(1);
+                    }
+                }
+            </style>
+            <h1 class="main-header" style="color: #f2c140;">Sudah Siap untuk Kuis?</h1>
+            <p class="main-body"
+                style="font-size: 1.5rem; text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 20px;">Mari
+                mengingat materi hari ini. Perhatikan layar ya!</p>
+        
+            <div style="position: relative; width: 340px; height: 280px; margin: 0 auto;">
+                <!-- Thought bubble -->
+                <div
+                    style="position: absolute; top: -10px; right: 10px; font-size: 4rem; animation: thinkBubble 2s infinite alternate;">
+                    💭</div>
+                <div
+                    style="position: absolute; top: 10px; right: 70px; font-size: 3rem; animation: thinkBubble 2s infinite alternate; animation-delay: 0.5s;">
+                    💡</div>
+        
+                <!-- Scratch Cat -->
+                <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/756d9713-87b5-4ec4-ae39-9f2352b8e280.png"
+                    alt="Scratch Cat Studying"
+                    style="position: absolute; top: 40px; left: 60px; width: 180px; z-index: 2; animation: bounceCat 0.4s infinite alternate; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+        
+                <!-- Laptop -->
+                <div style="position: absolute; bottom: 0px; left: 85px; font-size: 7rem; z-index: 3;">💻</div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Feedback -->
+        <div class="slide" id="slide18">
+            <h2 class="agenda-title" style="text-align: center; width: 100%; margin-bottom: 15px;">Bagaimana Kelas Hari Ini?
+            </h2>
+            <p
+                style="font-size: 1.3rem; text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 30px; color: #555;">
+                Bantu kami menjadi lebih baik dengan mengisi form feedback singkat ya!
+            </p>
+        
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%; max-width: 900px;">
+                <!-- Left: Scratch Cat Happy -->
+                <div style="position: relative; width: 300px; height: 300px; flex-shrink: 0;">
+                    <div
+                        style="position: absolute; top: 20px; left: 20px; font-size: 3rem; animation: floatSprite 2s infinite alternate;">
+                        💖</div>
+                    <div
+                        style="position: absolute; top: 50px; right: 20px; font-size: 2.5rem; animation: floatSprite 2.5s infinite alternate reverse;">
+                        ✨</div>
+                    <div
+                        style="position: absolute; bottom: 60px; left: 10px; font-size: 2rem; animation: floatSprite 3s infinite alternate;">
+                        🎉</div>
+        
+                    <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/756d9713-87b5-4ec4-ae39-9f2352b8e280.png"
+                        alt="Happy Scratch Cat"
+                        style="position: absolute; bottom: 0; left: 40px; width: 220px; z-index: 2; animation: bounce 1s infinite alternate; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));">
+                </div>
+        
+                <!-- Right: Feedback Box -->
+                <div
+                    style="background: white; border-radius: 20px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 2px solid #e0e0e0; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 400px;">
+                    <h3 style="color: #008080; margin-top: 0; font-size: 1.5rem; margin-bottom: 10px;">QR Code Feedback</h3>
+                    <p style="font-size: 1.1rem; color: #555; margin-bottom: 20px;">Pindai QR Code atau buka link di bawah ini:
+                    </p>
+        
+                    <!-- Dynamic QR Code -->
+                    <div
+                        style="width: 150px; height: 150px; background: white; border: 4px solid #333; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; padding: 5px;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://bit.ly/feedback_class_dms"
+                            alt="QR Code" style="width: 100%;">
+                    </div>
+        
+                    <div style="background: #e0f2f1; padding: 10px 20px; border-radius: 30px; border: 2px solid #008080;">
+                        <a href="http://bit.ly/feedback_class_dms" target="_blank"
+                            style="color: #008080; font-weight: bold; font-size: 1.3rem; text-decoration: none;">bit.ly/feedback_class_dms</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)" disabled>&#9664;</button>
+        <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">&#9658;</button>
+    </div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentSlide = 0;
+
+    function showSlide(index, direction = 'next') {
+        const oldSlide = slides[currentSlide];
+        const newSlide = slides[index];
+
+        slides.forEach(slide => { 
+            slide.classList.remove('active', 'is-next', 'is-exiting'); 
+            slide.style.zIndex = 1; 
+        });
+
+        if (direction === 'next') {
+            oldSlide.style.zIndex = 10;
+            newSlide.style.zIndex = 11;
+            newSlide.classList.add('is-next');
+            requestAnimationFrame(() => { 
+                newSlide.classList.add('active'); 
+                newSlide.classList.remove('is-next'); 
+            });
+        } else {
+            oldSlide.style.zIndex = 11;
+            newSlide.style.zIndex = 10;
+            newSlide.classList.add('active');
+            oldSlide.classList.add('is-exiting');
+        }
+
+        currentSlide = index;
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slides.length - 1;
+
+        if (slides[index].id === 'slide1') {
+            document.getElementById('globalLogoLeft').style.opacity = '1';
+            document.getElementById('globalLogoRight').style.opacity = '1';
+        }
+    }
+
+    function changeSlide(direction) {
+        const newIndex = currentSlide + direction;
+        if (newIndex >= 0 && newIndex < slides.length) {
+            showSlide(newIndex, direction === 1 ? 'next' : 'prev');
+        }
+    }
+
+    /* Interactive Refresher Logic */
+    let refSpriteIdx = 1;
+    const spriteUrls = [
+        "https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/21e3b527-aa3a-48ca-b39c-6607d01b7b48.png",
+        "https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/2c4f69fb-f29c-4cc2-9e43-cdd39ae9ecc6.png"
+    ];
+    function toggleRefSprite() {
+        refSpriteIdx = refSpriteIdx === 1 ? 0 : 1;
+        document.getElementById('ref-sprite').src = spriteUrls[refSpriteIdx];
+    }
+
+    let refBGIdx = 0;
+    const bgUrls = [
+        "https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/ad1d161e-2707-4f37-bb53-565ad87603af.png",
+        "https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/040b9af6-e9f9-48b7-8e00-39a10b96a03e.png" // Simulated B
+    ];
+    function toggleRefBG() {
+        refBGIdx = refBGIdx === 0 ? 1 : 0;
+        document.getElementById('ref-bg').style.backgroundImage = `url('${bgUrls[refBGIdx]}')`;
+    }
+
+    /* Move Demo Logic */
+    async function runMoveDemo() {
+        const sprite = document.getElementById('moveSprite');
+        const sequence = [
+            { block: 'b1-move', action: () => sprite.style.left = (parseInt(sprite.style.left || 50) + 40) + 'px' },
+            { block: 'b1-wait', action: null, delay: 200 },
+            { block: 'b2-move', action: () => sprite.style.left = (parseInt(sprite.style.left || 50) + 40) + 'px' },
+            { block: 'b2-wait', action: null, delay: 200 },
+            { block: 'b3-move', action: () => sprite.style.left = (parseInt(sprite.style.left || 50) + 40) + 'px' }
+        ];
+
+        // Reset
+        sprite.style.left = '50px';
+        
+        for (const item of sequence) {
+            document.getElementById(item.block).classList.add('highlight');
+            if (item.action) item.action();
+            await new Promise(r => setTimeout(r, item.delay || 400));
+            document.getElementById(item.block).classList.remove('highlight');
+        }
+    }
+
+    /* Glide Demo Logic */
+    function runGlideDemo() {
+        const sprite = document.getElementById('glideSprite');
+        const block = document.getElementById('glide-block');
+        
+        const canvas = sprite.parentElement;
+        const rect = canvas.getBoundingClientRect();
+        
+        const targetX = Math.random() * (rect.width - 200) + 50;
+        const targetY = Math.random() * (rect.height - 200) + 50;
+
+        block.classList.add('highlight');
+        sprite.style.left = targetX + 'px';
+        sprite.style.top = targetY + 'px';
+        
+        setTimeout(() => {
+            block.classList.remove('highlight');
+        }, 1000);
+    }
+
+    /* Slide 7 Comparison Logic */
+    function runComparison() {
+        const s10 = document.getElementById('compSprite10');
+        const s50 = document.getElementById('compSprite50');
+        
+        // Reset
+        s10.style.left = '20px';
+        s50.style.left = '20px';
+        
+        setTimeout(() => {
+            s10.style.left = (20 + 40) + 'px'; // Simulasi 10 steps
+            s50.style.left = (20 + 200) + 'px'; // Simulasi 50 steps (5x lebih jauh)
+        }, 100);
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') changeSlide(1);
+        else if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        showSlide(0);
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 7: Interaksi & Suara - Kejutan Saat Diklik</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset dan Global Styles */
+        body { margin: 0; padding: 0; font-family: 'Fredoka', sans-serif; background: url('https://i.imgur.com/z221jXz.png') center/cover fixed no-repeat; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .presentation-container { width: 77vw; height: 75.5vh; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; position: relative; background-color: transparent; }
+        .slide { width: 100%; height: 100%; padding: 40px 60px; box-sizing: border-box; color: #333; display: flex; flex-direction: column; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out; background-color: rgba(255, 255, 255, 0.95); visibility: hidden; overflow-y: auto; opacity: 0; }
+        .slide.active { opacity: 1; visibility: visible; z-index: 10; transform: translateX(0); }
+        .slide.is-next { transform: translateX(100%); visibility: visible; opacity: 1; z-index: 11; }
+        .slide.is-exiting { transform: translateX(100%); opacity: 1; z-index: 11; }
+        
+        #slide1 { background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://i.imgur.com/z221jXz.png') center/cover no-repeat; color: white; }
+        .solid-teal-bg { background-color: #008080; color: white; }
+        .starburst { position: absolute; width: 100px; height: 100px; z-index: 2; }
+        
+        /* Logos */
+        .slide-logo-left { position: fixed; top: 0; left: 0; background-color: white; padding: 10px 20px 10px 40px; border-bottom-right-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; transition: opacity 0.3s ease; gap: 15px; }
+        .slide-logo-left img { height: 45px; width: auto; }
+        .slide-logo-right { position: fixed; top: 0; right: 0; background-color: white; padding: 10px 40px 10px 20px; border-bottom-left-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; transition: opacity 0.3s ease; }
+        .slide-logo-right img { height: 45px; width: auto; }
+
+        .nav-button { background-color: rgba(0, 128, 128, 0.8); color: white; border: none; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 900; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
+        #prevBtn { left: 20px; } #nextBtn { right: 20px; }
+        .nav-button:hover { background-color: #f2c140; color: #333; transform: scale(1.1); }
+        .nav-button:disabled { background-color: #ccc; cursor: not-allowed; transform: scale(1); }
+        
+        .cover-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; line-height: 1.1; z-index: 3; text-align: center; }
+        .cover-subtitle { font-size: 1.8rem; font-weight: 400; margin-bottom: 20px; border-bottom: 3px solid #f2c140; padding-bottom: 10px; display: inline-block; z-index: 3; color: white; }
+        .agenda-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #008080; line-height: 1.2; margin-bottom: 30px; width: 100%; text-align: center; }
+        
+        /* Blocks Styling */
+        .block-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+        .block { padding: 10px 18px; border-radius: 4px 12px 12px 4px; color: white; font-weight: 600; font-size: 1.1rem; position: relative; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .block-blue { background: #4c97ff; }
+        .block-yellow { background: #ffbf00; color: #333; }
+        .block-purple { background: #9966ff; }
+        .block-pink { background: #cf63cf; }
+        .block-event { background: #ffbf00; color: #333; border-radius: 20px 20px 4px 4px; padding-top: 15px; }
+        
+        .block.highlight { outline: 4px solid #fff; z-index: 5; box-shadow: 0 0 20px rgba(255,255,255,0.8); transform: scale(1.05); transition: all 0.2s; }
+        
+        /* Modern Utilities */
+        .txt-blue { color: #4c97ff; font-weight: 800; }
+        .txt-purple { color: #9966ff; font-weight: 800; }
+        .txt-pink { color: #cf63cf; font-weight: 800; }
+        .txt-teal { color: #008080; font-weight: 800; }
+        .txt-yellow { color: #f2c140; font-weight: 800; }
+        .txt-green { color: #a8c368; font-weight: 800; }
+
+        /* Agenda / Summary Grid */
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; max-width: 900px; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); border: 2px solid #f0f0f0; transition: transform 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .card-icon { font-size: 3rem; margin-bottom: 15px; }
+
+        /* Refreshment Layout */
+        .refreshment-row { display: flex; gap: 30px; width: 100%; max-width: 1100px; height: 350px; }
+        .refreshment-col { flex: 1; background: #fff; border: 3px solid #eee; border-radius: 25px; display: flex; flex-direction: column; overflow: hidden; }
+        
+        /* Demo Layout */
+        .demo-layout { display: flex; gap: 40px; width: 100%; max-width: 1000px; align-items: stretch; justify-content: center; }
+        .demo-code-panel { width: 350px; background: #fff8f0; border-radius: 25px; padding: 20px; display: flex; flex-direction: column; align-items: center; border: 4px solid #ffbf00; }
+        .demo-canvas { flex: 1; background: white; border-radius: 25px; border: 4px solid #008080; position: relative; display: flex; align-items: center; min-height: 350px; overflow: hidden; background-image: linear-gradient(#eee 1px, transparent 1px), linear-gradient(90deg, #eee 1px, transparent 1px); background-size: 20px 20px; }
+        .demo-sprite { width: 120px; position: absolute; left: 50px; transition: left 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275), top 0.5s ease-in-out; cursor: pointer; }
+        
+        .flag-btn { cursor: pointer; transition: transform 0.2s; background: none; border: none; }
+        .flag-btn:hover { transform: scale(1.2); }
+
+        .huge-btn { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(to right, #008080, #f2c140); color: white; text-decoration: none; font-size: 1.5rem; font-weight: 700; padding: 15px 40px; border-radius: 50px; cursor: pointer; border: none; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,128,128,0.3); }
+        .huge-btn:hover { transform: scale(1.05); }
+
+        /* Sound Comparison Grid */
+        .sound-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; width: 100%; max-width: 1000px; }
+        .sound-card { background: #fdf2f8; border: 3px solid #cf63cf; border-radius: 20px; padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .sound-card .block { width: 100%; min-width: 0; box-sizing: border-box; }
+
+        @keyframes bounceCat { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+        @keyframes thinkBubble { 0% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0.8; transform: scale(1); } }
+        @keyframes floatSprite { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+    </style>
+</head>
+<body>
+    <!-- Definisi SVG -->
+    <svg width="0" height="0" style="position:absolute;">
+      <defs>
+        <symbol id="starburst-svg" viewBox="0 0 100 100">
+          <path d="M50 0 L55.9 34.5 L85.35 14.65 L65.5 44.1 L100 50 L65.5 55.9 L85.35 85.35 L55.9 65.5 L50 100 L44.1 65.5 L14.65 85.35 L34.5 55.9 L0 50 L34.5 44.1 L14.65 14.65 L44.1 34.5 Z" fill="currentColor"/>
+        </symbol>
+      </defs>
+    </svg>
+    
+    <!-- Logos -->
+    <div class="slide-logo-left" id="globalLogoLeft">
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/hs/1%20Homepage%20RG/logo%20ruangguru.png" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=RG'" alt="Logo Ruangguru">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Lambang_Kabupaten_Dharmasraya.png" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DH'" alt="Logo Kabupaten Dharmasraya">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DS'" alt="Logo Disdik Dharmasraya">
+    </div>
+    <div class="slide-logo-right" id="globalLogoRight">
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" onerror="this.onerror=null; this.src='https://placehold.co/80x40/ffffff/000000?text=RG+Coding'" alt="Logo Ruangguru Coding">
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="catSound" src="https://actions.google.com/sounds/v1/animals/cat_purr_close.ogg"></audio>
+    <audio id="bgMusic" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" loop></audio>
+
+    <div class="presentation-container" id="mainContainer">
+        <!-- Slide 1: Cover -->
+        <div class="slide active" id="slide1">
+            <svg class="starburst" style="top: 15%; left: 10%; width:100px; height:100px; color: #008080; transform: rotate(20deg); opacity: 0.7;"><use xlink:href="#starburst-svg"></use></svg>
+            <svg class="starburst" style="bottom: 20%; right: 15%; transform: rotate(-15deg); color: #cf63cf; opacity: 0.8;"><use xlink:href="#starburst-svg"></use></svg>
+            <h1 class="cover-title">
+                <span>PERKENALAN KODING BERSAMA</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Scratchlogo.svg/3840px-Scratchlogo.svg.png" alt="Scratch" style="height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); z-index: 3; margin: 10px auto; display: block;">
+            </h1>
+            <p class="cover-subtitle">SESI 7: Interaksi & Suara (Kejutan Saat Diklik)</p>
+            <div style="font-size: 8rem; z-index: 3;">🖱️ 🔊 ✨</div>
+        </div>
+
+        <!-- Slide 2: Hari Ini Kita Belajar -->
+        <div class="slide" id="slide2">
+            <h2 class="agenda-title">Hari Ini Kita Belajar... 🚀</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-icon">🖱️</div>
+                    <h3 class="txt-yellow">Event Klik</h3>
+                    <p>Membuat Sprite memberikan reaksi seru saat kita klik dengan mouse.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔊</div>
+                    <h3 class="txt-pink">Blok Pink</h3>
+                    <p>Mengenal blok Sound agar animasi kita tidak sepi lagi!</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🎭</div>
+                    <h3 class="txt-purple">Ganti Gaya</h3>
+                    <p>Menggabungkan suara dengan perubahan kostum yang keren.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <h3 class="txt-teal">Dua Kejadian</h3>
+                    <p>Belajar cara menjalankan dua event sekaligus dalam satu sprite.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Refreshment Motion Blocks -->
+        <div class="slide" id="slide3">
+            <h2 class="agenda-title">Refreshment: Masih Ingat Ini? 🏃‍♂️</h2>
+            <div class="refreshment-row">
+                <!-- Move 10 Steps Col -->
+                <div class="refreshment-col">
+                    <div style="background: #e0f2fe; padding: 15px; border-bottom: 2px solid #eee; display: flex; justify-content: center; gap: 10px; align-items: center;">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/034/974/435/small/green-flag-on-stick-3d-icon-illustration-png.png" class="flag-btn" onclick="runMoveDemo()" style="width: 40px;">
+                        <span style="font-size: 0.9rem; font-weight: bold;">Move 10 Steps</span>
+                    </div>
+                    <div class="demo-canvas" style="min-height: 250px; border: none; border-radius: 0;">
+                        <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="moveSprite" class="demo-sprite" style="width: 80px; left: 20px;">
+                    </div>
+                </div>
+                <!-- Glide Col -->
+                <div class="refreshment-col">
+                    <div style="background: #f0f7ff; padding: 15px; border-bottom: 2px solid #eee; display: flex; justify-content: center; gap: 10px; align-items: center;">
+                        <div style="font-size: 1.5rem;">🖱️</div>
+                        <span style="font-size: 0.9rem; font-weight: bold;">Glide to Random</span>
+                    </div>
+                    <div class="demo-canvas" style="min-height: 250px; border: none; border-radius: 0;">
+                        <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="glideSprite" class="demo-sprite" style="width: 80px; left: 100px; top: 100px;" onclick="runGlideDemo()">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Intro to Sound -->
+        <div class="slide" id="slide4">
+            <h2 class="agenda-title">Animasi Lebih Seru dengan Suara! 🎼</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
+                <div style="flex: 1; text-align: center;">
+                    <div style="font-size: 10rem; animation: floatSprite 2s infinite alternate;">📢 ✨</div>
+                </div>
+                <div style="flex: 1; max-width: 500px;">
+                    <p style="font-size: 1.8rem; font-weight: 700; color: #cf63cf; line-height: 1.2;">Bosan kalau Sprite cuma gerak tapi bisu?</p>
+                    <p style="font-size: 1.3rem; color: #555; line-height: 1.5; margin-top: 20px;">
+                        Agar programmu lebih hidup, kita butuh <span class="txt-teal">Efek Suara</span> dan <span class="txt-green">Musik</span>!<br><br>
+                        Di Scratch, semua blok suara berwarna <span class="txt-pink">PINK (SOUND)</span>. Ayo kita coba!
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Sound Blocks Comparison -->
+        <div class="slide" id="slide5">
+            <h2 class="agenda-title">3 Blok Suara Andalan 🎷</h2>
+            <div class="sound-grid">
+                <div class="sound-card">
+                    <div class="block block-pink">play sound (meow) until done</div>
+                    <p style="font-size: 0.9rem; font-weight: bold; color: #555;">Selesaikan suaranya dulu, baru lanjut ke blok bawahnya.</p>
+                </div>
+                <div class="sound-card">
+                    <div class="block block-pink">start sound (meow)</div>
+                    <p style="font-size: 0.9rem; font-weight: bold; color: #555;">Bunyikan suara sekarang, dan langsung lanjut ke blok bawahnya.</p>
+                </div>
+                <div class="sound-card">
+                    <div class="block block-pink">stop all sounds</div>
+                    <p style="font-size: 0.9rem; font-weight: bold; color: #555;">Seketika bikin panggung jadi senyap kembali.</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px; font-weight: bold; color: #008080; background: #e0f2f1; padding: 10px 20px; border-radius: 50px;">💡 Cukup fokus ke 3 blok ini untuk mulai memberi suara!</p>
+        </div>
+
+        <!-- Slide 6: Meow Demo -->
+        <div class="slide" id="slide6">
+            <h2 class="agenda-title">Demo: Klik & Bunyi! 🔊</h2>
+            <div class="demo-layout">
+                <div class="demo-code-panel" style="border-color: #cf63cf; background: #fdf2f8;">
+                   <div style="margin-bottom: 20px; text-align: center;">
+                       <div style="font-size: 3rem; position: relative; display: inline-block;">
+                           🖱️
+                           <div id="sound-ripple" style="position: absolute; top: -10px; right: -20px; font-size: 1.5rem; opacity: 0; transition: all 0.3s;">🔊</div>
+                       </div>
+                       <p style="font-size: 0.8rem; font-weight: bold; color: #333;">Klik Sprite-nya!</p>
+                   </div>
+                    <div class="block-stack">
+                        <div class="block block-event">when this sprite clicked</div>
+                        <div class="block block-pink" id="meow-block">start sound (Purr)</div>
+                        <div class="block block-blue" id="meow-glide">glide 1 secs to random position</div>
+                    </div>
+                </div>
+                <div class="demo-canvas">
+                    <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="meowSprite" class="demo-sprite" style="left: 150px; top: 120px;" onclick="runMeowDemo()">
+                    <p style="position: absolute; bottom: 20px; left: 20px; color: #999; font-size: 0.9rem;">Klik Sprite untuk mendengarnya mengeong sambil meluncur! Pastikan audio perangkat mu AKTIF!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Double Event -->
+        <div class="slide" id="slide7">
+            <h2 class="agenda-title">Menggunakan 2 Events! ⚡</h2>
+            <div class="demo-layout">
+                <!-- Left: Stage with Flag & Sprite -->
+                <div class="demo-canvas" style="flex:1; min-height: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                    <div style="background: rgba(255,255,255,0.8); padding: 10px 20px; border-radius: 15px; border: 2px solid #ffbf00; display: flex; align-items: center; gap: 10px;">
+                        <img src="https://static.vecteezy.com/system/resources/thumbnails/034/974/435/small/green-flag-on-stick-3d-icon-illustration-png.png" 
+                             class="flag-btn" onclick="toggleMusic()" style="width: 50px;" id="dualFlag">
+                        <span id="music-status" style="font-size: 0.9rem; font-weight: bold; color: #555;">Klik Bendera!</span>
+                    </div>
+                    <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" 
+                         id="dualSprite" class="demo-sprite" style="position:static; width: 120px;" onclick="runDualEventSprite()">
+                    <p style="color: #999; font-size: 0.8rem; text-align: center;">1. Klik Bendera (Musik) <br> 2. Klik Sprite (Animasi)</p>
+                </div>
+
+                <!-- Right: Code Blocks -->
+                <div style="flex:1; display: flex; flex-direction: column; gap: 20px;">
+                    <div style="background: white; border: 4px dashed #ffbf00; border-radius: 25px; padding: 25px;" id="event1-panel">
+                        <h4 style="margin: 0 0 10px 0; color: #008080; font-size: 1rem;">Event 1: Musik Pengiring</h4>
+                        <div class="block-stack">
+                            <div class="block block-event" id="e1-flag">when green flag clicked</div>
+                            <div class="block block-pink" id="e1-music">play sound (Sunny Day) until done</div>
+                        </div>
+                    </div>
+                    <div style="background: white; border: 4px dashed #ffbf00; border-radius: 25px; padding: 25px;" id="event2-panel">
+                        <h4 style="margin: 0 0 10px 0; color: #008080; font-size: 1rem;">Event 2: Efek Reaksi</h4>
+                        <div class="block-stack">
+                            <div class="block block-event" id="e2-click">when this sprite clicked</div>
+                            <div class="block block-pink" id="e2-sound">start sound (Purr)</div>
+                            <div class="block block-purple" id="e2-costume">next costume</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-top: 15px; font-size: 1.1rem; font-weight: bold; color: #333; text-align: center;">
+                Satu Sprite bisa punya banyak pemicu berbeda! ✨
+            </div>
+        </div>
+
+        <!-- Slide 8: Case Study -->
+        <div class="slide" id="slide8">
+            <h2 class="agenda-title">Lihat Apa yang Bisa Kamu Buat! 🌟</h2>
+            <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                <div style="width: 500px; height: 415px; background: #ffffff; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); border: 5px solid #008080; display: flex; justify-content: center; align-items: center;">
+                    <iframe src="https://scratch.mit.edu/projects/526342317/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; background: white;"></iframe>
+                </div>
+                <p style="font-size: 1.2rem; color: #555; background: #f0fdf4; padding: 15px 25px; border-radius: 20px; border: 2px dashed #a8c368; max-width: 900px; text-align: center;">
+                    Kira-kira, blok apa saja ya yang digunakan supaya sprite bersuara ketika di klik? <br>
+                    Apakah yang perlu dilakukan pada kostumnya? Yuk, perhatikan baik-baik!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 9: Let's Practice -->
+        <div class="slide" id="slide9">
+            <h2 class="agenda-title">Waktunya Berkreasi! 💻</h2>
+            <div style="text-align: center;">
+                <img src="https://media0.giphy.com/avatars/scratchfoundation/TRGiyW3EqeCF.GIF" style="width: 150px; margin-bottom: 30px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));">
+                <br>
+                <a href="https://scratch.mit.edu" target="_blank" class="huge-btn">👉 BUKA SCRATCH DI SINI 👈</a>
+                <div style="margin-top: 40px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 800px;">
+                    <div style="background: #fdf2f8; padding: 20px; border-radius: 15px; border: 2px solid #cf63cf; text-align: left;">
+                        <h4 style="margin:0 0 10px 0; color: #cf63cf;">Tugas 1:</h4>
+                        <p style="margin:0; font-size: 1rem;">Pasang blok <span class="txt-pink">Start Sound</span> di bawah blok <span class="txt-yellow">When this sprite clicked</span>.</p>
+                    </div>
+                    <div style="background: #f0f7ff; padding: 20px; border-radius: 15px; border: 2px solid #4c97ff; text-align: left;">
+                        <h4 style="margin:0 0 10px 0; color: #4c97ff;">Tugas 2:</h4>
+                        <p style="margin:0; font-size: 1rem;">Tambahkan blok <span class="txt-purple">Next Costume</span> agar sprite berubah gaya saat berbunyi!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Ringkasan -->
+        <div class="slide" id="slide10">
+            <h2 class="agenda-title">Ringkasan Hari Ini 📝</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-icon">🖱️</div>
+                    <p><strong>Event Klik</strong> adalah pintu masuk interaksi antara kamu dan sprite buatanmu.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">🔊</div>
+                    <p><strong>Blok Pink (Sound)</strong> memberikan "suara" pada karakter agar lebih ekspresif.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">⚡</div>
+                    <p>Satu Sprite bisa menjalankan <strong>Banyak Kejadian</strong> secara bersamaan.</p>
+                </div>
+                <div class="card">
+                    <div class="card-icon">✨</div>
+                    <p>Gabungan <strong>Suara + Kostum + Klik</strong> membuat programmu terasa seperti game beneran!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Quiz -->
+        <div class="slide solid-teal-bg" id="slide17">
+            <style>
+                @keyframes bounceCat {
+                    from {
+                        transform: translateY(0);
+                    }
+        
+                    to {
+                        transform: translateY(-10px);
+                    }
+                }
+        
+                @keyframes thinkBubble {
+                    0% {
+                        opacity: 0;
+                        transform: scale(0.8);
+                    }
+        
+                    50% {
+                        opacity: 1;
+                        transform: scale(1.1);
+                    }
+        
+                    100% {
+                        opacity: 0.8;
+                        transform: scale(1);
+                    }
+                }
+            </style>
+            <h1 class="main-header" style="color: #f2c140;">Sudah Siap untuk Kuis?</h1>
+            <p class="main-body"
+                style="font-size: 1.5rem; text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 20px;">Mari
+                mengingat materi hari ini. Perhatikan layar ya!</p>
+        
+            <div style="position: relative; width: 340px; height: 280px; margin: 0 auto;">
+                <!-- Thought bubble -->
+                <div
+                    style="position: absolute; top: -10px; right: 10px; font-size: 4rem; animation: thinkBubble 2s infinite alternate;">
+                    💭</div>
+                <div
+                    style="position: absolute; top: 10px; right: 70px; font-size: 3rem; animation: thinkBubble 2s infinite alternate; animation-delay: 0.5s;">
+                    💡</div>
+        
+                <!-- Scratch Cat -->
+                <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/756d9713-87b5-4ec4-ae39-9f2352b8e280.png"
+                    alt="Scratch Cat Studying"
+                    style="position: absolute; top: 40px; left: 60px; width: 180px; z-index: 2; animation: bounceCat 0.4s infinite alternate; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
+        
+                <!-- Laptop -->
+                <div style="position: absolute; bottom: 0px; left: 85px; font-size: 7rem; z-index: 3;">💻</div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Feedback -->
+        <div class="slide" id="slide12">
+            <h2 class="agenda-title" style="margin-bottom: 15px;">Bagaimana Kelas Hari Ini? 💖</h2>
+            <p style="font-size: 1.3rem; text-align: center; max-width: 800px; margin-bottom: 30px; color: #555;">
+                Bantu kami menjadi lebih baik dengan mengisi form feedback singkat ya!
+            </p>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%; max-width: 900px;">
+                <!-- Left: Happy Cat -->
+                <div style="position: relative; width: 300px; height: 300px; flex-shrink: 0; display: flex; justify-content: center; align-items: flex-end;">
+                    <div style="position: absolute; top: 20px; left: 20px; font-size: 3rem; animation: floatSprite 2s infinite alternate;">💖</div>
+                    <div style="position: absolute; top: 50px; right: 20px; font-size: 2.5rem; animation: floatSprite 2.5s infinite alternate reverse;">✨</div>
+                    <div style="position: absolute; bottom: 60px; left: 10px; font-size: 2rem; animation: floatSprite 3s infinite alternate;">🎉</div>
+                    <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/756d9713-87b5-4ec4-ae39-9f2352b8e280.png" alt="Happy Cat" style="width: 220px; z-index: 2; animation: bounceCat 1s infinite alternate; filter: drop-shadow(0 8px 16px rgba(0,0,0,0.2));">
+                </div>
+                <!-- Right: QR Code -->
+                <div style="background: white; border-radius: 20px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 2px solid #eee; text-align: center; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center;">
+                    <h3 style="color: #008080; margin: 0 0 20px 0;">QR Code Feedback</h3>
+                    <div style="width: 150px; height: 150px; border: 4px solid #333; border-radius: 10px; padding: 5px; margin-bottom: 20px;">
+                        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://bit.ly/feedback_class_dms" style="width: 100%;">
+                    </div>
+                    <div style="background: #e0f2f1; padding: 10px 20px; border-radius: 30px; border: 2px solid #008080;">
+                        <a href="http://bit.ly/feedback_class_dms" target="_blank" style="color: #008080; font-weight: bold; text-decoration: none; font-size: 1.1rem;">bit.ly/feedback_class_dms</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)" disabled>&#9664;</button>
+        <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">&#9658;</button>
+    </div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentSlide = 0;
+
+    function showSlide(index, direction = 'next') {
+        const oldSlide = slides[currentSlide];
+        const newSlide = slides[index];
+
+        slides.forEach(slide => { 
+            slide.classList.remove('active', 'is-next', 'is-exiting'); 
+            slide.style.zIndex = 1; 
+        });
+
+        if (direction === 'next') {
+            oldSlide.style.zIndex = 10;
+            newSlide.style.zIndex = 11;
+            newSlide.classList.add('is-next');
+            requestAnimationFrame(() => { 
+                newSlide.classList.add('active'); 
+                newSlide.classList.remove('is-next'); 
+            });
+        } else {
+            oldSlide.style.zIndex = 11;
+            newSlide.style.zIndex = 10;
+            newSlide.classList.add('active');
+            oldSlide.classList.add('is-exiting');
+        }
+
+        currentSlide = index;
+        prevBtn.disabled = currentSlide === 0;
+        nextBtn.disabled = currentSlide === slides.length - 1;
+    }
+
+    function changeSlide(direction) {
+        const newIndex = currentSlide + direction;
+        if (newIndex >= 0 && newIndex < slides.length) {
+            showSlide(newIndex, direction === 1 ? 'next' : 'prev');
+        }
+    }
+
+    /* Refreshment Demo Logic */
+    async function runMoveDemo() {
+        const sprite = document.getElementById('moveSprite');
+        const startLeft = 20;
+        sprite.style.left = startLeft + 'px';
+        
+        await new Promise(r => setTimeout(r, 200));
+        sprite.style.left = (startLeft + 40) + 'px';
+        await new Promise(r => setTimeout(r, 200));
+        sprite.style.left = (startLeft + 80) + 'px';
+    }
+
+    function runGlideDemo() {
+        const sprite = document.getElementById('glideSprite');
+        const canvas = sprite.parentElement;
+        const rect = canvas.getBoundingClientRect();
+        
+        const targetX = Math.random() * (rect.width - 100) + 20;
+        const targetY = Math.random() * (rect.height - 100) + 20;
+        
+        sprite.style.left = targetX + 'px';
+        sprite.style.top = targetY + 'px';
+    }
+
+    /* Meet 7 Meow Demo Logic */
+    function runMeowDemo() {
+        const sprite = document.getElementById('meowSprite');
+        const pinkBlock = document.getElementById('meow-block');
+        const blueBlock = document.getElementById('meow-glide');
+        const audio = document.getElementById('catSound');
+        const ripple = document.getElementById('sound-ripple');
+
+        // Reset display
+        ripple.style.opacity = '1';
+        ripple.style.transform = 'scale(1.2)';
+
+        // Highlight blocks and play sound
+        pinkBlock.classList.add('highlight');
+        
+        // Play sound
+        audio.currentTime = 0;
+        audio.play().catch(e => {
+            console.log('Audio manually triggered.');
+        });
+
+        setTimeout(() => {
+            ripple.style.opacity = '0';
+            ripple.style.transform = 'scale(1)';
+            pinkBlock.classList.remove('highlight');
+            blueBlock.classList.add('highlight');
+            
+            // Move sprite
+            const canvas = sprite.parentElement;
+            const rect = canvas.getBoundingClientRect();
+            const targetX = Math.random() * (rect.width - 150) + 50;
+            const targetY = Math.random() * (rect.height - 150) + 50;
+            
+            sprite.style.left = targetX + 'px';
+            sprite.style.top = targetY + 'px';
+
+            setTimeout(() => {
+                blueBlock.classList.remove('highlight');
+            }, 1000);
+        }, 800);
+    }
+
+    /* Refresher Logic from previous sessions */
+    let refSpriteIdx = 1;
+    const spriteUrls = [
+        "https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/21e3b527-aa3a-48ca-b39c-6607d01b7b48.png",
+        "https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/2c4f69fb-f29c-4cc2-9e43-cdd39ae9ecc6.png"
+    ];
+    function toggleRefSprite() {
+        refSpriteIdx = refSpriteIdx === 1 ? 0 : 1;
+        document.getElementById('ref-sprite').src = spriteUrls[refSpriteIdx];
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') changeSlide(1);
+        else if (e.key === 'ArrowLeft') changeSlide(-1);
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        showSlide(0);
+    });
+    /* Slide 7 Dual Event Logic */
+    let isMusicPlaying = false;
+    function toggleMusic() {
+        const music = document.getElementById('bgMusic');
+        const flag = document.getElementById('dualFlag');
+        const status = document.getElementById('music-status');
+        const blocks = ['e1-flag', 'e1-music'];
+
+        if (!isMusicPlaying) {
+            music.play();
+            isMusicPlaying = true;
+            status.innerText = "Music: ON 🎵";
+            status.style.color = "#008080";
+            blocks.forEach(id => document.getElementById(id).classList.add('highlight'));
+            flag.style.transform = "scale(1.2) rotate(10deg)";
+        } else {
+            music.pause();
+            isMusicPlaying = false;
+            status.innerText = "Music: OFF 🔇";
+            status.style.color = "#555";
+            blocks.forEach(id => document.getElementById(id).classList.remove('highlight'));
+            flag.style.transform = "scale(1)";
+        }
+    }
+
+    function runDualEventSprite() {
+        const sprite = document.getElementById('dualSprite');
+        const audio = document.getElementById('catSound');
+        const blocks = ['e2-click', 'e2-sound', 'e2-costume'];
+
+        // Sound
+        audio.currentTime = 0;
+        audio.play().catch(e => console.log("Sound interaction required"));
+
+        // Highlight
+        blocks.forEach(id => document.getElementById(id).classList.add('highlight'));
+        
+        // Flip Animation Sequence
+        let flipCount = 0;
+        const flipInterval = setInterval(() => {
+            sprite.style.transform = flipCount % 2 === 0 ? "scaleX(-1) scale(1.1)" : "scaleX(1) scale(1.1)";
+            flipCount++;
+            if (flipCount >= 6) {
+                clearInterval(flipInterval);
+                sprite.style.transform = "scaleX(1) scale(1)";
+                blocks.forEach(id => document.getElementById(id).classList.remove('highlight'));
+            }
+        }, 100);
+    }
+</script>
+</body>
+</html>

@@ -19,7 +19,7 @@
         #slide1 { background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://i.imgur.com/z221jXz.png') center/cover no-repeat; color: white; align-items: center; text-align: center; justify-content: center; }
         .solid-teal-bg { background-color: #008080; color: white; }
         
-        .nav-button { background-color: rgba(0, 128, 128, 0.8); color: white; border: none; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 900; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
+        .nav-button { background-color: rgba(0, 128, 128, 0.8); color: rgba(0, 128, 128, 0.8); border: none; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 900; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
         #prevBtn { left: 20px; } #nextBtn { right: 20px; }
         .nav-button:hover { background-color: #f2c140; color: #333; transform: scale(1.1); }
         .nav-button:disabled { background-color: #ccc; cursor: not-allowed; transform: scale(1); }
@@ -123,13 +123,15 @@
     <div class="presentation-container" id="mainContainer">
         <!-- Slide 1: Cover -->
         <div class="slide active" id="slide1">
+        <svg class="starburst" style="top: 15%; left: 10%; width:100px; height:100px; color: #008080; transform: rotate(20deg); opacity: 0.7;"><use xlink:href="#starburst-svg"></use></svg>
+            <svg class="starburst" style="bottom: 20%; right: 15%; transform: rotate(-15deg); color: #f2c140; opacity: 0.8;"><use xlink:href="#starburst-svg"></use></svg>
             <h1 class="cover-title">
-                <span style="color:white; font-size: 3rem; display: block; margin-bottom: 10px;">SELAMAT DATANG DI LEVEL 3</span>
-                <span class="highlight-gradient" style="font-size: 4rem;">Pindah Tempat & Ganti Costume!</span>
+                <span>PERKENALAN KODING BERSAMA</span>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Scratchlogo.svg/3840px-Scratchlogo.svg.png" alt="Scratch" style="height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); z-index: 3; margin: 10px auto; display: block;">
             </h1>
-            <p class="cover-subtitle" style="color:white;">SESI 3: Backdrops & Costumes</p>
-            <div style="font-size: 8rem;">🌍🎭</div>
-        </div>
+            <p class="cover-subtitle">SESI 3: Berpindah Tempat dengan Backdrops & Costume</p>
+            <div style="font-size: 8rem; z-index: 3;">🌆🌄✨</div>
+    </div>
 
         <!-- Slide 2: Hari Ini Kita Belajar... -->
         <div class="slide" id="slide2">

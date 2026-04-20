@@ -126,6 +126,7 @@
     </style>
 </head>
 <body>
+    <!-- Definisi SVG untuk elemen dekoratif -->
     <svg width="0" height="0" style="position:absolute;">
       <defs>
         <symbol id="starburst-svg" viewBox="0 0 100 100">
@@ -133,9 +134,31 @@
         </symbol>
       </defs>
     </svg>
-    <div class="slide-logo-left"><img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/hs/1%20Homepage%20RG/logo%20ruangguru.png" alt="RG"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Lambang_Kabupaten_Dharmasraya.png" alt="DH"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" alt="DS"></div>
-    <div class="slide-logo-right"><img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" alt="RGC"></div>
-
+    
+    <!-- LOGO DI LUAR CONTAINER (GLOBAL BODY) - Z-INDEX TERTINGGI -->
+    <!-- Logo Kiri Atas: Ruangguru, Dharmasraya, Disdik -->
+    <div class="slide-logo-left" id="globalLogoLeft">
+        <!-- Logo Ruangguru (Image) -->
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/hs/1%20Homepage%20RG/logo%20ruangguru.png" 
+             onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=RG'"
+             alt="Logo Ruangguru">
+        <!-- Logo Kabupaten Dharmasraya -->
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Lambang_Kabupaten_Dharmasraya.png" 
+             onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DH'"
+             alt="Logo Kabupaten Dharmasraya">
+        <!-- Logo Disdik Dharmasraya -->
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" 
+             onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DS'"
+             alt="Logo Disdik Dharmasraya">
+    </div>
+    
+    <!-- Logo Kanan Atas: Ruangguru Coding -->
+    <div class="slide-logo-right" id="globalLogoRight">
+        <!-- Logo Ruangguru Coding -->
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" 
+             onerror="this.onerror=null; this.src='https://placehold.co/80x40/ffffff/000000?text=RG+Coding'"
+             alt="Logo Ruangguru Coding">
+    </div>
 <div class="presentation-container" id="mainContainer">
 
     <!-- Slide 1 -->

@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sesi 10: Latihan Melompat (Repeat y)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Reset dan Global Styles */
+        body { margin: 0; padding: 0; font-family: 'Fredoka', sans-serif; background: url('https://i.imgur.com/z221jXz.png') center/cover fixed no-repeat; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
+        .presentation-container { width: 77vw; height: 75.5vh; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; position: relative; background-color: transparent; }
+        .slide { width: 100%; height: 100%; padding: 40px 60px; box-sizing: border-box; color: #333; display: flex; flex-direction: column; justify-content: center; align-items: center; position: absolute; top: 0; left: 0; transition: transform 0.6s ease-in-out, opacity 0.6s ease-in-out; background-color: rgba(255, 255, 255, 0.95); visibility: hidden; overflow-y: auto; opacity: 0; }
+        .slide.active { opacity: 1; visibility: visible; z-index: 10; transform: translateX(0); }
+        .slide.is-next { transform: translateX(100%); visibility: visible; opacity: 1; z-index: 11; }
+        .slide.is-exiting { transform: translateX(100%); opacity: 1; z-index: 11; }
+        
+        #slide1 { background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://i.imgur.com/z221jXz.png') center/cover no-repeat; color: white; }
+        .solid-teal-bg { background-color: #008080; color: white; }
+        
+        /* Logos */
+        .slide-logo-left { position: fixed; top: 0; left: 0; background-color: white; padding: 10px 20px 10px 40px; border-bottom-right-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; gap: 15px; }
+        .slide-logo-left img { height: 45px; width: auto; }
+        .slide-logo-right { position: fixed; top: 0; right: 0; background-color: white; padding: 10px 40px 10px 20px; border-bottom-left-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; }
+        .slide-logo-right img { height: 45px; width: auto; }
+
+        .nav-button { background-color: rgba(0, 128, 128, 0.8); color: white; border: none; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 900; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
+        #prevBtn { left: 20px; } #nextBtn { right: 20px; }
+        .nav-button:hover { background-color: #f2c140; color: #333; transform: scale(1.1); }
+        .nav-button:disabled { background-color: #ccc; cursor: not-allowed; transform: scale(1); }
+        
+        .cover-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; line-height: 1.1; text-align: center; }
+        .cover-subtitle { font-size: 1.8rem; font-weight: 400; margin-bottom: 20px; border-bottom: 3px solid #f2c140; padding-bottom: 10px; display: inline-block; color: white; }
+        .agenda-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #008080; line-height: 1.2; margin-bottom: 30px; width: 100%; text-align: center; }
+        
+        /* Blocks Styling */
+        .block-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
+        .block { padding: 10px 18px; border-radius: 4px 12px 12px 4px; color: white; font-weight: 600; font-size: 1.1rem; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; }
+        .block-blue { background: #4c97ff; }
+        .block-orange { background: #ffab19; color: #333; }
+        .block-purple { background: #9966ff; }
+        .block-event { background: #ffbf00; color: #333; border-radius: 20px 20px 4px 4px; padding-top: 15px; }
+
+        /* C-Block (Loop) Styling */
+        .block-repeat { background: #ffab19; color: #333; border-radius: 8px 12px 12px 8px; padding: 12px 15px 12px 25px; position: relative; min-height: 100px; width: fit-content; min-width: 220px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 8px; }
+        .block-repeat::before { content: ""; position: absolute; top: 45px; left: 25px; right: 0; bottom: 45px; background: rgba(255, 255, 255, 0.95); border-top-left-radius: 8px; border-bottom-left-radius: 8px; z-index: 0; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05); }
+        .block-repeat > * { z-index: 1; }
+        .block-repeat .block-stack { margin-left: 10px; }
+
+        /* Modal DND */
+        .dnd-modal-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex; justify-content: center; align-items: center; z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
+        .dnd-modal-overlay.show { opacity: 1; pointer-events: auto; }
+        .dnd-modal { background: white; border-radius: 24px; padding: 40px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transform: scale(0.7); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 400px; }
+        .dnd-modal-title { font-size: 1.8rem; font-weight: 900; color: #008080; margin-bottom: 8px; }
+        .dnd-modal-btn { background: #008080; color: white; border: none; padding: 12px 30px; border-radius: 30px; font-weight: 700; cursor: pointer; }
+
+        /* Utilities */
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); border: 4px solid #f0f0f0; transition: transform 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .card:hover { transform: translateY(-5px); border-color: #008080; }
+        .txt-teal { color: #008080; font-weight: 800; }
+        .txt-orange { color: #ffab19; font-weight: 800; }
+        .huge-btn { padding: 15px 30px; border: none; border-radius: 10px; color: white; font-weight: 800; cursor: pointer; font-size: 1.1rem; }
+        
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+        @keyframes floatSprite { from { transform: translateY(0); } to { transform: translateY(-20px); } }
+        
+        /* Coordinate Experiment */
+        .stage-area { width: 400px; height: 300px; background: #e0f7fa; border-radius: 20px; border: 4px solid #008080; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .axis-y { position: absolute; height: 100%; width: 2px; background: rgba(0,128,128,0.3); }
+        .label-val { font-weight: 900; font-size: 1.5rem; color: #008080; }
+
+        /* Builder Blocks */
+        .builder-slot { border: 3px dashed #ccc; border-radius: 10px; min-height: 50px; padding: 5px; margin-bottom: 5px; cursor: pointer; transition: all 0.2s; }
+        .builder-slot:hover { border-color: #008080; background: #f0f9f9; }
+        .builder-slot.correct { border-style: solid; border-color: #4caf50; background: #e8f5e9; }
+        
+        .huge-btn-scratch { display: inline-flex; align-items: center; justify-content: center; gap: 15px; background: linear-gradient(to right, #008080, #f2c140); color: white; text-decoration: none; font-size: 2.5rem; font-weight: 900; padding: 25px 60px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,128,128,0.4); transition: transform 0.2s; }
+    </style>
+</head>
+<body>
+    <div class="slide-logo-left">
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/hs/1%20Homepage%20RG/logo%20ruangguru.png" alt="Logo Ruangguru">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Lambang_Kabupaten_Dharmasraya.png" alt="Logo Kabupaten Dharmasraya">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" alt="Logo Disdik Dharmasraya">
+    </div>
+    <div class="slide-logo-right">
+        <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" alt="Logo Ruangguru Coding">
+    </div>
+
+    <div class="presentation-container">
+        <!-- Slide 1: Cover -->
+        <div class="slide active" id="slide1">
+            <h1 class="cover-title">PERKENALAN KODING BERSAMA SCRATCH</h1>
+            <p class="cover-subtitle">SESI 10: Latihan Melompat (Loop)</p>
+            <div style="font-size: 8rem; animation: floatSprite 2s infinite alternate;">🦘 🚀 ✨</div>
+        </div>
+
+        <!-- Slide 2: Hari Ini Kita Belajar -->
+        <div class="slide" id="slide2">
+            <h2 class="agenda-title">Hari Ini Kita Belajar... 🚀</h2>
+            <div style="display: flex; gap: 20px; width: 100%; max-width: 1000px;">
+                <div class="card" style="flex: 1;">
+                    <h3 class="txt-teal" style="font-size: 1.3rem;">📍 1. Koordinat Y</h3>
+                    <p style="font-size: 0.95rem;">Memahami bagaimana angka membuat kita naik (Atas) dan turun (Bawah).</p>
+                </div>
+                <div class="card" style="flex: 1;">
+                    <h3 class="txt-orange" style="font-size: 1.3rem;">⬆️ 2. Gerakan Melompat</h3>
+                    <p style="font-size: 0.95rem;">Menyambung Repeat "Naik" dan Repeat "Turun".</p>
+                </div>
+                <div class="card" style="flex: 1;">
+                    <h3 class="txt-teal" style="font-size: 1.3rem;">🧩 3. Efisiensi Kode</h3>
+                    <p style="font-size: 0.95rem;">Membuat gerakan melompat yang halus dengan Repeat.</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px; font-weight: 700; color: #008080; font-size: 1.3rem;">Misi: Membantu karakter melompati rintangan! 🦘</p>
+        </div>
+
+        <!-- Slide 3: Mengapa Melompat? -->
+        <div class="slide" id="slide3">
+            <h2 class="agenda-title">Kenapa karakter harus melompat? 🤔</h2>
+            <div style="display: flex; gap: 40px; align-items: center; max-width: 1000px;">
+                <img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2F0Mzdtb2Y2b293bnMzN3phN2E4MHVmaDlwcnVmb3FkYmtwdWFtZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/euuaA2cwLEUuI/giphy.gif" style="width: 450px; border-radius: 20px; border: 5px solid #008080;">
+                <div style="text-align: left; background: #fff8f0; padding: 30px; border-radius: 25px; border: 4px dashed #ffab19;">
+                    <p style="font-size: 1.5rem; color: #e69916; font-weight: 800; margin: 0;">Super Mario, Dino Run, atau Flappy Bird!</p>
+                    <p style="font-size: 1.2rem; margin-top: 15px; line-height: 1.5;">
+                        Coba bayangkan kalau mereka tidak bisa melompat? Gamenya pasti langsung Game Over! 😱<br><br>
+                        <strong>💡 Melompat itu cuma perlu gerak Naik lalu Turun dengan sangat cepat!</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Eksperimen Koordinat Y (Interaktif) -->
+        <div class="slide" id="slide4">
+            <h2 class="agenda-title">Eksperimen Koordinat Y 📍</h2>
+            <p style="margin-bottom: 25px;">Klik tombol di bawah untuk melihat bagaimana nilai Y berubah!</p>
+            <div style="display: flex; gap: 40px; align-items: center;">
+                <div class="stage-area">
+                    <div class="axis-y"></div>
+                    <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="experimentCat" style="width: 100px; transition: top 0.3s ease; position: absolute; top: 100px;">
+                    <div style="position: absolute; bottom: 10px; right: 20px;" class="label-val">Y: <span id="yVal">0</span></div>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <button class="huge-btn" style="background: #4caf50;" onclick="moveExp(10)">change y by 10 <br/> NAIK (+10) ⬆️</button>
+                    <button class="huge-btn" style="background: #f44336;" onclick="moveExp(-10)">change y by -10 <br/> TURUN (-10) ⬇️</button>
+                    <button class="huge-btn" style="background: #008080;" onclick="resetExp()">set y 0 <br/> RESET (0) 🔄</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Analogi Melompat -->
+        <div class="slide solid-teal-bg" id="slide5">
+            <h2 class="agenda-title" style="color: #f2c140;">Analogi: Trampolin 🤸</h2>
+            <div style="display: flex; gap: 50px; align-items: center;">
+                <div style="font-size: 10rem;">🤸</div>
+                <div style="text-align: left; max-width: 600px;">
+                    <div style="background: white; color: #333; padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+                        <h3 style="margin: 0; color: #008080;">1. Tenaga Naik (Power)</h3>
+                        <p>Kaki kita menekan trampolin untuk mendorong ke <b>ATAS</b> (Change Y by Positive).</p>
+                    </div>
+                    <div style="background: white; color: #333; padding: 20px; border-radius: 20px;">
+                        <h3 style="margin: 0; color: #e69916;">2. Gravitasi Turun (Fall)</h3>
+                        <p>Bumi menarik kita kembali ke <b>BAWAH</b> (Change Y by Negative).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: Blok Motion Baru -->
+        <div class="slide" id="slide6">
+            <h2 class="agenda-title">Berkenalan dengan Blok: Change Y 🪄</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 40px;">Gunakan blok biru kategori <b>Motion</b> ini untuk naik-turun!</p>
+            <div style="display: flex; gap: 40px;">
+                <div class="card" style="padding: 40px; border-color: #4c97ff;">
+                    <div class="block block-blue" style="margin-bottom: 20px; font-size: 1.5rem;">change y by (10)</div>
+                    <p style="font-weight: 700;">Membuat karakter bergerak ke atas.</p>
+                </div>
+                <div class="card" style="padding: 40px; border-color: #ff4d4d;">
+                    <div class="block block-blue" style="margin-bottom: 20px; font-size: 1.5rem;">change y by (-10)</div>
+                    <p style="font-weight: 700;">Membuat karakter bergerak ke bawah.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Lab Jam 1 (Manual) -->
+        <div class="slide" id="slide7">
+            <h2 class="agenda-title">Tanpa Loop: Melompat Manual 😫</h2>
+            <div style="display: flex; gap: 30px; width: 100%; max-width: 1050px; align-items: stretch;">
+                <div style="flex: 1; background: #fff8f0; border-radius: 25px; padding: 20px; border: 4px solid #ff4d4d;">
+                    <h3 class="txt-orange">Tumpukan Blok (Lelah...)</h3>
+                    <div style="max-height: 250px; overflow-y: auto; background: white; padding: 10px; border-radius: 10px;">
+                        <div class="block block-blue">change y by 10</div>
+                        <div class="block block-blue">change y by 10</div>
+                        <div class="block block-blue">change y by 10</div>
+                        <div class="block block-blue">change y by 10</div>
+                        <div class="block block-blue">change y by 10</div>
+                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
+                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
+                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
+                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
+                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
+                    </div>
+                </div>
+                <div style="width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                    <div class="stage-area" style="width: 250px; height: 350px;">
+                        <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="manualCat" style="width: 100px; position: absolute; bottom: 20px;">
+                    </div>
+                    <button class="huge-btn" style="background: #ff4d4d; width: 100%;" onclick="runJumpManual()">LOMPAT MANUAL! 😫</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Lab Jam 2 (Repeat) -->
+        <div class="slide" id="slide8">
+            <h2 class="agenda-title">Dengan Loop: Melompat dengan Repeat 😎</h2>
+            <div style="display: flex; gap: 30px; width: 100%; max-width: 1050px; align-items: stretch;">
+                <div style="flex: 1; background: #f0fdf4; border-radius: 25px; padding: 20px; border: 4px solid #008080;">
+                    <h3 class="txt-teal">Kode Rapi & Halus</h3>
+                    <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
+                        <div class="block-repeat" id="repeatUp">
+                            <span style="font-weight: 800;">repeat (10)</span>
+                            <div class="block block-blue" style="margin-left: 20px;">change y by (10)</div>
+                        </div>
+                        <div class="block-repeat" id="repeatDown">
+                            <span style="font-weight: 800;">repeat (10)</span>
+                            <div class="block block-blue" style="margin-left: 20px; background: #ff4d4d;">change y by (-10)</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
+                    <div class="stage-area" style="width: 250px; height: 350px;">
+                        <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="repeatCat" style="width: 100px; position: absolute; bottom: 20px;">
+                    </div>
+                    <button class="huge-btn" style="background: #008080; width: 100%;" onclick="runJumpRepeat()">LOMPAT REPEAT! 🔄</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Interactive Builder (KLIK-KLIK) -->
+        <div class="slide" id="slide9">
+            <h2 class="agenda-title">🪄 Menyusun Blok Melompat </h2>
+            <p style="margin-bottom: 20px;">Klik blok di bawah dalam urutan yang benar agar kucing bisa melompat!</p>
+            <div style="display: flex; gap: 30px; width: 100%; max-width: 1000px;">
+                <div style="flex: 1; background: #fff; padding: 20px; border-radius: 20px; border: 3px solid #ccc; text-align: left;">
+                    <h4 style="margin-top: 0;">Pilihan Blok:</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="block block-orange" style="cursor:pointer" onclick="addBlock('repeat')">repeat (10)</div>
+                        <div class="block block-blue" style="cursor:pointer" onclick="addBlock('up')">change y by (10)</div>
+                        <div class="block block-blue" style="cursor:pointer; background: #ff4d4d;" onclick="addBlock('down')">change y by (-10)</div>
+                    </div>
+                    <button class="huge-btn" style="background: #666; width: 100%; margin-top: 20px;" onclick="resetBuilder()">MULAI LAGI 🔄</button>
+                </div>
+                <div style="flex: 1.5; background: #f9f9f9; padding: 20px; border-radius: 20px; border: 4px dashed #008080;">
+                    <h4 style="margin-top: 0;">Urutan Melompat (Wajib 4 Langkah):</h4>
+                    <div id="slots">
+                        <div class="builder-slot" id="slot0">1. ???</div>
+                        <div class="builder-slot" id="slot1">2. ???</div>
+                        <div class="builder-slot" id="slot2">3. ???</div>
+                        <div class="builder-slot" id="slot3">4. ???</div>
+                    </div>
+                    <button class="huge-btn" id="runBuilderBtn" style="background: #ffab19; width: 100%; margin-top: 15px;" onclick="checkBuilder()" disabled>TEST LOMPATAN! 🧪</button>
+                </div>
+                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                    <div class="stage-area" style="width: 200px; height: 300px;">
+                        <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="builderCat" style="width: 80px; position: absolute; bottom: 20px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Latihan Grid 1 (Kanguru 1) -->
+        <div class="slide" id="slide10">
+            <h2 class="agenda-title">Latihan 1: Kanguru Melompat 🦘</h2>
+            <p style="margin-bottom: 20px;">Gunakan REPEAT agar Kanguru sampai ke Bendera 🚩!</p>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center;">
+                <div class="control-panel" style="background: #fff8f0; padding: 25px; border-radius: 25px; border: 4px solid #ffab19;">
+                    <div style="font-weight: 800; margin-bottom: 10px;">Arah: 
+                        <select id="dir10" class="repeat-input" style="width: 100px;">
+                            <option value="right">➡️ Kanan</option>
+                            <option value="up">⬆️ Atas</option>
+                        </select>
+                    </div>
+                    <div style="font-weight: 800; margin-bottom: 20px;">Ulangi: 
+                        <input type="number" id="num10" class="repeat-input" value="3" min="1" max="4">
+                    </div>
+                    <button class="huge-btn" style="background: #ffab19; width: 100%;" onclick="gameAction(10)">JALAN! 🦘</button>
+                </div>
+                <div id="grid10" style="display: grid; grid-template-columns: repeat(4, 70px); gap: 5px; background: #eee; padding: 10px; border-radius: 15px;"></div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Latihan Grid 2 (Lompat Lubang) -->
+        <div class="slide" id="slide11">
+            <h2 class="agenda-title">Latihan 2: Awas Ada Lubang! 🕳️</h2>
+            <p style="margin-bottom: 20px;">Kanguru harus melompat ke atas melewati lubang 🕳️!</p>
+            <div style="display: flex; gap: 40px; align-items: center;">
+                <div class="control-panel" style="background: #f0f7ff; padding: 25px; border-radius: 25px; border: 4px solid #4c97ff;">
+                    <button class="huge-btn" style="background: #4c97ff; width: 100%; margin-bottom: 10px;" onclick="gameJump(11)">LONCAT! 🚀</button>
+                    <button class="huge-btn" style="background: #ffab19; width: 100%;" onclick="gameAction(11, 'right', 1)">JALAN KANAN ➡️</button>
+                </div>
+                <div id="grid11" style="display: grid; grid-template-columns: repeat(4, 70px); gap: 5px; background: #eee; padding: 10px; border-radius: 15px; border: 2px solid #4c97ff;"></div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Latihan Grid 3 (Super Kanguru) -->
+        <div class="slide" id="slide12" style="background: #f0fdf4;">
+            <h2 class="agenda-title">Latihan 3: Misi Terakhir! 🏁</h2>
+            <p style="margin-bottom: 20px;">Kanguru harus melompat dan melompat! <b>WAJIB REPEAT!</b></p>
+            <div style="display: flex; gap: 40px; align-items: center;">
+                <div id="grid12" style="display: grid; grid-template-columns: repeat(4, 70px); gap: 5px; background: #dcfce7; padding: 10px; border-radius: 15px; border: 2px solid #a8c368;"></div>
+                <div class="control-panel" style="background: white; padding: 25px; border-radius: 25px; border: 4px solid #a8c368;">
+                    <div style="font-weight: 800; margin-bottom: 10px;">Lompat Sejauh: 
+                        <input type="number" id="num12" class="repeat-input" value="3" min="1" max="4">
+                    </div>
+                    <button class="huge-btn" style="background: #a8c368; width: 100%; color: white;" onclick="gameAction(12, 'right', document.getElementById('num12').value)">MAJU JAUH! 🦘</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Buka Scratch -->
+        <div class="slide" id="slide13">
+            <h2 class="agenda-title">Misi Melompat di Scratch! 🚀</h2>
+            <div style="text-align: center;">
+                <img src="https://media0.giphy.com/avatars/scratchfoundation/TRGiyW3EqeCF.GIF" style="width: 150px; margin-bottom: 30px;">
+                <br>
+                <a href="https://scratch.mit.edu" target="_blank" class="huge-btn-scratch">👉 BUKA SCRATCH DI SINI 👈</a>
+                <p style="font-size: 1.2rem; color: #555; margin-top: 30px;">Mari kita buat animasi melompat kita sendiri!</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Ringkasan -->
+        <div class="slide" id="slide14">
+            <h2 class="agenda-title">Apa yang Kita Pelajari? 📝</h2>
+            <div style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 800px;">
+                <div class="card" style="flex-direction: row; gap: 20px; text-align: left;">
+                    <div style="font-size: 3rem;">📍</div>
+                    <div><h4 style="margin:0">Koordinat Y</h4><p style="margin:0">Nilai (+) ke Atas, Nilai (-) ke Bawah.</p></div>
+                </div>
+                <div class="card" style="flex-direction: row; gap: 20px; text-align: left;">
+                    <div style="font-size: 3rem;">🦘</div>
+                    <div><h4 style="margin:0">Melompat = Gabungan Loop</h4><p style="margin:0">Repeat Naik digabung dengan Repeat Turun.</p></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Kuis -->
+        <div class="slide solid-teal-bg" id="slide15">
+            <h2 class="agenda-title" style="color: #f2c140;">Waktunya Kuis! ⚡</h2>
+            <div style="font-size: 8rem; margin-bottom: 20px; animation: bounce 1s infinite alternate;">🏆</div>
+            <p style="font-size: 1.8rem; text-align: center;">Mari kita ulas apa itu Loop bersama-sama!</p>
+        </div>
+
+        <!-- Slide 16: Feedback -->
+        <div class="slide" id="slide16">
+            <h2 class="agenda-title" style="margin-bottom: 15px;">Bagaimana Kelas Hari Ini? 💖</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%; max-width: 900px;">
+                <div style="position: relative; width: 300px; height: 300px;">
+                    <div style="position: absolute; top: 20px; left: 20px; font-size: 3rem; animation: floatSprite 2s infinite alternate;">💖</div>
+                    <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/756d9713-87b5-4ec4-ae39-9f2352b8e280.png" style="width: 250px; animation: bounce 1s infinite alternate;">
+                </div>
+                <div style="background: white; border-radius: 20px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 2px solid #eee; text-align: center;">
+                    <h3 style="color: #008080;">Pindai di Sini!</h3>
+                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://bit.ly/feedback_class_dms" style="width: 150px; border: 4px solid #333; margin: 15px 0;">
+                    <div style="background: #e0f2f1; padding: 10px 20px; border-radius: 30px;">
+                        <a href="http://bit.ly/feedback_class_dms" target="_blank" style="color: #008080; font-weight: bold; text-decoration: none;">bit.ly/feedback_class_dms</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)" disabled>&#9664;</button>
+        <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">&#9658;</button>
+    </div>
+
+    <!-- Modals -->
+    <div class="dnd-modal-overlay" id="globalSuccessModal">
+        <div class="dnd-modal">
+            <span id="modalEmoji" style="font-size: 4rem; display: block; margin-bottom: 12px;">🎉</span>
+            <div class="dnd-modal-title" id="modalTitle">Hebat!</div>
+            <p id="modalMsg"></p>
+            <button class="dnd-modal-btn" onclick="closeModal()">Lanjutkan ➜</button>
+        </div>
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+
+        function showSlide(index, direction = 'next') {
+            slides.forEach(s => s.classList.remove('active', 'is-next', 'is-exiting'));
+            slides[index].classList.add('active');
+            currentSlide = index;
+            document.getElementById('prevBtn').disabled = index === 0;
+            document.getElementById('nextBtn').disabled = index === slides.length - 1;
+            if (index >= 9 && index <= 11) initGrid(index + 1);
+        }
+
+        function changeSlide(d) {
+            const n = currentSlide + d;
+            if (n >= 0 && n < slides.length) showSlide(n, d === 1 ? 'next' : 'prev');
+        }
+
+        // Slide 4: Coord Exp
+        let yPos = 100;
+        function moveExp(val) {
+            yPos -= val; // Higher Y = Lower Top
+            if (yPos < 20) yPos = 20; if (yPos > 200) yPos = 200;
+            document.getElementById('experimentCat').style.top = yPos + 'px';
+            document.getElementById('yVal').innerText = (100 - yPos);
+        }
+        function resetExp() { yPos = 100; moveExp(0); }
+
+        // Slide 7 & 8: Jump Lab
+        async function runJumpManual() {
+            const cat = document.getElementById('manualCat');
+            for (let i = 0; i < 5; i++) { cat.style.bottom = (20 + (i+1)*15) + 'px'; await new Promise(r=>setTimeout(r,150)); }
+            for (let i = 5; i > 0; i--) { cat.style.bottom = (20 + (i-1)*15) + 'px'; await new Promise(r=>setTimeout(r,150)); }
+        }
+        async function runJumpRepeat() {
+            const cat = document.getElementById('repeatCat');
+            const bUp = document.getElementById('repeatUp');
+            const bDown = document.getElementById('repeatDown');
+            bUp.classList.add('highlight-block');
+            for (let i = 0; i < 10; i++) { cat.style.bottom = (20 + (i+1)*10) + 'px'; await new Promise(r=>setTimeout(r,50)); }
+            bUp.classList.remove('highlight-block');
+            bDown.classList.add('highlight-block');
+            for (let i = 10; i > 0; i--) { cat.style.bottom = (20 + (i-1)*10) + 'px'; await new Promise(r=>setTimeout(r,50)); }
+            bDown.classList.remove('highlight-block');
+        }
+
+        // Slide 9: Builder
+        let chosen = [];
+        function addBlock(type) {
+            if (chosen.length >= 4) return;
+            const labels = { repeat: 'repeat (10)', up: 'change y by (10)', down: 'change y by (-10)' };
+            document.getElementById('slot' + chosen.length).innerText = labels[type];
+            document.getElementById('slot' + chosen.length).classList.add('correct');
+            chosen.push(type);
+            if (chosen.length === 4) document.getElementById('runBuilderBtn').disabled = false;
+        }
+        function resetBuilder() {
+            chosen = [];
+            for (let i=0; i<4; i++) { 
+                document.getElementById('slot' + i).innerText = (i+1) + '. ???';
+                document.getElementById('slot' + i).classList.remove('correct');
+            }
+            document.getElementById('runBuilderBtn').disabled = true;
+        }
+        async function checkBuilder() {
+            const correctOrder = ['repeat', 'up', 'repeat', 'down'];
+            const cat = document.getElementById('builderCat');
+            if (JSON.stringify(chosen) === JSON.stringify(correctOrder)) {
+                for (let i=0;i<10;i++){cat.style.bottom=(20+(i+1)*8)+'px';await new Promise(r=>setTimeout(r,30));}
+                for (let i=10;i>0;i--){cat.style.bottom=(20+(i-1)*8)+'px';await new Promise(r=>setTimeout(r,30));}
+                alertModal("🎉 Hebat!", "Lompatan sempurna! Kodenya sudah benar.");
+            } else {
+                cat.style.transform = 'rotate(90deg)'; await new Promise(r=>setTimeout(r,500)); cat.style.transform='rotate(0deg)';
+                alertModal("❌ Hmm...", "Urutannya belum pas nih. Harus Repeat (Naik) dulu baru Repeat (Turun)!");
+            }
+        }
+
+        // Grid Games
+        const games = {
+            10: { r: [0,3], t: [3,3], theme: '🦘', goal: '🚩', obs: [], bg: '#eee' },
+            11: { r: [0,3], t: [3,0], theme: '🦘', goal: '🚩', obs: [[1,3],[2,3]], bg: '#eee' },
+            12: { r: [0,3], t: [3,3], theme: '🦘', goal: '🌟', obs: [[1,2],[2,1]], bg: '#dcfce7' }
+        };
+        let active = JSON.parse(JSON.stringify(games));
+
+        function initGrid(id) {
+            const g = active[id]; const el = document.getElementById('grid' + id); if (!el) return;
+            el.innerHTML = '';
+            for (let y=0; y<4; y++) {
+                for (let x=0; x<4; x++) {
+                    const c = document.createElement('div'); c.className = 'game-cell';
+                    if (x===g.r[0] && y===g.r[1]) c.innerHTML = g.theme;
+                    else if (x===g.t[0] && y===g.t[1]) c.innerHTML = g.goal;
+                    else if (g.obs.some(o=>o[0]===x && o[1]===y)) c.innerHTML = '🕳️';
+                    el.appendChild(c);
+                }
+            }
+        }
+
+        async function gameAction(id, customDir, customNum) {
+            const dir = customDir || document.getElementById('dir' + id).value;
+            const num = customNum || parseInt(document.getElementById('num' + id).value);
+            const g = active[id];
+            for (let i=0; i<num; i++) {
+                let nx=g.r[0], ny=g.r[1];
+                if (dir==='right') nx++; else if (dir==='left') nx--; else if (dir==='up') ny--; else if (dir==='down') ny++;
+                if (nx<0 || nx>3 || ny<0 || ny>3 || g.obs.some(o=>o[0]===nx && o[1]===ny)) { alertModal("❌ Ups!", "Awas jatuh!"); break; }
+                g.r = [nx, ny]; initGrid(id); await new Promise(r=>setTimeout(r,400));
+                if (nx===g.t[0] && ny===g.t[1]) { alertModal("🎉 Sukses!", "Misi selesai!"); break; }
+            }
+        }
+        async function gameJump(id) {
+            const g = active[id];
+            // Jump = Logic move up then move right then move down
+            let nx=g.r[0], ny=g.r[1];
+            ny--; if (ny>=0) { g.r=[nx,ny]; initGrid(id); await new Promise(r=>setTimeout(r,300)); }
+            nx++; if (nx<=3) { g.r=[nx,ny]; initGrid(id); await new Promise(r=>setTimeout(r,300)); }
+            ny++; if (ny<=3) { g.r=[nx,ny]; initGrid(id); await new Promise(r=>setTimeout(r,300)); }
+            if (nx===g.t[0] && ny===g.t[1]) alertModal("🎉 Lompatan Hebat!", "Satu rintangan terlewati!");
+        }
+
+        function alertModal(title, msg) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalMsg').innerText = msg;
+            document.getElementById('globalSuccessModal').classList.add('show');
+        }
+        function closeModal() { document.getElementById('globalSuccessModal').classList.remove('show'); }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') changeSlide(1); else if (e.key === 'ArrowLeft') changeSlide(-1); });
+        document.addEventListener('DOMContentLoaded', () => showSlide(0));
+    </script>
+</body>
+</html>

@@ -1,1 +1,204 @@
-html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<title>Screening Test Robotik - Dharmasraya Juara 2026</title>
+<meta name="description" content="Screening test robotik untuk menentukan peserta dari program Dharmasraya Juara.">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Barlow:wght@400;500;600;700;800&display=swap');
+
+    html { height: 100%; }
+    body {
+        margin:0; 
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: #2563eb;
+        background-image: url('https://roboguru-forum-cdn.ruangguru.com//image/4c80831b-c741-478a-8c49-5b37b5bece3e.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: #1e293b;
+        font-family: 'Barlow', system-ui, sans-serif;
+    }
+    
+    h1, h2, h3, h4, .title, button { font-family: 'Manrope', sans-serif; }
+
+    #master_container {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .landing-shell{
+        position:relative;
+        z-index:2;
+        width:min(900px, 100%);
+        padding:40px;
+        border-radius:40px;
+        background:#f8fbff;
+        box-shadow:0 24px 48px rgba(24, 53, 106, 0.16);
+        border:2px solid rgba(233, 241, 251, 0.95);
+        text-align: center;
+    }
+
+    .landing-visual{
+        position:relative;
+        border-radius:32px;
+        overflow:hidden;
+        background:linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+        box-shadow:inset 0 0 0 2px rgba(255,255,255,0.2);
+        padding: 60px 40px;
+        color: #fff;
+    }
+
+    .landing-title{
+        margin:0;
+        font-family: 'Manrope', sans-serif;
+        font-size:clamp(40px, 4.5vw, 64px);
+        line-height:1.2;
+        letter-spacing:-0.03em;
+        font-weight:900;
+        color:#fff;
+        text-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        margin-bottom: 24px;
+    }
+
+    .coming-soon-badge {
+        display: inline-block;
+        background: #f59e0b;
+        color: #fff;
+        font-weight: 900;
+        font-size: 20px;
+        padding: 10px 24px;
+        border-radius: 999px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        animation: pulse 2s infinite;
+    }
+
+    .landing-subtitle{
+        font-size: 22px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.6;
+        margin-bottom: 32px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .date-box {
+        background: rgba(255, 255, 255, 0.2);
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 24px;
+        padding: 24px;
+        display: inline-block;
+        backdrop-filter: blur(10px);
+    }
+
+    .date-box-title {
+        font-size: 16px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 8px;
+    }
+
+    .date-box-value {
+        font-size: 32px;
+        font-weight: 900;
+        font-family: 'Manrope', sans-serif;
+        color: #fff;
+    }
+
+    .robot-emoji {
+        font-size: 100px;
+        margin-bottom: 20px;
+        display: inline-block;
+        animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes float {
+        0% { transform: translateY(0px); }
+        50% { transform: translateY(-15px); }
+        100% { transform: translateY(0px); }
+    }
+
+    .landing-logo-pill{
+        position:relative;
+        z-index:2;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:24px;
+        padding:16px 42px;
+        border-radius:999px;
+        background:#ffffff;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border:1px solid rgba(210, 225, 242, 0.95);
+        margin-bottom: 32px;
+    }
+    .landing-logo-pill img{display:block; object-fit:contain;}
+    .landing-logo-divider{
+        width:2px;
+        height:52px;
+        background:#dbe5f3;
+        border-radius:999px;
+    }
+
+    @media (max-width: 768px){
+        .landing-shell { padding: 20px; }
+        .landing-visual { padding: 40px 20px; }
+        .landing-title { font-size: 32px; }
+        .landing-subtitle { font-size: 18px; }
+        .date-box-value { font-size: 24px; }
+        .robot-emoji { font-size: 80px; }
+        .landing-logo-pill { padding: 12px 24px; gap: 16px; flex-wrap: wrap; }
+        .landing-logo-pill img { height: 40px !important; }
+        .landing-logo-divider { height: 30px; }
+    }
+</style>
+</head>
+<body>
+
+    <div id="master_container">
+      <div class="landing-logo-pill">
+        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/94907efd-30d9-49af-8e62-aa4aee51ad33.png" alt="Ruangguru Coding" style="height:58px;">
+        <div class="landing-logo-divider"></div>
+        <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Lambang_Kabupaten_Dharmasraya.png" alt="Pemkab Dharmasraya" style="height:70px;">
+        <div class="landing-logo-divider"></div>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" alt="Dinas Pendidikan Dharmasraya" style="height:62px; mix-blend-mode:multiply;">
+      </div>
+
+      <div class="landing-shell">
+        <div class="landing-visual">
+          <div class="coming-soon-badge">Coming Soon</div>
+          <div class="robot-emoji">🤖</div>
+          <h1 class="landing-title">Screening Test Robotik<br>Dharmasraya 2026</h1>
+          <p class="landing-subtitle">Halaman screening test untuk program robotik saat ini masih dalam tahap persiapan. Harap bersabar ya!</p>
+          
+          <div class="date-box">
+            <div class="date-box-title">Catat Tanggalnya</div>
+            <div class="date-box-value">🗓️ 29 - 30 April 2026</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+</body>
+</html>

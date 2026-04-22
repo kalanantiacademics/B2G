@@ -125,13 +125,36 @@
         padding: 40px;
     }
 
+    .laptop-frame {
+        position: relative;
+        width: 100%;
+        max-width: 860px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: auto;
+    }
+
+    .laptop-bg {
+        width: 100%;
+        height: auto;
+        display: block;
+        position: relative;
+        z-index: 2;
+        pointer-events: none;
+        drop-shadow: 0 30px 40px rgba(0,0,0,0.3);
+    }
+
     .slide-img {
-        max-width: 60%;
-        max-height: 80%;
-        object-fit: contain;
-        border-radius: 16px;
-        border: 4px solid #fff;
-        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+        position: absolute;
+        top: 5.2%;
+        left: 9.8%;
+        width: 80.4%;
+        height: 85.6%;
+        object-fit: cover;
+        z-index: 1;
+        border-radius: 6px;
+        background: #f8fafc;
     }
 
     .controls {
@@ -221,64 +244,64 @@
 <script>
     const slidesData = [
         {
-            title: "Selamat Datang! 🌟",
-            text: "Hai Juara Dharmasraya! Yuk, kita lihat cara mengerjakan Screening Test langkah demi langkah!<br><br><span style='background:#fef08a; padding:4px 12px; border-radius:8px; border:2px solid #eab308; color:#854d0e;'>🔗 Masuk ke link test di sini: <strong>bit.ly/pt-coding-dms2</strong></span>",
-            image: "images/panduan/1-start.png"
+            title: "Panduan Pengerjaan 🌟",
+            text: "Selamat datang di panduan Screening Test Dharmasraya Juara. Harap perhatikan setiap langkah berikut dengan saksama.<br><br><span style='background:#fef08a; padding:4px 12px; border-radius:8px; border:2px solid #eab308; color:#854d0e;'>🔗 Akses tautan tes di sini: <strong>bit.ly/pt-coding-dms2</strong></span>",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/2c02f684-41b8-4931-9427-87eddee663ae.png"
         },
         {
-            title: "Pilih Sekolahmu 🏫",
-            text: "Pertama, klik tombol 'Pilih Asal Sekolah' lalu cari nama sekolahmu. Kalau sudah ketemu, langsung klik ya!",
-            image: "images/panduan/2-sekolah.png"
+            title: "Langkah 1: Memilih Nama Sekolah 🏫",
+            text: "Tekan tombol 'Pilih Asal Sekolah', kemudian ketik nama sekolah masing-masing. Jika sudah muncul, tekan pada nama sekolah tersebut.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/7a357295-7a89-4c0d-8e57-f22c03554505.png"
         },
         {
-            title: "Pilih Kelasmu 📚",
-            text: "Setelah sekolahnya dipilih, sekarang pilih deh kamu di kelas berapa.",
-            image: "images/panduan/3-kelas.png"
+            title: "Langkah 2: Memilih Kelas 📚",
+            text: "Setelah nama sekolah terpilih, silakan pilih tingkatan kelas yang sesuai dengan kelasmu saat ini.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/95ef6257-0525-436b-bb1f-9c6f0205425f.png"
         },
         {
-            title: "Siapa Namamu? 🙋‍♂️",
-            text: "Klik 'Pilih Nama Kamu' dan cari namamu di daftar. Kalau ketemu, langsung diklik ya!",
-            image: "images/panduan/4-nama.png"
+            title: "Langkah 3: Memilih Nama Siswa 🙋‍♂️",
+            text: "Tekan tombol 'Pilih Nama Kamu', lalu cari dan pilih namamu dari daftar yang tersedia.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/79481b6b-2e69-4bcc-b03f-30e9f2086d4c.png"
         },
         {
-            title: "Namaku Kok Gak Ada? 🕵️‍♂️",
-            text: "Jangan panik! Kalau namamu belum ada, scroll ke paling bawah dan pilih '-- Nama Saya Tidak Ada --'. Terus ketik sendiri namamu di kotak yang muncul ya! Ingat, huruf awalnya harus kapital (besar). Contoh: Budi Santoso.",
-            image: "images/panduan/5-manual.png"
+            title: "Langkah Alternatif: Nama Tidak Ditemukan 🕵️‍♂️",
+            text: "Jika namamu tidak ada di daftar, gulir ke paling bawah dan pilih opsi '-- Nama Saya Tidak Ada --'. Kemudian, ketik nama lengkapmu pada kolom yang muncul (gunakan huruf kapital di awal kata).",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/854368c6-4cde-43d9-b4dc-35bc716ff604.png"
         },
         {
-            title: "Sekolahku Gak Ada? 📞",
-            text: "Wah, kalau nama sekolahmu tidak ada di daftar, segera lapor ke Bapak/Ibu guru atau hubungi kakak-kakak dari Tim Ruangguru ya!",
-            image: "images/panduan/6-sekolah-gaada.png"
+            title: "Langkah Alternatif: Sekolah Tidak Ditemukan 📞",
+            text: "Apabila nama sekolahmu sama sekali tidak ditemukan, segera angkat tangan dan laporkan kepada Bapak/Ibu Guru yang bertugas.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/cbf4231f-3015-41bb-b0b0-e6a34cfdb150.png"
         },
         {
-            title: "Tiga Pilar Seru! 🚀",
-            text: "Kamu akan mengerjakan 3 misi seru (Pilar). Ada Logika, Literasi Digital, dan Spasial. Tiap pilar waktunya cuma 20 menit loh!",
-            image: "images/panduan/7-intro.png"
+            title: "Pengenalan Misi (Pilar) 🚀",
+            text: "Screening Test ini terdiri dari 3 bagian misi: Logika, Literasi Digital, dan Spasial. Setiap misi memiliki batas waktu pengerjaan selama 20 menit.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/55ed4066-b138-49e8-9a31-3fa738e823fd.png"
         },
         {
-            title: "Bermain Sambil Belajar 🎮",
-            text: "Di dalam misi, kamu akan bermain games seru. Pikirkan baik-baik dan jangan terburu-buru ya!",
-            image: "images/panduan/8-play.png"
+            title: "Proses Pengerjaan 🎮",
+            text: "Dalam setiap misi, kamu akan diminta untuk menyelesaikan berbagai soal interaktif. Baca instruksi dengan teliti dan jangan terburu-buru saat menjawab.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/47c9d15c-f6af-4449-9f07-e1929d2240a4.png"
         },
         {
-            title: "Waktunya Habis! ⏰",
-            text: "Kalau kamu sudah selesai cepat, kamu bisa langsung tekan lanjut. Tapi kalau waktunya keburu habis, tenang aja! Nanti otomatis lanjut ke misi berikutnya kok.",
-            image: "images/panduan/8-play.png"
+            title: "Batas Waktu Pengerjaan ⏰",
+            text: "Jika waktu 20 menit telah habis, sistem akan otomatis menyimpan jawabanmu dan melanjutkan ke misi berikutnya. Kamu juga dapat menekan 'Lanjut' jika sudah selesai lebih cepat.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/47c9d15c-f6af-4449-9f07-e1929d2240a4.png"
         },
         {
-            title: "Tidak Bisa Mengulang 🛑",
-            text: "Ingat ya, setiap pilar cuma bisa dikerjakan satu kali saja! Jadi kerjakan dengan teliti, jangan sampai asal pencet.",
-            image: "images/panduan/8-play.png"
+            title: "Perhatian: Tidak Ada Pengulangan 🛑",
+            text: "Harap diingat bahwa setiap pilar misi hanya dapat dikerjakan satu kali. Pastikan jawaban sudah tepat sebelum melanjutkan.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/47c9d15c-f6af-4449-9f07-e1929d2240a4.png"
         },
         {
-            title: "Kalau Kepencet Refresh? 💻",
-            text: "Duh, kepencet refresh atau layarnya tertutup? Gak usah nangis! Buka lagi aja link-nya, jawabanmu yang tadi masih tersimpan kok.",
-            image: "images/panduan/8-play.png"
+            title: "Kendala Teknis (Refresh) 💻",
+            text: "Jika layar tertutup atau tidak sengaja termuat ulang (refresh), jangan khawatir. Cukup buka kembali tautan tes, dan jawabanmu akan otomatis tersimpan.",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/47c9d15c-f6af-4449-9f07-e1929d2240a4.png"
         },
         {
-            title: "Selesai! 🎉",
-            text: "Kalau sudah selesai semua, tes ini gak bisa diulang lagi. Dan nilai akhirnya rahasia ya! Semangat mengerjakan, Juara!",
-            image: "images/panduan/11-selesai.png"
+            title: "Penyelesaian Tes 🎉",
+            text: "Setelah seluruh misi selesai, kamu tidak dapat masuk kembali ke dalam tes. Nilai akhir akan dirahasiakan. Selamat mengerjakan dan berikan usaha terbaikmu!",
+            image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/c69b8369-5528-49f3-a265-9d5dd33f283b.png"
         }
     ];
 
@@ -298,7 +321,10 @@
                     <div class="slide-text">${data.text}</div>
                 </div>
                 <div class="slide-content">
-                    <img class="slide-img" src="${data.image}" alt="Screenshot Langkah ${index + 1}" onerror="this.src='https://roboguru-forum-cdn.ruangguru.com//image/4c80831b-c741-478a-8c49-5b37b5bece3e.png'; this.style.opacity='0.2'">
+                    <div class="laptop-frame">
+                        <img class="laptop-bg" src="https://png.pngtree.com/png-clipart/20230222/ourmid/pngtree-macbook-pro-16-png-image_6614408.png" alt="Laptop Frame">
+                        <img class="slide-img" src="${data.image}" alt="Screenshot Langkah ${index + 1}">
+                    </div>
                 </div>
             `;
             wrapper.appendChild(slide);

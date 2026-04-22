@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panduan Screening Test - Dharmasraya Juara 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Barlow:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --primary: #3b82f6; --primary-dark: #2563eb;
+        --secondary: #e2e8f0; --text: #1e293b; --muted: #64748b;
+        --good: #22c55e; --accent: #f59e0b;
+        --font-title: 'Manrope', sans-serif;
+        --font-body: 'Barlow', sans-serif;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background-color: #2563eb;
+        background-image: url('https://roboguru-forum-cdn.ruangguru.com//image/39e64d7d-ac2a-46a3-bcf3-2fc28177226f.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        font-family: var(--font-body), sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: auto;
+        padding: 40px 0;
+        box-sizing: border-box;
+    }
+
+    h1, h2, h3, .slide-title { font-family: var(--font-title); }
+
+    .presentation-container {
+        width: 80%;
+        max-width: none;
+        height: auto;
+        min-height: 85vh;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(12px);
+        border: 4px solid #fff;
+        border-radius: 40px;
+        box-shadow: 0 30px 60px -15px rgba(0,0,0,0.4), 0 0 0 10px rgba(255,255,255,0.2);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .slide {
+        flex: 1;
+        display: none;
+        flex-direction: column;
+        padding: 40px 40px 20px;
+        animation: fadeIn 0.4s ease-out forwards;
+        height: calc(100% - 100px);
+    }
+
+    .slide.active {
+        display: flex;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px) scale(0.98); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .slide-header {
+        text-align: center;
+        margin-bottom: 24px;
+        flex-shrink: 0;
+    }
+
+    .slide-badge {
+        display: inline-block;
+        background: #fef3c7;
+        color: #d97706;
+        border: 3px solid #fcd34d;
+        border-radius: 20px;
+        padding: 8px 24px;
+        font-size: 18px;
+        font-weight: 900;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-family: var(--font-title);
+    }
+
+    .slide-title {
+        font-size: clamp(32px, 5vw, 48px);
+        font-weight: 900;
+        color: #0f172a;
+        margin: 0 0 16px;
+        line-height: 1.2;
+    }
+
+    .slide-text {
+        font-size: clamp(18px, 2.5vw, 24px);
+        font-weight: 700;
+        color: #334155;
+        max-width: 900px;
+        margin: 0 auto;
+        line-height: 1.6;
+        background: #f1f5f9;
+        padding: 16px 24px;
+        border-radius: 24px;
+        border: 2px solid #cbd5e1;
+    }
+
+    .slide-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        margin-top: 16px;
+        border-radius: 24px;
+        background: #e2e8f0; /* Keeping outer background */
+        border: 4px solid #fff;
+        box-shadow: inset 0 4px 12px rgba(0,0,0,0.1);
+        position: relative;
+        min-height: 400px;
+        padding: 40px;
+    }
+
+    .slide-img {
+        max-width: 60%;
+        max-height: 80%;
+        object-fit: contain;
+        border-radius: 16px;
+        border: 4px solid #fff;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.2);
+    }
+
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 24px 40px;
+        background: #fff;
+        border-top: 3px solid var(--secondary);
+        flex-shrink: 0;
+    }
+
+    .btn {
+        background: var(--primary);
+        color: #fff;
+        border: 3px solid var(--primary);
+        border-bottom-width: 6px;
+        border-bottom-color: var(--primary-dark);
+        border-radius: 20px;
+        padding: 16px 32px;
+        font-size: 22px;
+        font-weight: 900;
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-family: var(--font-title);
+    }
+
+    .btn:active {
+        transform: translateY(4px);
+        border-bottom-width: 2px;
+        margin-top: 4px;
+    }
+
+    .btn.secondary {
+        background: #fff;
+        color: var(--text);
+        border-color: #cbd5e1;
+        border-bottom-color: #94a3b8;
+    }
+
+    .btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none !important;
+        border-bottom-width: 6px !important;
+        margin-top: 0 !important;
+    }
+
+    .progress-dots {
+        display: flex;
+        gap: 10px;
+    }
+
+    .dot {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #cbd5e1;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .dot.active {
+        background: var(--primary);
+        transform: scale(1.3);
+        box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    }
+</style>
+</head>
+<body>
+
+<div class="presentation-container">
+    <div id="slides-wrapper" style="height: 100%; display: flex; flex-direction: column;">
+        <!-- Slides will be injected here via JS -->
+    </div>
+
+    <div class="controls">
+        <button id="btnPrev" class="btn secondary" onclick="changeSlide(-1)">⬅️ Kembali</button>
+        <div class="progress-dots" id="dots"></div>
+        <button id="btnNext" class="btn" onclick="changeSlide(1)">Lanjut ➡️</button>
+    </div>
+</div>
+
+<script>
+    const slidesData = [
+        {
+            title: "Selamat Datang! 🌟",
+            text: "Hai Juara Dharmasraya! Yuk, kita lihat cara mengerjakan Screening Test langkah demi langkah!<br><br><span style='background:#fef08a; padding:4px 12px; border-radius:8px; border:2px solid #eab308; color:#854d0e;'>🔗 Masuk ke link test di sini: <strong>bit.ly/pt-coding-dms2</strong></span>",
+            image: "images/panduan/1-start.png"
+        },
+        {
+            title: "Pilih Sekolahmu 🏫",
+            text: "Pertama, klik tombol 'Pilih Asal Sekolah' lalu cari nama sekolahmu. Kalau sudah ketemu, langsung klik ya!",
+            image: "images/panduan/2-sekolah.png"
+        },
+        {
+            title: "Pilih Kelasmu 📚",
+            text: "Setelah sekolahnya dipilih, sekarang pilih deh kamu di kelas berapa.",
+            image: "images/panduan/3-kelas.png"
+        },
+        {
+            title: "Siapa Namamu? 🙋‍♂️",
+            text: "Klik 'Pilih Nama Kamu' dan cari namamu di daftar. Kalau ketemu, langsung diklik ya!",
+            image: "images/panduan/4-nama.png"
+        },
+        {
+            title: "Namaku Kok Gak Ada? 🕵️‍♂️",
+            text: "Jangan panik! Kalau namamu belum ada, scroll ke paling bawah dan pilih '-- Nama Saya Tidak Ada --'. Terus ketik sendiri namamu di kotak yang muncul ya! Ingat, huruf awalnya harus kapital (besar). Contoh: Budi Santoso.",
+            image: "images/panduan/5-manual.png"
+        },
+        {
+            title: "Sekolahku Gak Ada? 📞",
+            text: "Wah, kalau nama sekolahmu tidak ada di daftar, segera lapor ke Bapak/Ibu guru atau hubungi kakak-kakak dari Tim Ruangguru ya!",
+            image: "images/panduan/6-sekolah-gaada.png"
+        },
+        {
+            title: "Tiga Pilar Seru! 🚀",
+            text: "Kamu akan mengerjakan 3 misi seru (Pilar). Ada Logika, Literasi Digital, dan Spasial. Tiap pilar waktunya cuma 20 menit loh!",
+            image: "images/panduan/7-intro.png"
+        },
+        {
+            title: "Bermain Sambil Belajar 🎮",
+            text: "Di dalam misi, kamu akan bermain games seru. Pikirkan baik-baik dan jangan terburu-buru ya!",
+            image: "images/panduan/8-play.png"
+        },
+        {
+            title: "Waktunya Habis! ⏰",
+            text: "Kalau kamu sudah selesai cepat, kamu bisa langsung tekan lanjut. Tapi kalau waktunya keburu habis, tenang aja! Nanti otomatis lanjut ke misi berikutnya kok.",
+            image: "images/panduan/8-play.png"
+        },
+        {
+            title: "Tidak Bisa Mengulang 🛑",
+            text: "Ingat ya, setiap pilar cuma bisa dikerjakan satu kali saja! Jadi kerjakan dengan teliti, jangan sampai asal pencet.",
+            image: "images/panduan/8-play.png"
+        },
+        {
+            title: "Kalau Kepencet Refresh? 💻",
+            text: "Duh, kepencet refresh atau layarnya tertutup? Gak usah nangis! Buka lagi aja link-nya, jawabanmu yang tadi masih tersimpan kok.",
+            image: "images/panduan/8-play.png"
+        },
+        {
+            title: "Selesai! 🎉",
+            text: "Kalau sudah selesai semua, tes ini gak bisa diulang lagi. Dan nilai akhirnya rahasia ya! Semangat mengerjakan, Juara!",
+            image: "images/panduan/11-selesai.png"
+        }
+    ];
+
+    let currentSlide = 0;
+    const wrapper = document.getElementById('slides-wrapper');
+    const dotsContainer = document.getElementById('dots');
+
+    function init() {
+        slidesData.forEach((data, index) => {
+            // Create slide
+            const slide = document.createElement('div');
+            slide.className = 'slide' + (index === 0 ? ' active' : '');
+            slide.innerHTML = `
+                <div class="slide-header">
+                    <div class="slide-badge">Langkah ${index + 1} / ${slidesData.length}</div>
+                    <h2 class="slide-title">${data.title}</h2>
+                    <div class="slide-text">${data.text}</div>
+                </div>
+                <div class="slide-content">
+                    <img class="slide-img" src="${data.image}" alt="Screenshot Langkah ${index + 1}" onerror="this.src='https://roboguru-forum-cdn.ruangguru.com//image/4c80831b-c741-478a-8c49-5b37b5bece3e.png'; this.style.opacity='0.2'">
+                </div>
+            `;
+            wrapper.appendChild(slide);
+
+            // Create dot
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (index === 0 ? ' active' : '');
+            dot.onclick = () => goToSlide(index);
+            dotsContainer.appendChild(dot);
+        });
+        updateControls();
+    }
+
+    function changeSlide(direction) {
+        goToSlide(currentSlide + direction);
+    }
+
+    function goToSlide(index) {
+        if (index < 0 || index >= slidesData.length) return;
+        
+        const slides = document.querySelectorAll('.slide');
+        const dots = document.querySelectorAll('.dot');
+        
+        slides[currentSlide].classList.remove('active');
+        dots[currentSlide].classList.remove('active');
+        
+        currentSlide = index;
+        
+        slides[currentSlide].classList.add('active');
+        dots[currentSlide].classList.add('active');
+        
+        updateControls();
+    }
+
+    function updateControls() {
+        document.getElementById('btnPrev').disabled = currentSlide === 0;
+        
+        const btnNext = document.getElementById('btnNext');
+        if (currentSlide === slidesData.length - 1) {
+            btnNext.innerHTML = 'Siap Mengerjakan! 🚀';
+            btnNext.onclick = () => alert('Semoga berhasil, Juara!');
+        } else {
+            btnNext.innerHTML = 'Lanjut ➡️';
+            btnNext.onclick = () => changeSlide(1);
+        }
+    }
+
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'ArrowRight') {
+            if (currentSlide < slidesData.length - 1) {
+                changeSlide(1);
+            }
+        } else if (event.key === 'ArrowLeft') {
+            if (currentSlide > 0) {
+                changeSlide(-1);
+            }
+        }
+    });
+
+    init();
+</script>
+
+</body>
+</html>

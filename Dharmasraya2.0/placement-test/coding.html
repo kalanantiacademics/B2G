@@ -1285,13 +1285,7 @@
     .emoji{font-size:68px;}
     #master_timer_ui{top:14px !important; right:14px !important;}
     .timer-pill{font-size:15px; padding:5px 10px; border-radius:8px;}
-    #devToolsPanel{
-      transform:scale(.82);
-      transform-origin:bottom right;
-      bottom:12px !important;
-      right:12px !important;
-    }
-  
+
     .quiz-grid-layout {
       display: flex;
       flex-direction: column;
@@ -1479,7 +1473,7 @@
         </div>
 
         <div style="margin-top:24px; padding:16px; background:rgba(255,255,255,0.1); border-radius:16px; font-size:14px; font-weight:800;">
-          🗓️ 29 - 30 April 2026 · 08:00 - 18:00 WIB
+          🗓️ 29 - 30 April 2026 · 09:00 - 16:00 WIB
         </div>
       </div>
 
@@ -1597,21 +1591,8 @@
       <div id="phase_result" class="master-intro" style="display:none;">
         <div style="font-size:90px; margin-bottom:16px; animation: pop 0.5s ease forwards;">🏆✨</div>
         <h2 style=" font-size:42px;">Screening Test Selesai!</h2>
-        <p style="font-size:20px; color:#64748b; font-weight:700;">Selamat <strong id="resName"></strong>, kamu telah menyelesaikan seleksi <strong style="color: #0d9488;">Dharmasraya Coding for Student 2026</strong>!<br><br>Data kamu sudah otomatis ter-upload ke sistem.</p>
-        <div style="margin-top:24px; padding:16px; background:#fffbeb; border:2px dashed #f59e0b; border-radius:16px; color:#92400e; font-size:14px; font-weight:700;">
-          <strong>[TESTING ONLY - TIDAK MUNCUL DI VERSI ASLI]</strong><br>
-          Skor: <span id="resScores"></span><br>
-          Waktu: <span id="resTimes"></span>
-        </div>
+        <p style="font-size:20px; color:#64748b; font-weight:700;">Terima kasih <strong id="resName"></strong>, data kamu sudah otomatis ter-upload ke sistem.<br><br>Terima kasih dan semoga beruntung sampai jumpa di kelas coding nanti!</p>
       </div>
-
-    <!-- ⚙️ DEV TOOLS: Floating Reset Button (Testing Only) -->
-    <div id="devToolsPanel" style="position:fixed; bottom:20px; right:20px; z-index:99998; display:flex; flex-direction:column; align-items:flex-end; gap:8px;">
-      <div style="background:#1e293b; color:#94a3b8; font-size:11px; font-weight:700; padding:4px 10px; border-radius:6px; letter-spacing:1px;">⚙️ DEV TOOLS</div>
-      <button onclick="clearCacheAndReset()" style="background:#ef4444; color:#fff; border:none; border-bottom:4px solid #b91c1c; border-radius:14px; padding:12px 20px; font-size:14px; font-weight:900; cursor:pointer; display:flex; align-items:center; gap:8px; box-shadow: 0 4px 20px rgba(239,68,68,0.4); transition: all 0.15s;" onmousedown="this.style.transform='translateY(3px)'; this.style.borderBottomWidth='1px';" onmouseup="this.style.transform='none'; this.style.borderBottomWidth='4px';" onmouseleave="this.style.transform='none'; this.style.borderBottomWidth='4px';">
-        🗑️ Clear Cache & Reset
-      </button>
-    </div>
 
       <!-- TIMER OVERLAY -->
       <div id="master_timer_ui" style="position:fixed; top:20px; right:20px; z-index:9999; display:none;">
@@ -1725,7 +1706,6 @@
 
     const API_URL = 'https://script.google.com/macros/s/AKfycbxtsHzgVsACAX1RNAEpKEbx_l-uHrhWOAMnb_YpqZp1zTr4aUArqxB8OvnZFiD6a-rsKA/exec';
     const TEST_TYPE = 'Coding';
-    const DEV_BYPASS_DUPLICATE_KEY = 'kalananti_dev_bypass_duplicate';
     let masterState = {
         sessionId: 'ST-' + Date.now() + '-' + Math.floor(Math.random()*1000),
         school: '',
@@ -1739,10 +1719,6 @@
     let schoolData = {};
     let completedStudents = [];
     let timerInterval = null;
-
-    function isDevBypassDuplicateEnabled() {
-      return sessionStorage.getItem(DEV_BYPASS_DUPLICATE_KEY) === '1';
-    }
 
     function saveState() {
       // Hanya simpan jika belum masuk result
@@ -1777,15 +1753,25 @@
     }
 
     function checkTimeGate() {
-      if (isDevBypassDuplicateEnabled()) return;
       const now = new Date();
-      const startDay1 = new Date('2026-04-29T08:00:00');
-      const endDay1 = new Date('2026-04-29T18:00:00');
-      const startDay2 = new Date('2026-04-30T08:00:00');
-      const endDay2 = new Date('2026-04-30T18:00:00');
+      const startDay1 = new Date('2026-04-29T09:00:00');
+      const endDay1 = new Date('2026-04-29T16:00:00');
+      const startDay2 = new Date('2026-04-30T09:00:00');
+      const endDay2 = new Date('2026-04-30T16:00:00');
+
+      // ⚠️ TEMPORARY DEBUG WINDOW — hapus sebelum hari-H!
+      const debugStart = new Date('2026-04-28T20:45:00');
+      const debugEnd   = new Date('2026-04-28T21:00:00');
+      const isDebugWindow = (now >= debugStart && now <= debugEnd);
 
       if (masterState.phase !== 'school' && masterState.phase !== 'waiting') return;
       
+      // Bypass time gate jika masuk debug window
+      if (isDebugWindow) {
+          if (masterState.phase === 'waiting') masterState.phase = 'school';
+          return;
+      }
+
       if (now < startDay1) {
           masterState.phase = 'waiting';
           updateWaitingTimer(startDay1);
@@ -1820,17 +1806,6 @@
         setTimeout(() => updateWaitingTimer(targetDate), 1000);
     }
 
-    // ⚙️ DEV TOOL: Clear all localStorage cache and reload
-    function clearCacheAndReset() {
-      if (confirm('🗑️ Reset semua progress & cache?\n\nIni akan menghapus semua data sesi yang tersimpan di browser ini, lalu reload dari awal dalam mode testing. Mode ini juga akan melewati cek duplikat agar kamu bisa coba lagi. Lanjutkan?')) {
-        if (typeof timerInterval !== 'undefined' && timerInterval) clearInterval(timerInterval);
-        window.saveState = function(){}; // Cegah state tersimpan ulang saat reload
-        sessionStorage.setItem(DEV_BYPASS_DUPLICATE_KEY, '1');
-        localStorage.removeItem('kalananti_session');
-        location.reload();
-      }
-    }
-
     function masterInit() {
         const isRestored = loadState();
         checkTimeGate();
@@ -1843,9 +1818,6 @@
             }
             if(json.completed) {
                 completedStudents = json.completed;
-            }
-            if (isDevBypassDuplicateEnabled()) {
-                completedStudents = [];
             }
             // Populate School List
             let schoolListHtml = '';
@@ -2173,7 +2145,7 @@
       }
 
       // CEK ANTI-DUPLIKAT
-      if (!isDevBypassDuplicateEnabled()) {
+      {
           const hasCoding = completedStudents.some(
               c => c.school.toLowerCase() === selectedSchool.toLowerCase() &&
                    c.name.toLowerCase() === selectedName.toLowerCase() &&
@@ -2265,8 +2237,6 @@
             masterState.phase = 'intro3';
         } else if(pilar === 'P3') {
             masterState.phase = 'result';
-            document.getElementById('resScores').textContent = `P1: ${getScoreP1()} | P2: ${getScoreP2()} | P3: ${getScoreP3()}`;
-            document.getElementById('resTimes').textContent = `P1: ${masterState.timeSpentP1}s | P2: ${masterState.timeSpentP2}s | P3: ${masterState.timeSpentP3}s`;
         }
         saveState();
         syncData(pilar === 'P3');
@@ -3007,14 +2977,8 @@
         <div class="result card-anim">
           <div class="emoji">🏆</div>
           <div class="badge">Tes Selesai!</div>
-          <h2>Yey! Ini Skor Kamu</h2>
-          <p class="desc" style="max-width:560px">Kerja bagus! Kamu sudah menyelesaikan tes logika pemrograman ini dengan luar biasa.</p>
-          <div class="score-box">
-            <div class="muted" style="font-weight:900;text-transform:uppercase;letter-spacing:2px">Total Skor</div>
-            <div class="score">${stateP1.score}</div>
-            <div class="muted" style="font-weight:700">dari 100 poin</div>
-          </div>
-          <div class="muted" style="margin-bottom:24px; font-weight:800; font-size:18px;">✅ Betul ${stateP1.score / 10} dari ${questionsP1.length} soal</div>
+          <h2>Terima Kasih!</h2>
+          <p class="desc" style="max-width:560px">Kerja bagus! Terima kasih dan semoga beruntung sampai jumpa di kelas coding nanti!</p>
           <div class="actions" style="width:min(320px,100%);padding-top:0">
             <button class="btn primary w-full" onclick="restartP1()">🔄 Ulang Tes</button>
           </div>
@@ -4129,19 +4093,13 @@
     // Result Screen
     // ─────────────────────────────────────────────────────────────────────────
     function renderResult(){
-      var score = evaluateScoreP2();
       cardP2.innerHTML =
         '<div class="result card-anim">' +
           '<div class="emoji">&#127942;&#10024;</div>' +
-          '<h2 style="font-size:42px;margin-bottom:16px;">Misi Selesai!</h2>' +
+          '<h2 style="font-size:42px;margin-bottom:16px;">Terima Kasih!</h2>' +
           '<p class="desc" style="max-width:560px;font-size:20px;">' +
-            'Hebat! Kamu berhasil melewati semua tantangan <strong>Digital Literacy</strong> layaknya pemain pro!' +
+            'Kerja bagus! Terima kasih dan semoga beruntung sampai jumpa di kelas coding nanti!' +
           '</p>' +
-          '<div class="score-box">' +
-            '<div style="font-weight:900;text-transform:uppercase;letter-spacing:2px;color:var(--primary-dark);">TOTAL SKOR PETUALANG</div>' +
-            '<div class="score">' + score + '</div>' +
-            '<div class="muted" style="font-size:16px;">Maksimal 100 poin</div>' +
-          '</div>' +
           '<div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:24px;">' +
             '<button class="btn secondary" style="font-size:18px;" onclick="restartP2()">&#128260; Main Lagi</button>' +
           '</div>' +
@@ -4707,19 +4665,28 @@
                           '<line x1="0" y1="30" x2="60" y2="30" stroke="#111827" stroke-width="4"/>' +
                         '</g>' +
                         '<g transform="translate(180, 60)">' +
+                          '<line x1="50" y1="30" x2="14" y2="30" stroke="#111827" stroke-width="4"/>' +
+                          '<polygon points="22,20 8,30 22,40" fill="#111827"/>' +
+                        '</g>' +
+                        '<g transform="translate(60, 60)">' +
                           '<circle cx="30" cy="30" r="18" fill="none" stroke="#111827" stroke-width="4"/>' +
+                        '</g>' +
+                        '<g transform="translate(120, 60)">' +
+                          '<polygon points="30,6 54,30 30,54 6,30" fill="none" stroke="#111827" stroke-width="4"/>' +
+                          '<line x1="30" y1="6" x2="30" y2="54" stroke="#111827" stroke-width="4"/>' +
                         '</g>' +
                       '</svg>' +
                     '</div>' +
+                  '</div>' +
                 '</div>' +
-              '</div>' +
-              '<div class="debug-question-right" style="width:100%;">' +
-                '<div class="option-grid" style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px;">' +
+              '<div class="debug-question-right">' +
+                '<div class="prompt">Misi: Mana bentuk kubus yang <strong>benar</strong> jika jaring-jaring di atas dilipat?</div>' +
+                '<div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">' +
                     '<button class="option ' + (a.q9==='A'?'selected':'') + '" onclick="stateP3.answers.q9=\'A\'; renderP3()" style="flex-direction:column; align-items:center; justify-content:center; padding:16px; min-width:140px;">' +
-                        optSvg('sym-circle', 'sym-rhombus-v', null) +
+                        optSvg('sym-arrow-up', 'sym-rhombus-v', 'sym-circle') +
                     '</button>' +
                     '<button class="option ' + (a.q9==='B'?'selected':'') + '" onclick="stateP3.answers.q9=\'B\'; renderP3()" style="flex-direction:column; align-items:center; justify-content:center; padding:16px; min-width:140px;">' +
-                        optSvg(null, 'sym-circle', null) +
+                        optSvg('sym-rhombus-h', 'sym-circle', 'sym-arrow-up') +
                     '</button>' +
                     '<button class="option ' + (a.q9==='C'?'selected':'') + '" onclick="stateP3.answers.q9=\'C\'; renderP3()" style="flex-direction:column; align-items:center; justify-content:center; padding:16px; min-width:140px;">' +
                         optSvg('sym-circle', 'sym-rhombus-h', 'sym-arrow-left') +

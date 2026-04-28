@@ -81,9 +81,12 @@
         width:100%;
         max-width:1360px;
         margin:0 auto;
+        display:flex;
+        justify-content:center;
     }
     .school-landing{
         position:relative;
+        width:100%;
         min-height:calc(100vh - 64px);
         display:flex;
         flex-direction:column;
@@ -91,7 +94,7 @@
         justify-content:center;
         gap:0;
         padding:24px 24px 36px;
-        overflow:hidden;
+        overflow:visible;
     }
 
     .landing-logo-pill{
@@ -107,6 +110,8 @@
         box-shadow: 0 10px 30px rgba(0,0,0,0.08);
         border:1px solid rgba(210, 225, 242, 0.95);
         margin-bottom: 24px;
+        margin-left:auto;
+        margin-right:auto;
     }
     .landing-logo-pill img{display:block; object-fit:contain;}
     .landing-logo-divider{
@@ -120,11 +125,14 @@
         z-index:2;
         width:min(1180px, 100%);
         margin-top:0;
+        margin-left:auto;
+        margin-right:auto;
         padding:20px;
         border-radius:40px;
         background:#f8fbff;
         box-shadow:0 24px 48px rgba(24, 53, 106, 0.16);
         border:2px solid rgba(233, 241, 251, 0.95);
+        overflow:visible;
     }
     .landing-shell-inner{
         display:grid;
@@ -132,6 +140,7 @@
         align-items:center;
         gap:32px;
         min-height:620px;
+        overflow:visible;
     }
     .landing-visual{
         position:relative;
@@ -245,6 +254,7 @@
         align-items:center;
         justify-content:center;
         padding:8px;
+        overflow:visible;
     }
     .landing-form-card{
         position:relative;
@@ -257,6 +267,7 @@
         padding:10px 10px 10px 18px;
         box-shadow:none;
         backdrop-filter:none;
+        overflow:visible;
     }
     .landing-form-title{
         margin:0 0 8px;
@@ -322,6 +333,18 @@
         border-radius:20px;
         box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
         padding: 8px;
+        z-index:100000;
+        max-height:min(320px, 42vh);
+        overscroll-behavior:contain;
+    }
+    #phase_school #nameKOptions{
+        max-height:min(300px, 38vh);
+        top:auto;
+        bottom:calc(100% + 8px);
+    }
+    #phase_school .k-select.drop-up .k-options{
+        top:auto;
+        bottom:calc(100% + 8px);
     }
     #phase_school .k-search-box {
         padding: 8px 8px 12px;
@@ -1038,13 +1061,14 @@
 
     /* Compact desktop quiz scale: keeps 100% browser zoom from feeling oversized. */
     .app{
-      min-height: auto;
+      min-height: 100vh;
       padding: 14px 20px;
-      align-items: flex-start;
+      align-items: center;
     }
     #master_container.quiz-active{
-      justify-content:flex-start !important;
-      padding-top:24px !important;
+      justify-content:center !important;
+      padding-top:32px !important;
+      padding-bottom:32px !important;
     }
     .shell{
       width: min(74vw, 1180px);
@@ -1325,6 +1349,53 @@
         grid-template-columns:1fr;
       }
     }
+
+    /* Extra compact typography: roughly halves the oversized test text. */
+    .landing-title{font-size:clamp(22px, 2.4vw, 32px) !important;}
+    .landing-form-title{font-size:26px !important;}
+    .landing-form-subtitle{font-size:12px !important;}
+    .landing-label{font-size:12px !important;}
+    #phase_school .k-select-trigger,
+    #phase_school #otherName{font-size:13px !important; min-height:44px !important; padding:11px 15px !important;}
+    #phase_school .k-option{font-size:12px !important; padding:10px 13px !important;}
+    #phase_school .k-search-box input{font-size:12px !important; padding:9px 11px !important;}
+    .landing-start-btn{font-size:15px !important; min-height:48px !important; border-radius:16px !important;}
+    .landing-mini-note,
+    .landing-visual-footer-kicker{font-size:10px !important;}
+    .landing-visual-footer-text{font-size:12px !important;}
+    .landing-badge-star{font-size:42px !important;}
+
+    .master-intro h2,
+    .card h2{font-size:clamp(16px, 1.8vw, 21px) !important;}
+    .master-intro p,
+    .desc{font-size:11px !important;}
+    .title{font-size:clamp(12px, 1.4vw, 16px) !important;}
+    .muted{font-size:11px !important;}
+    .badge{font-size:10px !important; padding:5px 9px !important; margin-bottom:9px !important; border-radius:9px !important;}
+    .prompt{font-size:11px !important; padding:10px 12px !important; margin-bottom:12px !important; border-radius:11px !important;}
+    .option,
+    .seq-item{font-size:11px !important; min-height:54px !important; padding:9px 12px !important; border-radius:11px !important; gap:8px !important;}
+    .opt-tag,
+    .seq-order{width:28px !important; height:28px !important; flex-basis:28px !important; font-size:12px !important; border-radius:8px !important;}
+    .btn{font-size:11px !important; padding:8px 13px !important; border-radius:11px !important;}
+    .pill{font-size:10px !important; padding:5px 8px !important;}
+    .timer-pill{font-size:11px !important; padding:4px 8px !important;}
+    .helper,
+    .status,
+    .formula,
+    .formula .block,
+    input[type="text"],
+    .k-select-trigger,
+    .k-option,
+    .slot-content,
+    .slot-empty-hint,
+    .drag-card,
+    .dnd-guide-text,
+    .picked{font-size:11px !important;}
+    .score{font-size:52px !important;}
+    .emoji{font-size:52px !important;}
+    .overlay-box p{font-size:12px !important;}
+    .overlay-box .big{font-size:40px !important;}
 </style>
 </head>
 <body>
@@ -1759,6 +1830,52 @@
     let kSelectedClass = '';
     let kSelectedName = '';
 
+    function escapeJsString(value) {
+        return String(value || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/\n/g, ' ');
+    }
+
+    function normalizeSearchText(value) {
+        return String(value || '')
+            .toLowerCase()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^a-z0-9\s]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+    }
+
+    function editDistance(a, b) {
+        const dp = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+        for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+        for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+        for (let i = 1; i <= a.length; i++) {
+            for (let j = 1; j <= b.length; j++) {
+                dp[i][j] = Math.min(
+                    dp[i - 1][j] + 1,
+                    dp[i][j - 1] + 1,
+                    dp[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
+                );
+            }
+        }
+        return dp[a.length][b.length];
+    }
+
+    function matchesLooseName(name, query) {
+        const q = normalizeSearchText(query);
+        if (!q) return true;
+        const normalized = normalizeSearchText(name);
+        const compactName = normalized.replace(/\s+/g, '');
+        const compactQuery = q.replace(/\s+/g, '');
+        if (normalized.includes(q) || compactName.includes(compactQuery)) return true;
+        const nameParts = normalized.split(' ').filter(Boolean);
+        const queryParts = q.split(' ').filter(Boolean);
+        return queryParts.every(part => nameParts.some(namePart =>
+            namePart.includes(part) ||
+            namePart.startsWith(part) ||
+            (part.length >= 4 && editDistance(part, namePart) <= 1)
+        ));
+    }
+
     function toggleKSelect(id) {
         const wrapper = document.getElementById(id);
         const trigger = wrapper.querySelector('.k-select-trigger');
@@ -1770,10 +1887,18 @@
         // Close all others
         document.querySelectorAll('.k-options').forEach(opt => opt.classList.remove('show'));
         document.querySelectorAll('.k-select-trigger').forEach(trig => trig.classList.remove('open'));
+        document.querySelectorAll('.k-select').forEach(select => select.classList.remove('drop-up'));
 
         if (!isOpen) {
             options.classList.add('show');
             trigger.classList.add('open');
+            const triggerRect = trigger.getBoundingClientRect();
+            const desiredHeight = Math.min(options.scrollHeight || 320, options.id === 'nameKOptions' ? 300 : 320, window.innerHeight * 0.42);
+            const spaceBelow = window.innerHeight - triggerRect.bottom - 16;
+            const spaceAbove = triggerRect.top - 16;
+            if (spaceBelow < desiredHeight && spaceAbove > spaceBelow) {
+                wrapper.classList.add('drop-up');
+            }
             const input = options.querySelector('input');
             if (input) {
                 input.value = '';
@@ -1788,18 +1913,23 @@
         if (!e.target.closest('.k-select')) {
             document.querySelectorAll('.k-options').forEach(opt => opt.classList.remove('show'));
             document.querySelectorAll('.k-select-trigger').forEach(trig => trig.classList.remove('open'));
+            document.querySelectorAll('.k-select').forEach(select => select.classList.remove('drop-up'));
         }
     }, true);
 
     function filterKOptions(id) {
+        if (id === 'nameK') {
+            filterNamesCustom();
+            return;
+        }
         const wrapper = document.getElementById(id);
         const input = wrapper.querySelector('.k-search-box input');
-        const filter = input ? input.value.toLowerCase() : '';
+        const filter = input ? normalizeSearchText(input.value) : '';
         const options = wrapper.querySelectorAll('.k-list .k-option');
         let hasVisible = false;
         
         options.forEach(opt => {
-            const txt = opt.textContent.toLowerCase();
+            const txt = normalizeSearchText(opt.textContent);
             if (txt.includes(filter)) {
                 opt.style.display = 'block';
                 hasVisible = true;
@@ -1893,12 +2023,19 @@
         if (kSelectedClass) {
             filtered = filtered.filter(item => item.kelas === kSelectedClass);
         }
+        const searchInput = document.querySelector('#nameK .k-search-box input');
+        const searchText = searchInput ? searchInput.value : '';
+        filtered = filtered.filter(item => matchesLooseName(item.name, searchText));
 
         let listHtml = '';
         filtered.forEach(item => {
-            listHtml += `<div class="k-option" onclick="selectKOption('nameK', '${item.name}', '${item.name}')">${item.name}</div>`;
+            const safeName = escapeJsString(item.name);
+            listHtml += `<div class="k-option" onclick="selectKOption('nameK', '${safeName}', '${safeName}')">${item.name}</div>`;
         });
-        listHtml += `<div class="k-option" style="color:#0d9488; border-top:1px dashed #e2e8f0;" onclick="selectKOption('nameK', 'OTHER', '-- Nama Saya Tidak Ada --')">-- Nama Saya Tidak Ada --</div>`;
+        if (filtered.length === 0) {
+            listHtml += `<div class="k-option no-res">Nama tidak ditemukan. Pilih opsi di bawah untuk menulis nama manual.</div>`;
+        }
+        listHtml += `<div class="k-option" style="color:#0d9488; border-top:1px dashed #e2e8f0;" onclick="selectKOption('nameK', 'OTHER', '-- Nama Saya Tidak Ada / Masukkan Nama --')">-- Nama Saya Tidak Ada / Masukkan Nama --</div>`;
         
         document.querySelector('#nameK .k-list').innerHTML = listHtml;
         
@@ -2107,7 +2244,7 @@
   <div style="position:absolute;font-size:38px;line-height:1;filter:drop-shadow(0 6px 6px rgba(0,0,0,0.15));animation:q4Robot 4.5s ease-in-out infinite;">🤖</div>
 </div>
 <div style="background:#fff7ed; border:3px solid #fdba74; border-bottom:5px solid #f97316; border-radius:16px; padding:12px 16px; margin-bottom:20px; color:#9a3412; font-size:16px; font-weight:900; line-height:1.45;">
-  Pertanyaan: dari daftar blok di atas, <strong>blok mana yang harus dibuang</strong> supaya gerakan robot sama seperti animasi target?
+  Pertanyaan: dari daftar blok di samping, <strong>blok mana yang harus dibuang</strong> supaya gerakan robot sama seperti animasi target?
 </div>`,
         formula: '🚩 Ketika mulai ditekan\n➡️ Maju ke kanan\n➡️ Maju ke kanan\n⬅️ Putar balik ke kiri\n⬆️ Lompat',
         options: [
@@ -2265,13 +2402,13 @@
         title: 'Hitung Skor Game-mu! 💯',
         desc: 'Saatnya berhitung skor ala programmer game.',
         prompt: 'Dapat ⭐ = <strong>+10 poin</strong>. Kena musuh 👾 = <strong>dikurang 5 poin</strong>. Berapa poin total kotak di bawah ini?',
-        extraHtml: `<div style="background:#fff; border:4px dashed var(--secondary-dark); border-radius:28px; padding:32px; display:flex; flex-direction:column; gap:16px; margin:24px 0; align-items:center; box-shadow: inset 0 0 0 4px #f8fafc;">
-           <div style="display:flex; gap:24px; flex-wrap:wrap; justify-content:center;">
-              <div style="background:var(--primary-light); padding:20px 24px; border-radius:24px; font-size:54px; border:5px solid var(--primary-border); border-bottom-width:10px; animation: pop 1s infinite alternate;">⭐</div>
-              <div style="background:var(--primary-light); padding:20px 24px; border-radius:24px; font-size:54px; border:5px solid var(--primary-border); border-bottom-width:10px; animation: pop 1s infinite alternate; animation-delay: 0.2s;">⭐</div>
-              <div style="background:#fee2e2; padding:20px 24px; border-radius:24px; font-size:54px; border:5px solid #ef4444; border-bottom-width:10px; transform: scale(1.1);">👾</div>
+        extraHtml: `<div style="background:#fff; border:4px dashed var(--secondary-dark); border-radius:24px; padding:22px 18px; display:flex; flex-direction:column; gap:14px; margin:18px 0; align-items:center; box-shadow: inset 0 0 0 4px #f8fafc;">
+           <div style="display:flex; gap:12px; flex-wrap:nowrap; justify-content:center; align-items:center; width:100%;">
+              <div style="background:var(--primary-light); padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid var(--primary-border); border-bottom-width:7px; animation: pop 1s infinite alternate;">⭐</div>
+              <div style="background:var(--primary-light); padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid var(--primary-border); border-bottom-width:7px; animation: pop 1s infinite alternate; animation-delay: 0.2s;">⭐</div>
+              <div style="background:#fee2e2; padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid #ef4444; border-bottom-width:7px;">👾</div>
            </div>
-           <div style="font-weight:900; color:var(--text); font-size:26px; margin-top:16px; background:#fef3c7; padding:8px 24px; border-radius:100px; border:3px solid #f59e0b;">Total Skor = ... ?</div>
+           <div style="font-weight:900; color:var(--text); font-size:24px; margin-top:8px; background:#fef3c7; padding:8px 20px; border-radius:100px; border:3px solid #f59e0b; text-align:center;">Total Skor = ... ?</div>
         </div>`,
         options: [
           { id: 'A', label: 'Skorku sisa 5' },
@@ -2540,6 +2677,10 @@
         renderScenarioMCQ(q);
         return;
       }
+      if(q.id === 7) {
+        renderMapLeftMCQ(q);
+        return;
+      }
       if(q.id === 9) {
         renderQuestionRightMCQ(q);
         return;
@@ -2644,6 +2785,35 @@
             </div>
             <div class="debug-question-right">
               ${q.questionHtml || ''}
+              <div class="option-grid">
+                ${q.options.map(opt => `
+                  <button class="option ${selected === opt.id ? 'selected' : ''}" onclick="selectOptionP1('${opt.id}')">
+                    ${opt.html ? opt.html : `<div class="opt-tag">${opt.id}</div><div>${opt.label}</div>`}
+                  </button>
+                `).join('')}
+              </div>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn secondary" onclick="goPrevP1()" ${stateP1.index === 0 ? 'disabled' : ''}>⬅️ Kembali</button>
+            <button class="btn primary" onclick="goNextP1()" ${!selected ? 'disabled' : ''}>${stateP1.index === questionsP1.length - 1 ? 'Simpan & Lanjut ➡️' : 'Lanjut ➡️'}</button>
+          </div>
+        </div>`;
+    }
+
+    function renderMapLeftMCQ(q){
+      const selected = stateP1.answers[stateP1.index];
+      cardP1.innerHTML = `
+        <div class="card-anim wrapped">
+          <div class="badge">🎯 ${q.category}</div>
+          <h2>${q.title}</h2>
+          <p class="desc">${q.desc}</p>
+          <div class="debug-question-layout">
+            <div class="debug-question-left">
+              ${q.extraHtml || ''}
+            </div>
+            <div class="debug-question-right">
+              <div class="prompt">${q.prompt}</div>
               <div class="option-grid">
                 ${q.options.map(opt => `
                   <button class="option ${selected === opt.id ? 'selected' : ''}" onclick="selectOptionP1('${opt.id}')">
@@ -3733,7 +3903,7 @@
           '<div class="badge">&#128269; Level Bos &mdash; Pencarian Cerdas</div>' +
           '<h2>Cari Harimau Sumatra! &#128047;</h2>' +
           '<p class="desc">Gunakan kolom pencarian seperti Google! Ketik kata kuncinya, lalu <strong>pilih saran yang tepat</strong> dari daftar yang muncul!</p>' +
-          '<div class="prompt">Misi: Cari tahu tentang <strong>Harimau Sumatra</strong> menggunakan kotak pencarian di bawah!</div>' +
+          '<div class="prompt">Misi: Cari tahu tentang <strong>Harimau Sumatra</strong> menggunakan kotak pencarian di samping!</div>' +
           '<div style="background:#f8fafc;border:3px solid var(--secondary-dark);border-radius:24px;padding:20px;margin-bottom:16px;">' +
             '<p style="font-weight:900;font-size:15px;color:var(--muted);margin:0 0 12px;">&#127760; Simulasi Mesin Pencari</p>' +
             // Search row
@@ -3952,11 +4122,11 @@
       if(a.q2 === 'A') score += 10;
       if(a.q3 === 'B') score += 10;
       if(a.q4.includes('S2') && a.q4.includes('S3') && a.q4.length === 2) score += 10;
-      if(a.q5 === 'D') score += 10;
+      if(a.q5 === 'A') score += 10;
       if(a.q6 === 16) score += 10;
       if(a.q7 === 'D') score += 10;
       if(a.q8 === 'C') score += 10;
-      if(a.q9 === 'B') score += 10;
+      if(a.q9 === 'C') score += 10;
       if(a.q10 === 'kanan') score += 10;
       return score;
     }
@@ -4187,20 +4357,32 @@
     function renderQ5_P3(){
       const a = stateP3.answers;
       cardP3.innerHTML = 
-        '<div class="card-anim">' +
+        '<div class="card-anim wrapped">' +
           '<div class="badge">🧩 Level 5 &mdash; Melengkapi Kubus</div>' +
           '<h2>Potongan Mana yang Pas? 🧊</h2>' +
           '<p class="desc">Perhatikan bentuk balok di atas. Pilih satu potongan yang bisa dipasang agar bentuk akhirnya menjadi kubus utuh.</p>' +
-          '<div class="prompt">Misi: <strong>Potongan mana</strong> yang paling pas untuk melengkapi objek ini menjadi sebuah kubus?</div>' +
-          '<div style="display:flex; flex-direction:column; gap:24px; align-items:center;">' +
-            '<div style="background:#fff; border:4px solid var(--secondary); border-radius:24px; padding:18px; display:flex; justify-content:center; width:100%; max-width:560px; box-shadow:inset 0 4px 6px rgba(0,0,0,0.04);">' +
-                cubeCompletionMainSvg() +
+          '<div class="debug-question-layout">' +
+            '<div class="debug-question-left">' +
+              '<div style="background:#fff; border:4px solid var(--secondary); border-radius:24px; padding:18px; display:flex; justify-content:center; width:100%; box-shadow:inset 0 4px 6px rgba(0,0,0,0.04);">' +
+                '<img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/2ba961da-d055-4fa8-b081-cec332d0db84.png" alt="Soal melengkapi kubus" style="width:100%; max-width:700px; height:auto; display:block; border-radius:16px;" />' +
+              '</div>' +
             '</div>' +
-            '<div class="option-grid" style="width:100%;">' +
-                '<button class="option ' + (a.q5==='A'?'selected':'') + '" onclick="stateP3.answers.q5=\'A\'; renderP3()" style="align-items:center;">' + cubeCompletionOptionSvg('A') + '<div><strong>A</strong><br>Potongan 1</div></button>' +
-                '<button class="option ' + (a.q5==='B'?'selected':'') + '" onclick="stateP3.answers.q5=\'B\'; renderP3()" style="align-items:center;">' + cubeCompletionOptionSvg('B') + '<div><strong>B</strong><br>Potongan 2</div></button>' +
-                '<button class="option ' + (a.q5==='C'?'selected':'') + '" onclick="stateP3.answers.q5=\'C\'; renderP3()" style="align-items:center;">' + cubeCompletionOptionSvg('C') + '<div><strong>C</strong><br>Potongan 3</div></button>' +
-                '<button class="option ' + (a.q5==='D'?'selected':'') + '" onclick="stateP3.answers.q5=\'D\'; renderP3()" style="align-items:center;">' + cubeCompletionOptionSvg('D') + '<div><strong>D</strong><br>Potongan 4</div></button>' +
+            '<div class="debug-question-right">' +
+              '<div class="prompt">Misi: <strong>Potongan mana</strong> yang paling pas untuk melengkapi objek ini menjadi sebuah kubus?</div>' +
+              '<div class="option-grid" style="width:100%; grid-template-columns:1fr;">' +
+                '<button class="option ' + (a.q5==='A'?'selected':'') + '" onclick="stateP3.answers.q5=\'A\'; renderP3()" aria-label="Pilihan A" title="Pilihan A" style="align-items:center; justify-content:center; padding:12px; min-height:unset;">' +
+                  '<img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/950d5067-c0bc-4e16-8842-d2aee89fa8b1.png" alt="Pilihan A" style="width:100%; max-width:160px; height:auto; display:block; border-radius:12px; background:#fff;" />' +
+                '</button>' +
+                '<button class="option ' + (a.q5==='B'?'selected':'') + '" onclick="stateP3.answers.q5=\'B\'; renderP3()" aria-label="Pilihan B" title="Pilihan B" style="align-items:center; justify-content:center; padding:12px; min-height:unset;">' +
+                  '<img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/3cbed7bc-41b6-49c0-8ca1-da4f11ccd860.png" alt="Pilihan B" style="width:100%; max-width:160px; height:auto; display:block; border-radius:12px; background:#fff;" />' +
+                '</button>' +
+                '<button class="option ' + (a.q5==='C'?'selected':'') + '" onclick="stateP3.answers.q5=\'C\'; renderP3()" aria-label="Pilihan C" title="Pilihan C" style="align-items:center; justify-content:center; padding:12px; min-height:unset;">' +
+                  '<img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/a170672d-0a32-4bce-8323-06b860ca48bb.png" alt="Pilihan C" style="width:100%; max-width:160px; height:auto; display:block; border-radius:12px; background:#fff;" />' +
+                '</button>' +
+                '<button class="option ' + (a.q5==='D'?'selected':'') + '" onclick="stateP3.answers.q5=\'D\'; renderP3()" aria-label="Pilihan D" title="Pilihan D" style="align-items:center; justify-content:center; padding:12px; min-height:unset;">' +
+                  '<img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/33de3f7a-bd83-4635-bead-0b8f82bf610c.png" alt="Pilihan D" style="width:100%; max-width:160px; height:auto; display:block; border-radius:12px; background:#fff;" />' +
+                '</button>' +
+              '</div>' +
             '</div>' +
           '</div>' +
         '</div>' +
@@ -4293,29 +4475,33 @@
         '<div class="card-anim">' +
           '<div class="badge">✂️ Level 8 &mdash; Simetri Lipatan Kertas</div>' +
           '<h2>Simetri Lipatan Kertas ✂️</h2>' +
-          '<p class="desc">Selembar kertas persegi dilipat dua kali, lalu digunting sudut kiri bawahnya membentuk segitiga.</p>' +
-          '<div class="prompt">Misi: Jika kertas dibuka utuh kembali, <strong>pola manakah yang akan terbentuk?</strong></div>' +
+          '<p class="desc">Perhatikan urutannya baik-baik. Bagian <strong>abu-abu</strong> menunjukkan sisi kertas yang sedang <strong>dilipat / digerakkan</strong>, sedangkan bagian putih tetap diam.</p>' +
+          '<div class="prompt">Misi: Kertas pertama <strong>dilipat ke kanan</strong>, lalu hasil lipatannya <strong>dilipat ke bawah</strong>. Setelah itu sudut kiri bawah dari lipatan kecil tadi digunting. Jika kertas dibuka utuh kembali, <strong>pola manakah yang akan terbentuk?</strong></div>' +
           '<div style="display:flex; flex-direction:column; align-items:center; gap:24px;">' +
               '<div style="display:flex; align-items:center; gap:16px; background:#f8fafc; padding:24px; border-radius:24px; border:3px solid var(--secondary); justify-content:center; flex-wrap:wrap; width:100%;">' +
                   '<div style="width:64px; height:64px; background:#fff; border:3px solid #94a3b8;"></div>' +
                   '<div style="font-weight:900; color:#94a3b8; font-size:24px;">➔</div>' +
-                  '<div style="width:64px; height:64px; display:flex; border:3px solid #94a3b8; position:relative;">' +
+                  '<div style="display:flex; flex-direction:column; align-items:center; gap:8px;">' +
+                    '<div style="width:64px; height:64px; display:flex; border:3px solid #94a3b8; position:relative;">' +
                       '<div style="width:32px; height:100%; background:#64748b; position:absolute; left:0;"></div>' +
                       '<div style="width:32px; height:100%; background:#fff; position:absolute; right:0; border-left:2px dashed #94a3b8;"></div>' +
-                      '<div style="position:absolute; left:6px; top:50%; transform:translateY(-50%); font-size:10px; font-weight:900; color:#fff;">Lipat<br>Kanan</div>' +
+                    '</div>' +
+                    '<div style="font-size:10px; font-weight:900; color:#334155; background:#e2e8f0; padding:3px 8px; border-radius:999px; line-height:1;">Lipat ke kanan</div>' +
                   '</div>' +
                   '<div style="font-weight:900; color:#94a3b8; font-size:24px;">➔</div>' +
-                  '<div style="width:32px; height:64px; display:flex; flex-direction:column; border:3px solid #94a3b8; position:relative;">' +
-                      '<div style="width:100%; height:32px; background:#64748b; position:absolute; top:0;"></div>' +
-                      '<div style="width:100%; height:32px; background:#fff; position:absolute; bottom:0; border-top:2px dashed #94a3b8;"></div>' +
-                      '<div style="position:absolute; top:6px; font-size:9px; line-height:1; font-weight:900; color:#fff; text-align:center; width:100%;">Lipat<br>Bawah</div>' +
+                  '<div style="display:flex; flex-direction:column; align-items:center; gap:8px;">' +
+                    '<div style="width:32px; height:64px; display:flex; flex-direction:column; border:3px solid #94a3b8; position:relative;">' +
+                        '<div style="width:100%; height:32px; background:#64748b; position:absolute; top:0;"></div>' +
+                        '<div style="width:100%; height:32px; background:#fff; position:absolute; bottom:0; border-top:2px dashed #94a3b8;"></div>' +
+                    '</div>' +
+                    '<div style="font-size:10px; font-weight:900; color:#334155; background:#e2e8f0; padding:3px 8px; border-radius:999px; line-height:1;">Lipat ke bawah</div>' +
                   '</div>' +
                   '<div style="font-weight:900; color:#94a3b8; font-size:24px;">➔</div>' +
                   '<div style="position:relative;">' +
                       '<div style="width:32px; height:32px; background:#fff; border:3px solid #94a3b8; position:relative; overflow:hidden;">' +
                           '<div style="position:absolute; bottom:-16px; left:-16px; width:32px; height:32px; background:#475569; transform:rotate(45deg); border:2px solid #1e293b;"></div>' +
                       '</div>' +
-                      '<div style="position:absolute; font-size:20px; left:-16px; bottom:-16px; z-index:10;">✂️</div>' +
+                      '<div style="position:absolute; font-size:20px; left:-10px; bottom:-10px; z-index:10;">✂️</div>' +
                   '</div>' +
               '</div>' +
               '<div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">' +
@@ -4354,84 +4540,75 @@
     // Q9: Jaring-Jaring Kubus
     function renderQ9_P3(){
       const a = stateP3.answers;
-      cardP3.innerHTML = 
-        '<div class="card-anim">' +
+      const defs = '<svg width="0" height="0" style="position:absolute; width:0; height:0;">' +
+        '<defs>' +
+          '<g id="sym-circle"><circle cx="20" cy="20" r="14" fill="none" stroke="#111827" stroke-width="3"/></g>' +
+          '<g id="sym-rhombus-h"><polygon points="20,0 40,20 20,40 0,20" fill="none" stroke="#111827" stroke-width="3"/><line x1="0" y1="20" x2="40" y2="20" stroke="#111827" stroke-width="3"/></g>' +
+          '<g id="sym-rhombus-v"><polygon points="20,0 40,20 20,40 0,20" fill="none" stroke="#111827" stroke-width="3"/><line x1="20" y1="0" x2="20" y2="40" stroke="#111827" stroke-width="3"/></g>' +
+          '<g id="sym-arrow-up"><line x1="20" y1="40" x2="20" y2="10" stroke="#111827" stroke-width="3"/><polygon points="12,18 20,6 28,18" fill="#111827"/></g>' +
+          '<g id="sym-arrow-left"><line x1="40" y1="20" x2="10" y2="20" stroke="#111827" stroke-width="3"/><polygon points="18,12 6,20 18,28" fill="#111827"/></g>' +
+        '</defs>' +
+      '</svg>';
+
+      const optSvg = (topSym, leftSym, rightSym) => {
+        return '<svg width="90" height="90" viewBox="-5 -5 90 90" style="display:block; margin:0 auto;">' +
+          '<polygon points="40,0 80,20 40,40 0,20" fill="#f8fafc" stroke="#1e293b" stroke-width="2" stroke-linejoin="round"/>' +
+          (topSym ? '<g transform="matrix(1, 0.5, -1, 0.5, 40, 0)"><use href="#' + topSym + '"/></g>' : '') +
+          '<polygon points="0,20 40,40 40,80 0,60" fill="#e2e8f0" stroke="#1e293b" stroke-width="2" stroke-linejoin="round"/>' +
+          (leftSym ? '<g transform="matrix(1, 0.5, 0, 1, 0, 20)"><use href="#' + leftSym + '"/></g>' : '') +
+          '<polygon points="40,40 80,20 80,60 40,80" fill="#cbd5e1" stroke="#1e293b" stroke-width="2" stroke-linejoin="round"/>' +
+          (rightSym ? '<g transform="matrix(1, -0.5, 0, 1, 40, 40)"><use href="#' + rightSym + '"/></g>' : '') +
+        '</svg>';
+      };
+
+      cardP3.innerHTML = defs +
+        '<div class="card-anim wrapped">' +
           '<div class="badge">🎲 Level 9 &mdash; Jaring-Jaring Kubus</div>' +
-          '<h2>Jaring-Jaring Kubus 🎲</h2>' +
-          '<p class="desc">Perhatikan dua posisi kubus pada gambar dan susunan jaring-jaringnya yang sesuai.</p>' +
-          '<div class="prompt">Misi: <strong>Simbol apakah yang tepat</strong> untuk mengisi kotak bertanda tanya (?)</div>' +
-          '<div style="display:flex; flex-direction:column; align-items:center; gap:24px; width:100%;">' +
-              '<div style="position:relative; width:100%; max-width:540px; background:#fff; border:4px solid var(--secondary); border-radius:24px; padding:24px; box-shadow:0 4px 6px rgba(0,0,0,0.05); display:flex; flex-direction:column; gap:24px;">' +
-                  '<svg width="0" height="0" style="position:absolute;">' +
-                      '<defs>' +
-                          '<g id="sym-osq"><rect x="-14" y="-14" width="28" height="28" fill="none" stroke="#f97316" stroke-width="4" stroke-linejoin="round"/></g>' +
-                          '<g id="sym-ssq"><rect x="-14" y="-14" width="28" height="28" fill="#f97316" stroke-linejoin="round"/></g>' +
-                          '<g id="sym-ocir"><circle cx="0" cy="0" r="15" fill="none" stroke="#f97316" stroke-width="4"/></g>' +
-                          '<g id="sym-scir"><circle cx="0" cy="0" r="15" fill="#f97316"/></g>' +
-                          '<g id="sym-ohex"><polygon points="0,-16 13.8,-8 13.8,8 0,16 -13.8,8 -13.8,-8" fill="none" stroke="#f97316" stroke-width="4" stroke-linejoin="round"/></g>' +
-                          '<g id="sym-shex"><polygon points="0,-16 13.8,-8 13.8,8 0,16 -13.8,8 -13.8,-8" fill="#f97316" stroke-linejoin="round"/></g>' +
-                      '</defs>' +
-                  '</svg>' +
-                  '<div style="display:flex; justify-content:space-between; align-items:flex-start; width:100%; flex-wrap:wrap; gap:16px;">' +
-                      '<div style="display:flex; gap:16px;">' +
-                          '<svg width="100" height="100" viewBox="-40 -45 80 90">' +
-                              '<polygon points="0,-40 34.6,-20 0,0 -34.6,-20" fill="#f8fafc" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>' +
-                              '<polygon points="-34.6,-20 0,0 0,40 -34.6,20" fill="#ffffff" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>' +
-                              '<polygon points="0,0 34.6,-20 34.6,20 0,40" fill="#f1f5f9" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>' +
-                              '<use href="#sym-osq" transform="matrix(0.866, 0.5, -0.866, 0.5, 0, -20)"/>' +
-                              '<use href="#sym-ohex" transform="matrix(0.866, 0.5, 0, 1, -17.3, 10)"/>' +
-                              '<use href="#sym-ssq" transform="matrix(0.866, -0.5, 0, 1, 17.3, 10)"/>' +
-                          '</svg>' +
-                          '<svg width="100" height="100" viewBox="-40 -45 80 90">' +
-                              '<polygon points="0,-40 34.6,-20 0,0 -34.6,-20" fill="#f8fafc" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>' +
-                              '<polygon points="-34.6,-20 0,0 0,40 -34.6,20" fill="#ffffff" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>' +
-                              '<polygon points="0,0 34.6,-20 34.6,20 0,40" fill="#f1f5f9" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>' +
-                              '<use href="#sym-scir" transform="matrix(0.866, 0.5, -0.866, 0.5, 0, -20)"/>' +
-                              '<use href="#sym-osq" transform="matrix(0.866, 0.5, 0, 1, -17.3, 10)"/>' +
-                              '<use href="#sym-ocir" transform="matrix(0.866, -0.5, 0, 1, 17.3, 10)"/>' +
-                          '</svg>' +
-                      '</div>' +
-                      '<div style="border:2px solid #1e293b; font-size:14px; background:#fff; box-shadow:0 2px 4px rgba(0,0,0,0.1);">' +
-                          '<div style="display:flex; border-bottom:2px solid #1e293b;">' +
-                              '<div style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;"><svg width="20" height="20" viewBox="-20 -20 40 40"><use href="#sym-ssq"/></svg></div>' +
-                              '<div style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;"><svg width="20" height="20" viewBox="-20 -20 40 40"><use href="#sym-scir"/></svg></div>' +
-                              '<div style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;"><svg width="20" height="20" viewBox="-20 -20 40 40"><use href="#sym-shex"/></svg></div>' +
-                              '<div style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;"><svg width="20" height="20" viewBox="-20 -20 40 40"><use href="#sym-osq"/></svg></div>' +
-                              '<div style="width:36px; height:36px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;"><svg width="20" height="20" viewBox="-20 -20 40 40"><use href="#sym-ocir"/></svg></div>' +
-                              '<div style="width:36px; height:36px; display:flex; align-items:center; justify-content:center;"><svg width="20" height="20" viewBox="-20 -20 40 40"><use href="#sym-ohex"/></svg></div>' +
-                          '</div>' +
-                          '<div style="display:flex; font-weight:900; color:#334155;">' +
-                              '<div style="width:36px; height:28px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;">1</div>' +
-                              '<div style="width:36px; height:28px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;">2</div>' +
-                              '<div style="width:36px; height:28px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;">3</div>' +
-                              '<div style="width:36px; height:28px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;">4</div>' +
-                              '<div style="width:36px; height:28px; display:flex; align-items:center; justify-content:center; border-right:2px solid #1e293b;">5</div>' +
-                              '<div style="width:36px; height:28px; display:flex; align-items:center; justify-content:center;">6</div>' +
-                          '</div>' +
-                      '</div>' +
-                  '</div>' +
-                  '<div style="display:flex; justify-content:center;">' +
-                      '<div style="position:relative; width:240px; height:180px;">' +
-                          '<div style="position:absolute; top:0; left:60px; width:60px; height:60px; border:2px solid #1e293b; background:#fff;"></div>' +
-                          '<div style="position:absolute; top:60px; left:0; width:60px; height:60px; border:2px solid #1e293b; background:#fff; display:flex; align-items:center; justify-content:center;">' +
-                                  '<svg width="32" height="32" viewBox="-20 -20 40 40"><use href="#sym-ssq"/></svg>' +
-                          '</div>' +
-                          '<div style="position:absolute; top:60px; left:60px; width:60px; height:60px; border:2px solid #1e293b; background:#fff; display:flex; align-items:center; justify-content:center;">' +
-                                  '<svg width="32" height="32" viewBox="-20 -20 40 40"><use href="#sym-osq"/></svg>' +
-                          '</div>' +
-                          '<div style="position:absolute; top:60px; left:120px; width:60px; height:60px; border:2px solid #1e293b; background:#fff; display:flex; align-items:center; justify-content:center; font-weight:900; font-size:40px; color:#475569;">?</div>' +
-                          '<div style="position:absolute; top:60px; left:180px; width:60px; height:60px; border:2px solid #1e293b; background:#fff; display:flex; align-items:center; justify-content:center;">' +
-                                  '<svg width="32" height="32" viewBox="-20 -20 40 40"><use href="#sym-ocir"/></svg>' +
-                          '</div>' +
-                          '<div style="position:absolute; top:120px; left:60px; width:60px; height:60px; border:2px solid #1e293b; background:#fff;"></div>' +
-                      '</div>' +
-                  '</div>' +
+          '<h2>Bentuk Kubus dari Jaring 🎲</h2>' +
+          '<p class="desc">Perhatikan jaring-jaring kubus di bawah ini. Pilih bentuk kubus yang benar saat jaring-jaring tersebut dilipat!</p>' +
+          '<div class="debug-question-layout" style="flex-direction:column; gap:24px;">' +
+              '<div class="debug-question-left" style="width:100%; max-width:500px; margin:0 auto;">' +
+                '<div style="background:#fff; border:4px solid var(--secondary); border-radius:24px; padding:32px 24px; box-shadow:0 4px 6px rgba(0,0,0,0.05);">' +
+                    '<div style="display:flex; justify-content:center;">' +
+                      '<svg width="260" height="200" viewBox="-10 -10 260 200" style="max-width:100%; height:auto; display:block;">' +
+                        '<g fill="#fff" stroke="#111827" stroke-width="3">' +
+                          '<rect x="120" y="0" width="60" height="60"/>' +
+                          '<rect x="0" y="60" width="60" height="60"/>' +
+                          '<rect x="60" y="60" width="60" height="60"/>' +
+                          '<rect x="120" y="60" width="60" height="60"/>' +
+                          '<rect x="180" y="60" width="60" height="60"/>' +
+                          '<rect x="180" y="120" width="60" height="60"/>' +
+                        '</g>' +
+                        '<g transform="translate(120, 0)">' +
+                          '<line x1="30" y1="60" x2="30" y2="15" stroke="#111827" stroke-width="4"/>' +
+                          '<polygon points="20,25 30,10 40,25" fill="#111827"/>' +
+                        '</g>' +
+                        '<g transform="translate(0, 60)">' +
+                          '<polygon points="30,0 60,30 30,60 0,30" fill="none" stroke="#111827" stroke-width="4"/>' +
+                          '<line x1="0" y1="30" x2="60" y2="30" stroke="#111827" stroke-width="4"/>' +
+                        '</g>' +
+                        '<g transform="translate(180, 60)">' +
+                          '<circle cx="30" cy="30" r="18" fill="none" stroke="#111827" stroke-width="4"/>' +
+                        '</g>' +
+                      '</svg>' +
+                    '</div>' +
+                '</div>' +
               '</div>' +
-              '<div class="option-grid" style="width:100%; max-width:480px;">' +
-                  '<button class="option ' + (a.q9==='A'?'selected':'') + '" onclick="stateP3.answers.q9=\'A\'; renderP3()"><svg width="40" height="40" viewBox="-20 -20 40 40"><use href="#sym-ohex"/></svg> Segienam Kosong</button>' +
-                  '<button class="option ' + (a.q9==='B'?'selected':'') + '" onclick="stateP3.answers.q9=\'B\'; renderP3()"><svg width="40" height="40" viewBox="-20 -20 40 40"><use href="#sym-scir"/></svg> Lingkaran Penuh</button>' +
-                  '<button class="option ' + (a.q9==='C'?'selected':'') + '" onclick="stateP3.answers.q9=\'C\'; renderP3()"><svg width="40" height="40" viewBox="-20 -20 40 40"><use href="#sym-ocir"/></svg> Lingkaran Kosong</button>' +
-                  '<button class="option ' + (a.q9==='D'?'selected':'') + '" onclick="stateP3.answers.q9=\'D\'; renderP3()"><svg width="40" height="40" viewBox="-20 -20 40 40"><use href="#sym-shex"/></svg> Segienam Penuh</button>' +
+              '<div class="debug-question-right" style="width:100%;">' +
+                '<div class="option-grid" style="display:flex; flex-wrap:wrap; justify-content:center; gap:16px;">' +
+                    '<button class="option ' + (a.q9==='A'?'selected':'') + '" onclick="stateP3.answers.q9=\'A\'; renderP3()" style="flex-direction:column; align-items:center; justify-content:center; padding:16px; min-width:140px;">' +
+                        optSvg('sym-circle', 'sym-rhombus-v', null) +
+                    '</button>' +
+                    '<button class="option ' + (a.q9==='B'?'selected':'') + '" onclick="stateP3.answers.q9=\'B\'; renderP3()" style="flex-direction:column; align-items:center; justify-content:center; padding:16px; min-width:140px;">' +
+                        optSvg(null, 'sym-circle', null) +
+                    '</button>' +
+                    '<button class="option ' + (a.q9==='C'?'selected':'') + '" onclick="stateP3.answers.q9=\'C\'; renderP3()" style="flex-direction:column; align-items:center; justify-content:center; padding:16px; min-width:140px;">' +
+                        optSvg('sym-circle', 'sym-rhombus-h', 'sym-arrow-left') +
+                    '</button>' +
+                    '<button class="option ' + (a.q9==='D'?'selected':'') + '" onclick="stateP3.answers.q9=\'D\'; renderP3()" style="flex-direction:column; align-items:center; justify-content:center; padding:16px; min-width:140px;">' +
+                        optSvg(null, 'sym-arrow-up', 'sym-rhombus-v') +
+                    '</button>' +
+                '</div>' +
               '</div>' +
           '</div>' +
         '</div>' +
@@ -4503,7 +4680,34 @@
 
   
 
-    window.onload = masterInit;
+    const COMPACT_TEXT_SCALE = 0.65;
+    const COMPACT_TEXT_MIN_PX = 8;
+
+    function applyCompactTypography(root) {
+      const scope = root && root.nodeType === 1 ? root : document;
+      const nodes = [];
+      if (scope.matches && scope.matches('[style*="font-size"]')) nodes.push(scope);
+      scope.querySelectorAll('[style*="font-size"]').forEach(el => nodes.push(el));
+
+      nodes.forEach(el => {
+        if (el.dataset.compactFontApplied === '1') return;
+        const rawSize = el.style.fontSize || '';
+        if (!rawSize.endsWith('px')) return;
+        const originalSize = parseFloat(rawSize);
+        if (!Number.isFinite(originalSize) || originalSize <= 0) return;
+
+        const minSize = el.closest('.landing-deco') ? 18 : COMPACT_TEXT_MIN_PX;
+        const scaledSize = Math.max(minSize, Math.round(originalSize * COMPACT_TEXT_SCALE * 10) / 10);
+        el.dataset.originalFontSize = rawSize;
+        el.style.fontSize = scaledSize + 'px';
+        el.dataset.compactFontApplied = '1';
+      });
+    }
+
+    window.onload = function() {
+      masterInit();
+      applyCompactTypography(document);
+    };
     
     // Automatically split quiz views into 2 columns for desktop
     const cardObserver = new MutationObserver((mutations) => {
@@ -4555,7 +4759,10 @@
                 node.innerHTML = '';
                 node.appendChild(grid);
                 if(actions) node.appendChild(actions);
+                applyCompactTypography(node);
               }
+            } else if (node.nodeType === 1) {
+              applyCompactTypography(node);
             }
           });
         }
@@ -4565,6 +4772,16 @@
     if (document.getElementById('cardP1')) cardObserver.observe(document.getElementById('cardP1'), { childList: true });
     if (document.getElementById('cardP2')) cardObserver.observe(document.getElementById('cardP2'), { childList: true });
     if (document.getElementById('cardP3')) cardObserver.observe(document.getElementById('cardP3'), { childList: true });
+
+    const compactTypographyObserver = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1) applyCompactTypography(node);
+        });
+      });
+    });
+    compactTypographyObserver.observe(document.getElementById('master_container'), { childList: true, subtree: true });
+    applyCompactTypography(document);
 </script>
 </body>
 </html>

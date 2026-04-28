@@ -1759,19 +1759,8 @@
       const startDay2 = new Date('2026-04-30T09:00:00');
       const endDay2 = new Date('2026-04-30T16:00:00');
 
-      // ⚠️ TEMPORARY DEBUG WINDOW — hapus sebelum hari-H!
-      const debugStart = new Date('2026-04-28T20:45:00');
-      const debugEnd   = new Date('2026-04-28T21:00:00');
-      const isDebugWindow = (now >= debugStart && now <= debugEnd);
-
       if (masterState.phase !== 'school' && masterState.phase !== 'waiting') return;
       
-      // Bypass time gate jika masuk debug window
-      if (isDebugWindow) {
-          if (masterState.phase === 'waiting') masterState.phase = 'school';
-          return;
-      }
-
       if (now < startDay1) {
           masterState.phase = 'waiting';
           updateWaitingTimer(startDay1);
@@ -2140,7 +2129,10 @@
       let selectedName = kSelectedName;
       let isManualName = false;
       if(selectedName === 'OTHER') {
-          selectedName = document.getElementById('otherName').value.trim();
+          selectedName = document.getElementById('otherName').value.trim()
+              .replace(/\s+/g, ' ')
+              .toLowerCase()
+              .replace(/\b\w/g, c => c.toUpperCase());
           isManualName = true;
       }
 

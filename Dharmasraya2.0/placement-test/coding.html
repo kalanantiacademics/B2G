@@ -3626,7 +3626,7 @@
 
 
     // ─────────────────────────────────────────────────────────────────────────
-    // Q5: Login Komputer (Username + Password)
+    // Q5: Login Komputer (Username + kode-akses)
     // ─────────────────────────────────────────────────────────────────────────
     var Q5_USER_P2 = 'Petualang99';
     var Q5_PASS_P2 = 'Sk0l@h_Asyik!';
@@ -3649,7 +3649,7 @@
         '<div class="card-anim">' +
           '<div class="badge">&#128187; Level 5 &mdash; Login Komputer</div>' +
           '<h2>Login ke Komputer! &#128272;</h2>' +
-          '<p class="desc">Untuk masuk ke komputer sekolah kamu harus mengetik username dan password dengan <strong>PERSIS BENAR</strong> — huruf besar, angka, dan simbol harus tepat!</p>' +
+          '<p class="desc">Untuk masuk ke komputer sekolah kamu harus mengetik username dan kode-akses dengan <strong>PERSIS BENAR</strong> — huruf besar, angka, dan simbol harus tepat!</p>' +
 
           // Login cardP2 mock
           '<div style="background:#1e293b;border-radius:20px;padding:20px 24px;margin-bottom:20px;' +
@@ -3677,14 +3677,14 @@
               '</div>' +
             '</div>' +
 
-            // Password field
+            // kode-akses field
             '<div style="margin-bottom:8px;">' +
-              '<label style="color:#94a3b8;font-size:13px;font-weight:900;display:block;margin-bottom:6px;letter-spacing:1px;">&#128272; PASSWORD</label>' +
+              '<label style="color:#94a3b8;font-size:13px;font-weight:900;display:block;margin-bottom:6px;letter-spacing:1px;">&#128272; kode-akses</label>' +
               '<div style="position:relative;">' +
                 '<input type="text" id="q5pass" value="' + escapeHtmlP2(p) + '" ' +
                   'oninput="stateP2.answers.q5.pass=this.value; updateNextBtnP2()" ' +
                   'onpaste="blockPasteP2(this)" ' +
-                  'placeholder="Ketik password..." autocomplete="off" spellcheck="false" ' +
+                  'placeholder="Ketik kode-akses..." autocomplete="off" spellcheck="false" ' +
                   'style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid ' +
                     (p ? (passOk ? '#22c55e' : '#ef4444') : '#475569') + ';' +
                   'font-size:18px;font-weight:800;background:#0f172a;color:#f1f5f9;outline:none;font-family:monospace;letter-spacing:2px;">' +
@@ -3699,7 +3699,7 @@
               ? '<div style="margin-top:12px;text-align:center;padding:12px;background:rgba(34,197,94,0.15);border-radius:12px;border:2px solid #22c55e;">' +
                   '<span style="color:#22c55e;font-size:18px;font-weight:900;">&#127481; Login Berhasil! Selamat datang, Petualang!</span>' +
                 '</div>'
-              : '<p style="color:#ef4444;font-size:13px;font-weight:800;margin:12px 0 0;text-align:center;">&#128274; Tombol Lanjut akan terbuka jika username DAN password sudah benar semua!</p>' +
+              : '<p style="color:#ef4444;font-size:13px;font-weight:800;margin:12px 0 0;text-align:center;">&#128274; Tombol Lanjut akan terbuka jika username DAN kode-akses sudah benar semua!</p>' +
                 '<div style="margin-top:10px;padding:10px 14px;background:#fef3c7;border:2px solid #f59e0b;border-radius:12px;text-align:center;">' +
                   '<span style="font-size:14px;font-weight:900;color:#92400e;">⚠️ PENTING: Pastikan setiap karakter SAMA PERSIS dengan target! Huruf besar (A) dan kecil (a) itu BERBEDA. Perhatikan juga angka dan simbol spesialnya ya!</span>' +
                 '</div>') +

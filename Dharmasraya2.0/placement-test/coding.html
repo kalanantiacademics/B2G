@@ -1473,7 +1473,7 @@
         </div>
 
         <div style="margin-top:24px; padding:16px; background:rgba(255,255,255,0.1); border-radius:16px; font-size:14px; font-weight:800;">
-          🗓️ 29 - 30 April 2026 · 08:00 - 17:00 WIB
+          🗓️ 29 - 30 April 2026 · 08:00 - 18:00 WIB
         </div>
       </div>
 
@@ -1803,26 +1803,29 @@
     function checkTimeGate() {
       const now = new Date();
       const startDay1 = new Date('2026-04-29T08:00:00+07:00');
-      const endDay1 = new Date('2026-04-29T17:00:00+07:00');
+      const endDay1 = new Date('2026-04-29T18:00:00+07:00');
       const startDay2 = new Date('2026-04-30T08:00:00+07:00');
-      const endDay2 = new Date('2026-04-30T17:00:00+07:00');
+      const endDay2 = new Date('2026-04-30T18:00:00+07:00');
 
       if (masterState.phase !== 'school' && masterState.phase !== 'waiting') return;
-      
+
       if (now < startDay1) {
           masterState.phase = 'waiting';
           updateWaitingTimer(startDay1);
           return;
       }
+
       if (now > endDay1 && now < startDay2) {
-          if (masterState.phase === 'waiting') masterState.phase = 'school'; // reset agar render login jika bsk sdh mulai
-          document.getElementById('closeTomorrowOverlay').classList.add('show');
+          masterState.phase = 'waiting';
+          updateWaitingTimer(startDay2);
           return;
       }
+
       if (now > endDay2) {
           document.getElementById('closeFinalOverlay').classList.add('show');
           return;
       }
+
       // Jika masuk jam aktif tapi masih phase waiting
       if (masterState.phase === 'waiting') masterState.phase = 'school';
     }
@@ -1894,6 +1897,7 @@
         document.getElementById('P1_container').style.display = 'none';
         document.getElementById('P2_container').style.display = 'none';
         document.getElementById('P3_container').style.display = 'none';
+        document.getElementById('phase_waiting').style.display = 'none';
         document.getElementById('phase_school').style.display = 'none';
         document.getElementById('phase_intro1').style.display = 'none';
         document.getElementById('phase_intro2').style.display = 'none';

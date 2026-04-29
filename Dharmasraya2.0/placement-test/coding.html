@@ -1473,7 +1473,7 @@
         </div>
 
         <div style="margin-top:24px; padding:16px; background:rgba(255,255,255,0.1); border-radius:16px; font-size:14px; font-weight:800;">
-          🗓️ 29 - 30 April 2026 · 09:00 - 16:00 WIB
+          🗓️ 29 - 30 April 2026 · 08:00 - 17:00 WIB
         </div>
       </div>
 
@@ -1686,10 +1686,58 @@
     </div>
     
 <script>
+    // ============================================
+    // ANTI-INSPECT: Blok DevTools & Klik Kanan
+    // ============================================
+    (function(){
+      // Blok klik kanan (context menu)
+      document.addEventListener('contextmenu', function(e){ e.preventDefault(); });
+
+      // Blok shortcut keyboard DevTools
+      document.addEventListener('keydown', function(e){
+        // F12
+        if(e.key === 'F12' || e.keyCode === 123){
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+        // Ctrl+Shift+I / Ctrl+Shift+J / Ctrl+Shift+C
+        if(e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')){
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+        // Ctrl+U (View Source)
+        if(e.ctrlKey && (e.key === 'U' || e.key === 'u')){
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+        // Ctrl+S (Save Page)
+        if(e.ctrlKey && (e.key === 'S' || e.key === 's')){
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+        // Cmd variants for Mac
+        if(e.metaKey && e.altKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')){
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+        if(e.metaKey && (e.key === 'U' || e.key === 'u' || e.key === 'S' || e.key === 's')){
+          e.preventDefault(); e.stopPropagation(); return false;
+        }
+      }, true);
+
+      // Deteksi DevTools terbuka via debugger statement
+      // Jika DevTools terbuka, debugger akan memblokir eksekusi
+      var _dtCheck = setInterval(function(){
+        var start = performance.now();
+        debugger;
+        var end = performance.now();
+        if(end - start > 100){
+          // DevTools kemungkinan terbuka — bersihkan halaman
+          document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0f172a;color:#fff;font-family:sans-serif;text-align:center;padding:24px;"><div><div style="font-size:80px;margin-bottom:16px;">🚫</div><h1 style="font-size:32px;margin:0 0 12px;">Akses Ditolak</h1><p style="font-size:18px;color:#94a3b8;margin:0;">Menutup Developer Tools diperlukan untuk melanjutkan test.</p></div></div>';
+          clearInterval(_dtCheck);
+        }
+      }, 2000);
+    })();
+
     // Enforce Desktop Only
     function enforceDesktopOnly() {
       const coarse = window.matchMedia('(pointer: coarse)').matches;
-      const tooSmall = window.innerWidth < 800;
+      const tooSmall = window.innerWidth < 600;
       const overlay = document.getElementById('globalMobileOverlay');
       const appContainer = document.getElementById('master_container');
       if (coarse || tooSmall) {
@@ -1754,10 +1802,10 @@
 
     function checkTimeGate() {
       const now = new Date();
-      const startDay1 = new Date('2026-04-29T09:00:00');
-      const endDay1 = new Date('2026-04-29T16:00:00');
-      const startDay2 = new Date('2026-04-30T09:00:00');
-      const endDay2 = new Date('2026-04-30T16:00:00');
+      const startDay1 = new Date('2026-04-29T08:00:00');
+      const endDay1 = new Date('2026-04-29T17:00:00');
+      const startDay2 = new Date('2026-04-30T08:00:00');
+      const endDay2 = new Date('2026-04-30T17:00:00');
 
       if (masterState.phase !== 'school' && masterState.phase !== 'waiting') return;
       

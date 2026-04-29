@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alur Screening Test - 2 Slides</title>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Barlow:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #3b82f6; --primary-dark: #2563eb;
+            --secondary: #e2e8f0; --text: #1e293b; --muted: #64748b;
+            --good: #22c55e; --accent: #f59e0b;
+            --font-title: 'Manrope', sans-serif;
+            --font-body: 'Barlow', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background-color: #2563eb;
+            background-image: url('https://roboguru-forum-cdn.ruangguru.com//image/39e64d7d-ac2a-46a3-bcf3-2fc28177226f.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: var(--font-body), sans-serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        /* Floating Nav Buttons */
+        .nav-btn {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            font-size: 36px;
+            cursor: pointer;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .nav-btn:hover {
+            background: #fff;
+            transform: translateY(-50%) scale(1.1);
+        }
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: translateY(-50%);
+        }
+        #btnPrev { left: 40px; }
+        #btnNext { right: 40px; }
+
+        #scale-wrapper {
+            transform-origin: center center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1920px;
+            height: 1080px;
+        }
+
+        .poster-container {
+            width: 1920px;
+            height: 1080px;
+            background: transparent; /* No background per user's setup */
+            box-sizing: border-box;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .slide-frame {
+            display: none;
+            width: 100%;
+            height: 100%;
+        }
+        .slide-frame.active {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Grid */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 50px 80px;
+            flex: 1;
+            position: relative;
+            padding: 40px;
+        }
+
+        .step-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Laptop CSS */
+        .laptop-frame {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: auto;
+        }
+
+        .laptop-bg {
+            width: 100%;
+            height: auto;
+            display: block;
+            position: relative;
+            z-index: 2;
+            pointer-events: none;
+            filter: drop-shadow(0 15px 25px rgba(0,0,0,0.2));
+        }
+
+        .slide-img {
+            position: absolute;
+            top: 2%;
+            left: 9.8%;
+            width: 80.4%;
+            height: 88.8%;
+            object-fit: cover;
+            z-index: 1;
+            border-radius: 4px;
+            background: #f8fafc;
+        }
+
+        /* Step Badge */
+        .step-badge {
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 60px;
+            height: 60px;
+            background: #10b981;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-title);
+            font-size: 32px;
+            font-weight: 900;
+            z-index: 10;
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.4);
+            border: 4px solid #fff;
+        }
+
+        /* Step Content */
+        .step-content {
+            margin-top: 24px;
+            text-align: center;
+            width: 100%;
+            max-width: 460px;
+            background: rgba(255,255,255,0.9);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .step-title {
+            font-family: var(--font-title);
+            font-size: 24px;
+            font-weight: 900;
+            color: #0f172a;
+            margin: 0 0 12px;
+        }
+        .step-desc {
+            font-size: 18px;
+            font-weight: 700;
+            color: #475569;
+            margin: 0;
+            line-height: 1.5;
+        }
+        .highlight {
+            color: #2563eb;
+            font-weight: 900;
+        }
+
+        /* Arrows */
+        .arrow {
+            position: absolute;
+            z-index: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #10b981;
+            opacity: 0.9;
+        }
+        .arrow svg {
+            width: 100px;
+            height: 100px;
+            fill: currentColor;
+            filter: drop-shadow(0 4px 6px rgba(16, 185, 129, 0.3));
+        }
+
+        /* Arrow Positions */
+        .arrow-1 { top: 15%; left: 31%; }
+        .arrow-2 { top: 15%; left: 63.5%; }
+        .arrow-3 { top: 40%; left: 83%; transform: rotate(90deg); }
+        .arrow-4 { top: 65%; left: 63.5%; transform: rotate(180deg); }
+        .arrow-5 { top: 65%; left: 31%; transform: rotate(180deg); }
+
+    </style>
+</head>
+<body>
+
+    <button class="nav-btn" id="btnPrev" onclick="changeSlide(-1)">⬅️</button>
+    <button class="nav-btn" id="btnNext" onclick="changeSlide(1)">➡️</button>
+
+    <div id="scale-wrapper">
+        <div class="poster-container" id="posterContainer">
+            <!-- Content injected by JS -->
+        </div>
+    </div>
+
+    <script>
+        const slidesData = [
+            // SLIDE 1 (Steps 1-6)
+            [
+                { step: 1, title: "Akses Link Test", desc: "Masuk melalui link browser:<br>🖥️ Coding: <span class='highlight'>bit.ly/pt-coding-dms2</span><br>🤖 Robotik: <span class='highlight'>bit.ly/pt-robotik-dms2</span><br>Soalnya berbeda, cara ngerjainnya sama!", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/2c02f684-41b8-4931-9427-87eddee663ae.png" },
+                { step: 2, title: "Pilih Nama Sekolah", desc: "Klik <span class='highlight'>Pilih Asal Sekolah</span> lalu ketikkan nama sekolahmu. Jika sudah muncul, klik sekolah tersebut.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/7a357295-7a89-4c0d-8e57-f22c03554505.png" },
+                { step: 3, title: "Pilih Kelas", desc: "Setelah sekolah terpilih, klik <span class='highlight'>Pilih Kelas</span> dan sesuaikan dengan tingkatan kelasmu.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/95ef6257-0525-436b-bb1f-9c6f0205425f.png" },
+                { step: 4, title: "Pilih Nama Kamu", desc: "Klik <span class='highlight'>Pilih Nama Kamu</span>, ketik namamu, dan pilih dari daftar yang tersedia.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/79481b6b-2e69-4bcc-b03f-30e9f2086d4c.png" },
+                { step: 5, title: "Nama Tidak Ditemukan", desc: "Jika nama tidak ada, pilih <span class='highlight'>-- Nama Saya Tidak Ada --</span> lalu ketik manual dengan huruf kapital di awal.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/854368c6-4cde-43d9-b4dc-35bc716ff604.png" },
+                { step: 6, title: "Sekolah Tidak Ditemukan", desc: "Jika nama sekolahmu sama sekali tidak ada di dalam daftar, segera lapor ke guru pengawas.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/cbf4231f-3015-41bb-b0b0-e6a34cfdb150.png" }
+            ],
+            // SLIDE 2 (Steps 7-12)
+            [
+                { step: 7, title: "Pengenalan Misi", desc: "Terdapat 3 bagian misi (Pilar) dengan masing-masing waktu <span class='highlight'>20 menit</span>. Tes hanya bisa dikerjakan 1 kali!", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/55ed4066-b138-49e8-9a31-3fa738e823fd.png" },
+                { step: 8, title: "Proses Pengerjaan", desc: "Kamu akan menyelesaikan soal interaktif berbentuk game. Baca instruksi dan jangan terburu-buru.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/47c9d15c-f6af-4449-9f07-e1929d2240a4.png" },
+                { step: 9, title: "Batas Waktu", desc: "Jika waktu habis, otomatis lanjut ke pilar berikutnya. Kamu juga bisa klik 'Lanjut' jika selesai lebih cepat.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/47c9d15c-f6af-4449-9f07-e1929d2240a4.png" },
+                { step: 10, title: "Tidak Ada Pengulangan", desc: "Setiap pilar hanya bisa dikerjakan <span class='highlight'>satu kali</span>. Pastikan jawabanmu sudah tepat.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/47c9d15c-f6af-4449-9f07-e1929d2240a4.png" },
+                { step: 11, title: "Kendala Teknis (Refresh)", desc: "Jika layar tertutup atau termuat ulang, buka kembali link tes dan jawabanmu akan otomatis tersimpan.", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/47c9d15c-f6af-4449-9f07-e1929d2240a4.png" },
+                { step: 12, title: "Penyelesaian Tes", desc: "Setelah seluruh misi selesai, kamu tidak dapat masuk kembali ke dalam tes. Semangat mengerjakan!", image: "https://cdn-web-2.ruangguru.com/landing-pages/assets/c69b8369-5528-49f3-a265-9d5dd33f283b.png" }
+            ]
+        ];
+
+        let currentSlide = 0;
+
+        function renderSlides() {
+            const container = document.getElementById('posterContainer');
+            container.innerHTML = '';
+
+            slidesData.forEach((slideArr, slideIndex) => {
+                const frame = document.createElement('div');
+                frame.className = 'slide-frame' + (slideIndex === 0 ? ' active' : '');
+                frame.id = 'slide-' + slideIndex;
+
+                let gridHTML = `<div class="grid-container">
+                    <div class="arrow arrow-1"><svg viewBox="0 0 24 24"><path d="M4 11h12.17l-5.58-5.59L12 4l8 8-8 8-1.41-1.41L16.17 13H4v-2z"/></svg></div>
+                    <div class="arrow arrow-2"><svg viewBox="0 0 24 24"><path d="M4 11h12.17l-5.58-5.59L12 4l8 8-8 8-1.41-1.41L16.17 13H4v-2z"/></svg></div>
+                    <div class="arrow arrow-3"><svg viewBox="0 0 24 24"><path d="M4 11h12.17l-5.58-5.59L12 4l8 8-8 8-1.41-1.41L16.17 13H4v-2z"/></svg></div>
+                    <div class="arrow arrow-4"><svg viewBox="0 0 24 24"><path d="M4 11h12.17l-5.58-5.59L12 4l8 8-8 8-1.41-1.41L16.17 13H4v-2z"/></svg></div>
+                    <div class="arrow arrow-5"><svg viewBox="0 0 24 24"><path d="M4 11h12.17l-5.58-5.59L12 4l8 8-8 8-1.41-1.41L16.17 13H4v-2z"/></svg></div>
+                `;
+
+                // Order in grid:
+                // Col 1, 2, 3
+                // Col 3, 2, 1 (Snake)
+                const gridPositions = [
+                    "1 / 1 / 2 / 2", // Item 0
+                    "1 / 2 / 2 / 3", // Item 1
+                    "1 / 3 / 2 / 4", // Item 2
+                    "2 / 3 / 3 / 4", // Item 3
+                    "2 / 2 / 3 / 3", // Item 4
+                    "2 / 1 / 3 / 2", // Item 5
+                ];
+
+                slideArr.forEach((item, index) => {
+                    gridHTML += `
+                    <div class="step-card" style="grid-area: ${gridPositions[index]};">
+                        <div class="laptop-frame">
+                            <div class="step-badge">${item.step}</div>
+                            <img class="laptop-bg" src="https://png.pngtree.com/png-clipart/20230222/ourmid/pngtree-macbook-pro-16-png-image_6614408.png" alt="Laptop Frame">
+                            <img class="slide-img" src="${item.image}" alt="${item.title}">
+                        </div>
+                        <div class="step-content">
+                            <h3 class="step-title">${item.title}</h3>
+                            <p class="step-desc">${item.desc}</p>
+                        </div>
+                    </div>`;
+                });
+
+                gridHTML += `</div>`;
+                frame.innerHTML = gridHTML;
+                container.appendChild(frame);
+            });
+            updateControls();
+        }
+
+        function changeSlide(dir) {
+            document.getElementById('slide-' + currentSlide).classList.remove('active');
+            currentSlide += dir;
+            if(currentSlide < 0) currentSlide = 0;
+            if(currentSlide > slidesData.length - 1) currentSlide = slidesData.length - 1;
+            document.getElementById('slide-' + currentSlide).classList.add('active');
+            updateControls();
+        }
+
+        function updateControls() {
+            document.getElementById('btnPrev').disabled = currentSlide === 0;
+            document.getElementById('btnNext').disabled = currentSlide === slidesData.length - 1;
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowRight' && currentSlide < slidesData.length - 1) changeSlide(1);
+            else if (event.key === 'ArrowLeft' && currentSlide > 0) changeSlide(-1);
+        });
+
+        function scaleLayout() {
+            const wrapper = document.getElementById('scale-wrapper');
+            const scaleX = window.innerWidth / 1920;
+            const scaleY = window.innerHeight / 1080;
+            wrapper.style.transform = `scale(${Math.min(scaleX, scaleY)})`;
+        }
+
+        window.addEventListener('resize', scaleLayout);
+        window.addEventListener('DOMContentLoaded', () => {
+            renderSlides();
+            scaleLayout();
+        });
+    </script>
+</body>
+</html>

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SESI 2: Karakter Bisa Berbicara</title>
+    <title>RUANGGURU CODING</title>
+    <link rel="icon" href="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -23,13 +24,52 @@
         .slide-logo-right { position: fixed; top: 0; right: 0; background-color: white; padding: 10px 40px 10px 20px; border-bottom-left-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 99; transition: opacity 0.3s ease; }
         .slide-logo-right img { height: 45px; width: auto; }
         .highlight-gradient { background: linear-gradient(to right, #008080, #a8c368, #f2c140); -webkit-background-clip: text; background-clip: text; color: transparent; display: inline-block; }
-        .nav-button { background-color: rgba(0, 128, 128, 0.8); color: white; border: none; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 900; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
-        #prevBtn { left: 20px; } #nextBtn { right: 20px; }
-        .nav-button:hover { background-color: #f2c140; color: #333; transform: scale(1.1); }
-        .nav-button:disabled { background-color: #ccc; cursor: not-allowed; transform: scale(1); }
+        .nav-button {
+            background-color: #f2c140; /* Kuning yang mencolok */
+            color: #222; /* Ikon panah gelap */
+            border: 3px solid white; /* Garis tepi putih untuk pemisah dari BG gelap */
+            position: fixed; /* Tombol diposisikan secara fixed terhadap viewport */
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 100; /* Pastikan di atas semua elemen lain */
+            width: 50px; /* Sedikit diperbesar */
+            height: 50px; 
+            border-radius: 50%; /* Bulat */
+            cursor: pointer;
+            font-size: 1.5rem;
+            font-weight: 900;
+            line-height: 1;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Shadow kuat */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #prevBtn { left: 20px; } 
+        #nextBtn { right: 20px; }
+        .nav-button:hover:not(:disabled) {
+            background-color: #ffab19; /* Oranye saat di-hover */
+            color: white;
+            transform: translateY(-50%) scale(1.15); /* Perbesar sedikit */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+        }
+        .nav-button:disabled {
+            background-color: #e0e0e0;
+            color: #999;
+            border-color: #ccc;
+            cursor: not-allowed;
+            box-shadow: none;
+            transform: translateY(-50%);
+        }
         .slide h1, .slide h2 { margin-top: 50px; } #slide1 h1, #slide1 h2 { margin-top: 0; }
         .cover-title { font-size: 4.5rem; font-weight: 900; margin-bottom: 20px; line-height: 1.1; z-index: 3; }
+        .game-title-gradient { background: linear-gradient(135deg, #f2c140 0%, #ffffff 50%, #00f2fe 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 20px rgba(242, 193, 64, 0.4)); display: inline-block; }
         .cover-subtitle { font-size: 1.8rem; font-weight: 400; margin-bottom: 40px; border-bottom: 3px solid #f2c140; padding-bottom: 10px; display: inline-block; z-index: 3; }
+        .hero-mascot { width: 320px; height: auto; z-index: 4; filter: drop-shadow(0 20px 40px rgba(0,0,0,0.5)); animation: floatHero 3s infinite ease-in-out; margin-bottom: -20px; }
+        @keyframes floatHero { 0%, 100% { transform: translateY(0) rotate(2deg); } 50% { transform: translateY(-20px) rotate(-2deg); } }
+        .scratch-badge { position: absolute; top: 40px; right: 40px; background: white; padding: 12px; border-radius: 20px; display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 5; transform: rotate(5deg); }
+        .scratch-badge img { height: 35px; }
+        .scratch-badge span { color: #333; font-weight: 800; font-size: 0.9rem; }
         .agenda-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #008080; line-height: 1.2; margin-bottom: 40px; }
         
         /* Modals */
@@ -114,6 +154,20 @@
         #dz-workspace { top: 10%; left: 34%; width: 23%; height: 80%; }
         #dz-objects { bottom: 1%; right: -2%; width: 44%; height: 43%; }
 
+        /* Matching Game Styles */
+        .matching-game { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; max-width: 800px; }
+        .game-viewport { width: 100%; height: 350px; background-color: #e6c280; border-radius: 20px; border: 4px solid #008080; display: flex; justify-content: center; align-items: center; position: relative; transition: background-color 0.4s ease, background-image 0.4s ease; background-size: 100% 100%; background-repeat: no-repeat; background-position: center;}
+        .sprite-center { font-size: 8rem; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.3)); z-index: 2; transition: transform 0.3s;}
+        .match-check { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 10rem; z-index: 3; opacity: 0; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .match-check.show { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        .game-nav { display: flex; align-items: center; justify-content: center; gap: 20px; background: white; padding: 10px 20px; border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .game-arrow { background: #008080; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; transition: transform 0.2s; display: flex; justify-content: center; align-items: center; }
+        .game-arrow:hover { transform: scale(1.1); background: #a8c368; }
+        .game-feedback { font-size: 1.2rem; font-weight: bold; min-height: 25px; color: #ff6b6b; text-align: center; }
+        .game-btn { background: linear-gradient(to right, #008080, #f2c140); color: white; border: none; padding: 12px 30px; border-radius: 30px; font-size: 1.2rem; font-weight: bold; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(0,128,128,0.3); font-family: inherit; }
+        .game-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(0,128,128,0.4); }
+        .game-btn:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
         @media (max-width: 768px) {
             .presentation-container { width: 100vw; height: 100vh; border-radius: 0; }
             .slide { padding: 30px 20px; }
@@ -122,6 +176,7 @@
             .scratch-ui-container { width: 100%; height: 300px; background-size: contain; background-repeat: no-repeat; background-position: center;}
             .arrow-pool { width: 100%; justify-content: center; }
             .algo-slots { flex-direction: row; width: 100%; justify-content: center;}
+            .game-viewport { height: 200px; }
         }
     </style>
 </head>
@@ -150,6 +205,10 @@
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" 
              onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DS'"
              alt="Logo Disdik Dharmasraya">
+        
+        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/24f1773d-33d0-4b51-a608-ba820f3c3b9e.png" 
+             onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DS'"
+             alt="Logo Dharmasraya Juara">
     </div>
     
     <!-- Logo Kanan Atas: Ruangguru Coding -->
@@ -164,13 +223,19 @@
     <!-- Slide 1 -->
     <div class="slide active" id="slide1">
         <svg class="starburst" style="top: 15%; left: 10%; width:100px; height:100px; color: #008080; transform: rotate(20deg); opacity: 0.7;"><use xlink:href="#starburst-svg"></use></svg>
-            <svg class="starburst" style="bottom: 20%; right: 15%; transform: rotate(-15deg); color: #f2c140; opacity: 0.8;"><use xlink:href="#starburst-svg"></use></svg>
-            <h1 class="cover-title">
-                <span>PERKENALAN KODING BERSAMA</span>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Scratchlogo.svg/3840px-Scratchlogo.svg.png" alt="Scratch" style="height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); z-index: 3; margin: 10px auto; display: block;">
-            </h1>
-            <p class="cover-subtitle">SESI 2: Bercerita dengan Sprite</p>
-            <div style="font-size: 8rem; z-index: 3;">💭🤔🎤✨</div>
+        <svg class="starburst" style="bottom: 20%; right: 15%; transform: rotate(-15deg); color: #f2c140; opacity: 0.8;"><use xlink:href="#starburst-svg"></use></svg>
+        <h1 class="cover-title" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; margin-bottom: 20px;">
+            <div style="line-height: 1.1; text-align: center;">
+                <span class="game-title-gradient" style="font-size: 6rem;">ROBO-KAL</span><br>
+                <span style="font-size: 4rem; color: #f2c140; text-shadow: 0 0 30px rgba(242,193,64,0.5);">POWER QUEST</span>
+            </div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Scratchlogo.svg/3840px-Scratchlogo.svg.png" alt="Scratch" style="height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); z-index: 3; margin: 10px auto; display: block;">
+        </h1>
+        <p class="cover-subtitle">SESI 2: MEMBANGUN PROGRAM INTRODUCTION</p>
+        
+        <!-- Robo-KAL Mascot -->
+        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/e79d067d-f532-40c5-94b8-53e50b9a52ee.png" 
+             style="width: 300px; position: absolute; bottom: 40px; right: 40px; z-index: 4; animation: floatHero 3s infinite ease-in-out;" alt="Robo KAL">
     </div>
 
     <!-- Slide 2 -->
@@ -314,31 +379,92 @@
         </div>
     </div>
 
-    <!-- Slide 8: UI Scratch Drag Drop -->
-    <div class="slide" id="slide8">
-        <h2 class="agenda-title" style="margin-bottom: 10px;">Masih Ingat Tempat Ini? 🤔</h2>
-        <p style="font-size: 1.2rem; margin-bottom: 20px;">Tarik label oranye ke area putus merah yang tepat di gambar editor Scratch ini!</p>
-        
-        <div class="scratch-ui-container">
-            <!-- Dropzones Absolute Positioning over Background -->
-            <div class="ui-dropzone-wrapper" id="dz-toolbox" data-target="Toolbox"></div>
-            <div class="ui-dropzone-wrapper" id="dz-workspace" data-target="Workspace"></div>
-            <div class="ui-dropzone-wrapper" id="dz-stage" data-target="Stage"></div>
-            <div class="ui-dropzone-wrapper" id="dz-objects" data-target="Objects"></div>
+    <!-- Slide 5: Matching Game -->
+        <div class="slide" id="slide5">
+            <h2 class="agenda-title" style="margin-bottom: 20px;">Game: Cocokkan Lokasinya! 🧩</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 20px;">Ganti <span class="txt-teal">Backdrop</span> agar sesuai dengan <span class="txt-purple">Karakter</span> di tengah!</p>
+            <div class="matching-game">
+                <div class="game-viewport" id="gameViewport">
+                    <div class="match-check" id="matchCheck">✅</div>
+                    <div class="sprite-center" id="spriteGame">🧙</div>
+                </div>
+                <div class="game-nav">
+                    <button class="game-arrow" onclick="changeGameBg(-1)">◀</button>
+                    <div style="font-weight: bold; font-size: 1.3rem; min-width: 200px; text-align: center;" id="themeLabel">Lokasi: Savannah</div>
+                    <button class="game-arrow" onclick="changeGameBg(1)">▶</button>
+                </div>
+                <div class="game-feedback" id="gameFeedback"></div>
+                <div style="display: flex; gap: 1px; margin-top: 0px;">
+                    <button class="game-btn" style="background: #008080;" id="btnCheckMatch" onclick="checkMatch()">PERIKSA JAWABAN! 🔍</button>
+                    <button class="game-btn" id="btnNextSprite" onclick="nextGameSprite()" disabled>LANJUT ➜</button>
+                </div>
+            </div>
         </div>
-        
-        <div style="display: flex; gap: 20px; flex-wrap: wrap; justify-content:center;" id="uiLabelPool">
-            <div class="ui-label" draggable="true" data-id="Toolbox">Menu / Toolbox</div>
-            <div class="ui-label" draggable="true" data-id="Stage">Stage (Panggung)</div>
-            <div class="ui-label" draggable="true" data-id="Workspace">Workspace (Area Kerja)</div>
-            <div class="ui-label" draggable="true" data-id="Objects">Objek / Backdrops</div>
+
+        <!-- Slide 6: Story Transition -->
+        <div class="slide solid-teal-bg" id="slide6">
+            <h2 class="agenda-title" style="color: #f2c140;">Hebat! Kamu sudah menyesuaikan tema dengan baik! 🥳</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center;">
+                <div style="font-size: 10rem;">🧙✨</div>
+                <div style="max-width: 600px;">
+                    <p style="font-size: 1.6rem; line-height: 1.5;">
+                        Bayangkan karakter <span class="txt-yellow">Witch</span> sedang berada di <span class="txt-yellow">Hutan Ajaib</span>. Tentu dia tidak akan diam di satu titik saja, kan? Dia akan berpindah posisi di berbagai sudut hutan tersebut.
+                    </p>
+                    <p style="font-size: 1.5rem; margin-top: 20px; background: rgba(255,255,255,0.1); padding: 20px; border-radius: 12px;">
+                        Bagaimana cara menampilkannya di Scratch? <br>
+                        Kita harus menambah beberapa pose Hutan Ajaib dengan <strong>COSTUME!</strong>
+                    </p>
+                </div>
+            </div>
         </div>
-    </div>
+
+        <!-- Slide 7: Costume Theory -->
+        <div class="slide" id="slide7">
+            <h2 class="agenda-title">Apa itu Costume untuk Backdrop? 🎭</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center;">
+                <div style="display: flex; gap: 15px;">
+                    <div style="background: white; padding: 10px; border-radius: 15px; border: 3px solid #9966ff; text-align: center; width: 220px;">
+                        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/ad1d161e-2707-4f37-bb53-565ad87603af.png" style="width: 100%; border-radius: 10px;">
+                        <p style="font-weight: bold; color: #9966ff; margin: 10px 0 5px 0;">Kostum A</p>
+                        <small>(Sisi Kiri Hutan)</small>
+                    </div>
+                    <div style="background: white; padding: 10px; border-radius: 15px; border: 3px solid #a8c368; text-align: center; width: 220px;">
+                        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/040b9af6-e9f9-48b7-8e00-39a10b96a03e.png" style="width: 100%; border-radius: 10px; transform: scaleX(-1);">
+                        <p style="font-weight: bold; color: #a8c368; margin: 10px 0 5px 0;">Kostum B</p>
+                        <small>(Sisi Kanan Hutan)</small>
+                    </div>
+                </div>
+                <div style="max-width: 450px;">
+                    <p style="font-size: 1.6rem; color: #444;">
+                        Ternyata, <span class="txt-purple">Latar Belakang</span> juga bisa punya kostum! 
+                    </p>
+                    <p style="font-size: 1.25rem; color: #666;">
+                        Satu tempat yang sama bisa punya "beberapa foto" dengan sudut pandang yang berbeda.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Costume Blocks -->
+        <div class="slide" id="slide8">
+            <h2 class="agenda-title">Blok Ungu: Mengganti Gaya Latar 💜</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
+                <div style="flex: 1; max-width: 450px;">
+                    <p style="font-size: 1.2rem; margin-bottom: 20px;">Gunakan blok ini untuk mengganti kostum latar panggung:</p>
+                    <div style="background: #9966ff; color: white; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 1.4rem; margin-bottom: 20px; box-shadow: 0 4px 10px rgba(153,102,255,0.3);">switch backdrop to [Hutan-B ▼]</div>
+                    <div style="background: #9966ff; color: white; padding: 15px; border-radius: 10px; font-weight: bold; font-size: 1.4rem; box-shadow: 0 4px 10px rgba(153,102,255,0.3);">next backdrop</div>
+                </div>
+                <div style="flex: 0 0 300px; background: #f0fdf4; padding: 20px; border-radius: 20px; text-align: center; border: 3px solid #a8c368;">
+                    <div id="demo-backdrop-frame" style="width: 100%; height: 180px; background: url('https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/ad1d161e-2707-4f37-bb53-565ad87603af.png') center/cover; border-radius: 10px; border: 2px solid #ddd; margin-bottom: 15px; transition: all 0.3s;"></div>
+                    <button class="huge-btn" style="font-size: 1rem; width: 100%;" onclick="demoNextBackdrop()">GANTI KOSTUM LATAR!</button>
+                </div>
+            </div>
+        </div>
 
     <!-- Slide 9: Login Trap -->
     <div class="slide" id="slide9">
-        <h2 class="agenda-title" style="margin-bottom: 80px;">Waktunya Masuk! 🔐</h2>
-        
+        <h2 class="agenda-title" style="margin-bottom: 70px;">Masih ingat akun Scratch nya 🔐</h2>
+    
         <div class="login-box">
             <!-- Peningkatan Desain Login -->
             <img src="https://media0.giphy.com/avatars/scratchfoundation/TRGiyW3EqeCF.GIF" class="login-mascot" alt="Mascot">
@@ -360,196 +486,259 @@
         </div>
     </div>
 
-    <!-- Slide 10: Tombol Buka Scratch -->
-    <div class="slide" id="slide10">
-        <h2 class="agenda-title" style="text-align: center; margin-bottom: 20px;">Misi Persiapan Hari Ini 🚀</h2>
-        <div style="text-align: center;">
-            <img src="https://media0.giphy.com/avatars/scratchfoundation/TRGiyW3EqeCF.GIF" style="width: 150px; margin-bottom: 30px; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.2));">
-            <br>
-            <a href="https://scratch.mit.edu" target="_blank" class="huge-btn">👉 LOGIN SCRATCH DI SINI 👈</a>
-            <p style="font-size: 1.5rem; color: #555; margin-top: 40px; font-weight: 500; line-height: 1.5;">
-                Klik tombol di atas untuk membuka web Scratch di tab baru.<br>
-                Setelah terbuka, klik <strong style="color:#008080;">Create</strong> atau <strong style="color:#008080;">New Project</strong>.
-            </p>
-        </div>
-    </div>
-
     <!-- Slide 11: Misi Utama -->
     <div class="slide" id="slide11">
-        <h2 class="agenda-title" style="text-align: center;">Misi Utama Hari Ini ✨</h2>
-        <div style="display: flex; flex-direction: column; align-items: center;">
-            <div style="font-size: 10rem; margin-bottom: 20px;">💬🐈</div>
-            <p style="font-size: 2rem; font-weight: bold; text-align: center; color: #008080;">Karakter Bisa Berbicara!</p>
-            <p style="font-size: 1.4rem; text-align: center; max-width: 600px;">Kita akan memprogram karakter agar memunculkan gelembung tulisan menyapa nama kita!</p>
-        </div>
-    </div>
-
-    <!-- Slide 12: Langkah 1 -->
-    <div class="slide" id="slide12">
-        <h2 class="agenda-title" style="margin-bottom: 30px;">Langkah 1: Cari Bloknya</h2>
-        <div style="display: flex; gap: 50px; align-items: center; justify-content: center; width: 100%;">
-            <div style="flex: 1; max-width: 600px;">
-                <ul class="step-list">
-                    <li class="step-item"><div class="step-num">1</div> <div>Arahkan <span class="txt-teal txt-large">mouse</span> ke kelompok kategori di paling kiri layar.</div></li>
-                    <li class="step-item"><div class="step-num">2</div> <div>Cari dan klik tombol lingkaran berwarna <span class="txt-purple txt-large">UNGU</span> bertuliskan <span class="txt-purple txt-large">"Looks"</span>.</div></li>
-                </ul>
-            </div>
-            <div style="flex: 0 0 250px; text-align: center; position: relative;">
-                <img src="https://static.vecteezy.com/system/resources/thumbnails/070/915/093/small_2x/glossy-green-cursor-arrow-isolated-on-transparent-background-png.png" style="width: 120px; animation: bounceSlow 2s infinite alternate;" alt="Mouse">
-                <div style="background: white; border: 6px solid #9966ff; border-radius: 50%; width: 140px; height: 140px; display: flex; justify-content: center; align-items: center; color: #9966ff; font-weight: bold; font-size: 2rem; box-shadow: 0 10px 30px rgba(153, 102, 255, 0.4); margin-top: 20px;">
-                    Looks
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Slide 13: Langkah 2 -->
-    <div class="slide" id="slide13">
-        <h2 class="agenda-title" style="margin-bottom: 30px;">Langkah 2: Tarik Bloknya</h2>
-        <div style="display: flex; gap: 50px; align-items: center; justify-content: center; width: 100%;">
-            <div style="flex: 1; max-width: 600px;">
-                <ul class="step-list">
-                    <li class="step-item"><div class="step-num">1</div> <div>Temukan blok bertuliskan <span class="txt-purple">"say Hello! for 2 seconds"</span>.</div></li>
-                    <li class="step-item"><div class="step-num">2</div> <div><span class="txt-teal txt-large">Tarik</span> blok tersebut dan lepaskan di <span class="txt-green txt-large">Workspace</span> (Area Kerja) di bagian tengah.</div></li>
-                </ul>
-            </div>
-            <div style="flex: 0 0 250px; text-align: center;">
-                <img src="https://img.icons8.com/color/200/speech-bubble.png" style="width: 120px; margin-bottom: 20px;" alt="Bubble">
-                <div style="background: #9966ff; color: white; padding: 20px 30px; border-radius: 12px; font-weight: bold; font-size: 1.4rem; box-shadow: 0 8px 15px rgba(0,0,0,0.2); animation: moveCurve 3s infinite ease-in-out;">
-                    say [Hello!] for (2) seconds
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Slide 14: Langkah 3 -->
-    <div class="slide" id="slide14">
-        <h2 class="agenda-title" style="margin-bottom: 30px;">Langkah 3: Kreasikan Sapaanmu</h2>
-        <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
-            <div style="flex: 1; max-width: 550px;">
-                <ul class="step-list">
-                    <li class="step-item"><div class="step-num">1</div> <div><span class="txt-teal txt-large">Klik</span> teks "Hello!" warna putih di dalam blok yang sudah kamu tarik.</div></li>
-                    <li class="step-item"><div class="step-num">2</div> <div>Hapus lalu <span class="txt-green txt-large">Ketik</span> sapaanmu sendiri (misal: namamu).</div></li>
-                </ul>
-            </div>
-            <div style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 15px;">
-                <img src="https://cliply.co/wp-content/uploads/2019/06/391906110_WAVING_HAND_400px.gif" style="width: 100px;" alt="Hello">
-                <div style="display: flex; flex-direction: column; gap: 10px; align-items: center; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 2px dashed #ddd;">
-                    <div style="background: #9966ff; color: white; padding: 12px 20px; border-radius: 12px; font-weight: bold; font-size: 1.2rem;">say <span style="background:white; color:#333; padding:4px 10px; border-radius:15px;">Hello!</span> for (2) seconds</div>
-                    <div style="font-size: 2rem;">⬇️</div>
-                    <div style="background: #9966ff; color: white; padding: 12px 20px; border-radius: 12px; font-weight: bold; font-size: 1.2rem;">say <span style="background:white; color:#333; padding:4px 10px; border-radius:15px; border:3px solid #ff6b6b;">Hai, namaku Kala!</span> for (2) seconds</div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Slide 15: Misi Tambahan -->
-    <div class="slide" id="slide15">
-        <h2 class="agenda-title" style="margin-bottom: 30px; color: #f2c140;">Misi Tambahan: Susunan Blok 🧩</h2>
-        <div style="display: flex; gap: 30px; align-items: center; justify-content: center;">
-            <ul class="step-list" style="max-width: 400px;">
-                <li class="step-item"><div class="step-num">1</div> <div>Ambil 1 blok Say ungu lagi dari Toolbox.</div></li>
-                <li class="step-item"><div class="step-num">2</div> <div>Pasangkan tepat menempel dengan bunyi *click* di <span class="txt-teal">BAWAH</span> blok pertamamu.</div></li>
-                <li class="step-item"><div class="step-num">3</div> <div>Tulis sapaan kalimat keduamu agar nyambung!</div></li>
-            </ul>
-            <div style="display: flex; flex-direction: column;">
-                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 10px 10px 0 0; font-weight: bold; font-size: 1.4rem; border-bottom: 2px solid #6633cc; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position:relative; z-index:2;">say [Halo aku Kala] for (2) seconds</div>
-                <!-- Notching effect for block snapping -->
-                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 0 0 10px 10px; font-weight: bold; font-size: 1.4rem; position:relative; top:-2px; z-index:1; box-shadow: 0 4px 6px rgba(0,0,0,0.3);">say [Aku suka menggunakan Scratch!] for (2) seconds</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Slide 16: Misi Rahasia (Event Block) -->
-    <div class="slide" id="slide16">
-        <h2 class="agenda-title" style="text-align: center; margin-bottom: 30px; color: #ff6b6b;">Misi Rahasia: Bagaimana Cara Mulainya? 🚩</h2>
+        <h2 class="agenda-title" style="text-align: center;">Misi Utama: Robo-KAL Power Quest! 🤖⚡</h2>
         <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
-            <p style="font-size: 1.5rem; text-align: center; max-width: 700px;">
-                Agar program kita bisa jalan saat tombol <span class="txt-green">Bendera Hijau</span> diklik, blok apa yang harus kita pasang di paling atas?
+            <div style="font-size: 8rem; margin-bottom: 0px;">🤖🔋☀️</div>
+            <p style="font-size: 1.8rem; font-weight: bold; text-align: center; color: #008080; margin: 0;">Robo KAL Kehabisan Energi!</p>
+            <p style="font-size: 1.4rem; text-align: center; max-width: 750px; line-height: 1.4;">
+                Bantu Robo KAL dalam perjalanannya mencari energi matahari. Kita akan belajar cara <span class="txt-teal">Menyusun Cerita</span> dan <span class="txt-purple">Sinkronisasi Waktu</span>.
             </p>
-            
-            <div style="display: flex; gap: 60px; align-items: flex-end; margin-top: 20px;">
-                <div style="text-align: center;">
-                     <div style="background: #9966ff; color: white; padding: 15px 25px; border-radius: 10px; font-weight: bold; font-size: 1.4rem; opacity: 0.5;">say [Hello!] ...</div>
-                     <p style="color: #ff6b6b; font-weight: bold; margin-top: 15px;">❌ Belum bisa jalan</p>
-                </div>
-                <div style="font-size: 3rem; margin-bottom: 50px;">➡️</div>
-                <div style="text-align: center;">
-                    <!-- Simulasi Hat Block -->
-                    <div style="background: #ffbf00; color: #333; padding: 12px 25px; border-radius: 20px 20px 0 0; font-weight: bold; font-size: 1.2rem; display: inline-block; position: relative; top: 10px; box-shadow: 0 -4px 10px rgba(0,0,0,0.1);">when 🚩 clicked</div>
-                    <div style="background: #9966ff; color: white; padding: 15px 25px; border-radius: 0 10px 10px 10px; font-weight: bold; font-size: 1.4rem; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">say [Hello!] for (2) seconds</div>
-                    <p style="color: #a8c368; font-weight: bold; margin-top: 15px;">✅ SIAP BERAKSI!</p>
-                </div>
-            </div>
-
-            <div class="hint-container">
-                <span style="font-size: 2.5rem;">💡</span>
-                <div><strong>TIPS:</strong> Coba cari blok berwarna <span class="txt-yellow">KUNING</span> di kategori <span class="txt-yellow">Events</span>!</div>
+            <div style="background: #e0f2f1; padding: 15px 30px; border-radius: 20px; border: 2px dashed #008080;">
+                <p style="margin: 0; font-size: 1.1rem;"><strong>Target Hari Ini:</strong> Menerapkan Algoritma pada Program!</p>
             </div>
         </div>
     </div>
 
-    <!-- Slide 17: Scratch Project Embed -->
-    <div class="slide" id="slide17">
-        <h2 class="agenda-title" style="text-align: center; margin-bottom: 20px;">Contoh Hasil Program! 🐈✨</h2>
+    <!-- Slide 19: Scratch Project Embed -->
+    <div class="slide" id="slide19">
+        <h2 class="agenda-title" style="text-align: center; margin-bottom: 20px;">Contoh Hasil Program! 🤖✨</h2>
         <div style="width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 15px;">
             <div style="width: 500px; height: 415px; background: #ffffff; border-radius: 16px; box-shadow: 0 15px 40px rgba(0,0,0,0.2); border: 5px solid #008080;">
-                <iframe src="https://scratch.mit.edu/projects/1308401289/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; background: white;"></iframe>
+                <iframe src="https://scratch.mit.edu/projects/1308414594/embed" allowtransparency="true" width="485" height="402" frameborder="0" scrolling="no" allowfullscreen style="border-radius: 8px; background: white;"></iframe>
             </div>
             <p style="font-size: 1.2rem; color: #555; background: white; padding: 10px 20px; border-radius: 30px; border: 2px dashed #a8c368;">
-                Klik bendera hijau pada kotak di atas untuk melihat karakter menyapa! 🚩
+                Klik bendera hijau pada kotak di atas untuk melihat Robo-KAL! 🚩
             </p>
         </div>
     </div>
 
-    <!-- Slide 18: Berhasil -->
+    <!-- Slide 12: Step 1 -->
+    <div class="slide" id="slide12">
+        <h2 class="agenda-title" style="margin-bottom: 20px;">Langkah 1: Mencari Panggung (Backdrop) 🖼️</h2>
+        <div style="display: flex; gap: 40px; align-items: start; justify-content: center; width: 100%;">
+            <div style="flex: 1; max-width: 650px;">
+                <ul class="step-list">
+                    <li class="step-item"><div class="step-num">1</div> <div>Klik ikon <span class="txt-teal">"Choose a Backdrop"</span> di pojok kanan bawah.</div></li>
+                    <li class="step-item"><div class="step-num">2</div> <div>Cari dan pilih dua panggung: <span class="txt-green">"Circles"</span> dan <span class="txt-yellow">"Rays"</span>.</div></li>
+                    <li class="step-item"><div class="step-num">3</div> <div>Klik tab <span class="txt-purple">"Backdrops"</span> di kiri atas untuk melihat keduanya.</div></li>
+                </ul>
+            </div>
+            <div style="flex: 0 0 450px; text-align: center;">
+                <div style="position: relative; padding-bottom: 75%; height: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 3px solid #008080;">
+                    <iframe id="js_video_iframe" src="https://jumpshare.com/embed/f3btNglHQgxAvdMIvVKp" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                </div>
+                <p style="font-size: 0.9rem; color: #888; margin-top: 10px;">Perhatikan gambar berikut untuk mencari Backdrop 🌄</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 13: Step 2 -->
+    <div class="slide" id="slide13">
+        <h2 class="agenda-title" style="margin-bottom: 20px;">Langkah 2: Memanggil Robot KAL 🤖</h2>
+        <div style="display: flex; gap: 40px; align-items: start; justify-content: center; width: 100%;">
+            <div style="flex: 0 0 450px; text-align: center;">
+                <div style="position: relative; padding-bottom: 75%; height: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); border: 3px solid #008080;">
+                    <iframe id="js_video_iframe" src="https://jumpshare.com/embed/r6Vcq0arPI15UiJqS7DQ" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+                </div>
+                <p style="font-size: 0.9rem; color: #888; margin-top: 10px;">Perhatikan gambar berikut untuk menambahkan Sprite 🤖</p>
+            </div>
+            <div style="flex: 1; max-width: 600px;">
+                <ul class="step-list">
+                    <li class="step-item"><div class="step-num">1</div> <div>Hapus Kucing Scratch (klik ikon tempat sampah).</div></li>
+                    <li class="step-item"><div class="step-num">2</div> <div>Klik <span class="txt-teal">"Choose a Sprite"</span>, cari robot bernama <span class="txt-green">"Robot"</span>.</div></li>
+                    <li class="step-item"><div class="step-num">3</div> <div>Ubah namanya di kotak Sprite Name menjadi <span class="txt-teal">"ROBO - KAL"</span>.</div></li>
+                    <li class="step-item"><div class="step-num">4</div> <div>Sesuaikan ukuran Sprite dan posisi nya di tengah stage.</div></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 14: Step 3 -->
+    <div class="slide" id="slide14">
+        <h2 class="agenda-title" style="margin-bottom: 20px;">Langkah 3: Menyiapkan Baterai 🪄🔋</h2>
+        <div style="display: flex; gap: 40px; align-items: start; justify-content: center; width: 100%;">
+            <div style="flex: 1; max-width: 600px;">
+                <ul class="step-list">
+                    <li class="step-item"><div class="step-num">1</div> <div>Klik lagi <span class="txt-teal">"Choose a Sprite"</span>.</div></li>
+                    <li class="step-item"><div class="step-num">2</div> <div>Cari <span class="txt-purple">"Magic Wand"</span> (Bentuknya seperti tongkat, tapi kita anggap baterai).</div></li>
+                    <li class="step-item"><div class="step-num">3</div> <div>Letakkan di sisi Sprite Robot sebagai Baterai.</div></li>
+                    <li class="step-item"><div class="step-num">4</div> <div>Buka Paint untuk menyesuaikan warna dan tampilan dari Baterai.</div></li>
+                </ul>
+            </div>
+            <div style="flex: 0 0 250px; text-align: center; background: #fff; padding: 20px; border-radius: 20px; border: 3px dashed #f2c140;">
+                <div style="font-size: 8rem;">🪄</div>
+                <div style="font-size: 8rem;">🔋</div>
+                <p style="font-weight: bold; color: #f2c140;">Magic Wand = Baterai</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 15: Section Intro Programming -->
+    <div class="slide" id="slide15">
+        <h2 class="agenda-title" style="text-align: center;">Mari Menyusun Program! 🚀</h2>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 30px;">
+            <div style="font-size: 5rem; animation: bounce 1s infinite alternate;">👨‍💻✨</div>
+            <p style="font-size: 1.8rem; text-align: center; max-width: 800px; color: #444; font-weight: 500;">
+                Sekarang kita akan memberikan <strong style="color: #008080;">PERINTAH</strong> pada setiap Sprite kita dengan susunan blok kode!
+            </p>
+            <div style="display: flex; gap: 20px;">
+                <div style="background: white; padding: 20px; border-radius: 20px; border: 3px solid #008080; text-align: center;">
+                    <div style="font-size: 3rem;">🤖</div>
+                    <p style="margin: 5px 0 0; font-weight: bold;">ROBO-KAL</p>
+                </div>
+                <div style="background: white; padding: 20px; border-radius: 20px; border: 3px solid #9966ff; text-align: center;">
+                    <div style="font-size: 3rem;">🌄</div>
+                    <p style="margin: 5px 0 0; font-weight: bold;">Backdrop</p>
+                </div>
+                <div style="background: white; padding: 20px; border-radius: 20px; border: 3px solid #f2c140; text-align: center;">
+                    <div style="font-size: 3rem;">🔋</div>
+                    <p style="margin: 5px 0 0; font-weight: bold;">Battery</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 16: ROBO-KAL Code -->
+    <div class="slide" id="slide16">
+        <h2 class="agenda-title" style="margin-bottom: 20px;">1. Program Untuk ROBO-KAL 🤖</h2>
+        <div style="display: flex; gap: 40px; align-items: start; justify-content: center; width: 100%;">
+            <div style="flex: 1; max-width: 450px;">
+                <ul class="step-list">
+                    <li class="step-item"><div class="step-num">1</div> <div>Tarik <span class="txt-yellow">When Flag Clicked</span> dari kategori <span class="txt-yellow">Events</span>.</div></li>
+                    <li class="step-item"><div class="step-num">2</div> <div>Gunakan blok <span class="txt-purple">Say</span> untuk menulis dialog cerita.</div></li>
+                    <li class="step-item"><div class="step-num">3</div> <div>Gunakan <span class="txt-yellow">Wait</span> agar robot tidak bicara terlalu cepat.</div></li>
+                </ul>
+                <div class="hint-container" style="font-size: 1rem; margin-top: 15px; padding: 1px">
+                    <span>💡</span> <strong>PRO TIPS:</strong> Urutan blok dari <b>Atas ke Bawah</b> menentukan jalannya cerita!
+                </div>
+            </div>
+            <!-- Visual Representation of Scratch Blocks -->
+            <div style="flex: 0 0 280px; display: flex; flex-direction: column; background: #fff; padding: 20px; border-radius: 16px; border: 2px solid #ddd; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                <div style="background: #ffab19; color: white; padding: 12px 20px; border-radius: 20px 20px 5px 5px; font-weight: bold; font-size: 1rem; margin-bottom: 2px;">when 🚩 clicked</div>
+                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 5px; font-weight: bold; font-size: 1.1rem; margin-bottom: 2px;">say [Duh.. bateraiku habis!] for (2) secs</div>
+                <div style="background: #ffab19; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 1rem; margin-bottom: 2px;">wait (1) seconds</div>
+                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 5px; font-weight: bold; font-size: 1.1rem; margin-bottom: 2px;">say [Aku harus cari matahari!] for (2) secs</div>
+                <div style="background: #ffab19; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 1rem; margin-bottom: 2px;">wait (1) seconds</div>
+                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 5px 5px 20px 20px; font-weight: bold; font-size: 1.1rem;">say [Ayo kita berangkat!] for (2) secs</div>
+            </div>
+            <div style="flex: 0 0 200px; text-align: center;">
+                <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/e79d067d-f532-40c5-94b8-53e50b9a52ee.png"
+                    style="width: 200px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1)); animation: floatHero 3s infinite ease-in-out;"
+                    alt="ROBO-KAL">
+                <p style="font-weight: bold; color: #008080; margin-top: 10px;">ROBO - KAL</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 17: Stage Code -->
+    <div class="slide" id="slide17">
+        <h2 class="agenda-title" style="margin-bottom: 20px;">2. Program Untuk Stage (Panggung) 🌄</h2>
+        <div style="display: flex; gap: 40px; align-items: start; justify-content: center; width: 100%;">
+            <!-- Visual Representation of Scratch Blocks -->
+            <div style="flex: 0 0 280px; display: flex; flex-direction: column; background: #fff; padding: 20px; border-radius: 16px; border: 2px solid #ddd; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                <div style="background: #ffab19; color: white; padding: 12px 20px; border-radius: 20px 20px 5px 5px; font-weight: bold; font-size: 1rem; margin-bottom: 2px;">when 🚩 clicked</div>
+                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 5px; font-weight: bold; font-size: 1.1rem; margin-bottom: 2px;">switch backdrop to [Circles]</div>
+                <div style="background: #ffab19; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 1rem; margin-bottom: 2px;">wait (6) seconds</div>
+                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 5px 5px 20px 20px; font-weight: bold; font-size: 1.1rem;">switch backdrop to [Rays]</div>
+                <div style="display: flex; gap: 15px; justify-content: center; padding-top: 10px;">
+                    <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/5a4544c3-07cf-48a3-85d6-6f016240e9c9.png" style="width: 180px; border: 3px solid #9966ff; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Backdrop Circles">
+                    <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/3986718f-d3e4-4882-ba1b-1b0007fac57e.png" style="width: 180px; border: 3px solid #008080; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);" alt="Backdrop Rays">
+                </div>
+            </div>
+            <div style="flex: 1; max-width: 450px;">
+                <ul class="step-list" style="margin-bottom: 20px;">
+                    <li class="step-item"><div class="step-num">1</div> <div>Klik <span class="txt-teal">Stage</span> (kanan bawah) untuk memprogram panggung.</div></li>
+                    <li class="step-item"><div class="step-num">2</div> <div>Mulai dengan latar <span class="txt-purple">Circles</span>.</div></li>
+                    <li class="step-item"><div class="step-num">3</div> <div>Berikan <span class="txt-yellow">Wait</span> agar panggung berubah saat ROBO-KAL berangkat!</div></li>
+                </ul>
+                
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide 18: Battery Code -->
     <div class="slide" id="slide18">
+        <h2 class="agenda-title" style="margin-bottom: 20px;">3. Program Untuk Baterai 🔋</h2>
+        <div style="display: flex; gap: 40px; align-items: start; justify-content: center; width: 100%;">
+            <div style="flex: 1; max-width: 450px;">
+                <ul class="step-list" style="margin-bottom: 20px;">
+                    <li class="step-item"><div class="step-num">1</div> <div>Klik pada Sprite <span class="txt-teal">Magic Wand</span> (Baterai).</div></li>
+                    <li class="step-item"><div class="step-num">2</div> <div>Gunakan blok <span class="txt-purple">Switch Costume</span> untuk mengubah tampilan.</div></li>
+                    <li class="step-item"><div class="step-num">3</div> <div>Pasang blok <span class="txt-yellow">Wait</span> yang sama dengan Stage tadi.</div></li>
+                </ul>
+            </div>
+            <!-- Visual Representation of Scratch Blocks -->
+            <div style="flex: 0 0 280px; display: flex; flex-direction: column; background: #fff; padding: 20px; border-radius: 16px; border: 2px solid #ddd; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
+                <div style="background: #ffab19; color: white; padding: 12px 20px; border-radius: 20px 20px 5px 5px; font-weight: bold; font-size: 1rem; margin-bottom: 2px;">when 🚩 clicked</div>
+                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 5px; font-weight: bold; font-size: 1.1rem; margin-bottom: 2px;">switch costume to [wand-a]</div>
+                <div style="background: #ffab19; color: white; padding: 10px 20px; border-radius: 5px; font-weight: bold; font-size: 1rem; margin-bottom: 2px;">wait (6) seconds</div>
+                <div style="background: #9966ff; color: white; padding: 15px 20px; border-radius: 5px 5px 20px 20px; font-weight: bold; font-size: 1.1rem;">switch costume to [wand-b]</div>
+                <div style="display: flex; gap: 20px; justify-content: center; background: #fffaf0; padding-top: 15px; border-radius: 12px; border: 2px dashed #f2c140; margin-top: 10px">
+                    <div style="text-align: center;">
+                        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/3ce66972-8907-4273-ac83-f0ea87ff49e0.png" style="width: 80px;" alt="Empty Battery">
+                        <p style="font-size: 0.8rem; font-weight: bold; margin-top: 5px;">Baterai Habis</p>
+                    </div>
+                    <div style="display: flex; align-items: center; font-size: 2rem;">➡️</div>
+                    <div style="text-align: center;">
+                        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/b4648fc0-2b2d-4a0d-a12c-b0e3a2f045c5.png" style="width: 80px;" alt="Full Battery">
+                        <p style="font-size: 0.8rem; font-weight: bold; margin-top: 5px;">Baterai Penuh!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- Slide 20: Berhasil -->
+    <div class="slide" id="slide20">
         <h2 class="agenda-title" style="text-align: center;">HEBAT! 🌟</h2>
-        <div style="font-size: 7rem; text-align: center; animation: bounce 1s infinite alternate; margin-bottom: 20px;">🙌🥳🐈</div>
+        <div style="font-size: 7rem; text-align: center; animation: bounce 1s infinite alternate; margin-bottom: 20px;">🙌🥳🤖</div>
         <p style="font-size: 1.8rem; text-align: center; max-width: 800px; color: #444; margin: 0 auto; line-height: 1.6;">
-            Kamu sudah berhasil membuat karakter berbicara di Scratch. Yuk, kita lihat apa saja yang sudah kita pelajari hari ini!
+            Kamu sudah berhasil membuat cerita <span class="txt-green">Robo-KAL Power Quest</span>! Yuk, kita lihat apa saja yang sudah kita pelajari hari ini!
         </p>
     </div>
 
-    <!-- Slide 19: Ringkasan Hari Ini -->
-    <div class="slide" id="slide19">
+    <!-- Slide 21: Ringkasan Hari Ini -->
+    <div class="slide" id="slide21">
         <h2 class="agenda-title" style="text-align: center; width: 100%;">Ringkasan Hari Ini</h2>
-        <ul class="step-list" style="max-width: 400px;">
-            <li class="step-item"><div class="step-num">1</div> <div>1️⃣Algoritma: Langkah berurutan</div></li>
-            <li class="step-item"><div class="step-num">2</div> <div>⬇️Urutan: Atas ke Bawah</div></li>
-            <li class="step-item"><div class="step-num">3</div> <div>💜Looks: Blok untuk bicara</div></li>
-            <li class="step-item"><div class="step-num">4</div> <div>🚩Events:  untuk mulai</div></li>
+        <ul class="step-list" style="max-width: 500px;">
+            <li class="step-item"><div class="step-num">1</div> <div>1️⃣ Algoritma: Langkah berurutan (Atas ke Bawah)</div></li>
+            <li class="step-item"><div class="step-num">2</div> <div>💜 Say Blocks: Untuk membuat karakter bicara</div></li>
+            <li class="step-item"><div class="step-num">3</div> <div>⏳ Wait Blocks: Untuk mengatur waktu (Sinkronisasi)</div></li>
+            <li class="step-item"><div class="step-num">4</div> <div>🎭 Switch Backdrop: Mengganti suasana cerita</div></li>
         </ul>
     </div>
 
-    <!-- Slide 20: Waktunya Kuis! -->
-    <div class="slide solid-teal-bg" id="slide20">
-        <style>
-            @keyframes bounceCat {
-                from { transform: translateY(0); }
-                to { transform: translateY(-10px); }
-            }
-            @keyframes thinkBubble {
-                0% { opacity: 0; transform: scale(0.8); }
-                50% { opacity: 1; transform: scale(1.1); }
-                100% { opacity: 0.8; transform: scale(1); }
-            }
-        </style>
-        <h1 class="main-header" style="color: #f2c140; font-size: 4rem; font-weight: 900; margin-bottom: 20px;">Waktunya Kuis!</h1>
-        <p class="main-body" style="font-size: 1.5rem; text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 20px;">Mari mengulas materi hari ini. Perhatikan layar ya!</p>
+    <!-- Slide 23: Kuis Interaktif -->
+    <div class="slide solid-teal-bg" id="slide23">
+        <h2 class="agenda-title" style="color: #f2c140; text-align: center; margin-bottom: 5px;">Review Materi! 🧠</h2>
+    
         
-        <div style="position: relative; width: 340px; height: 280px; margin: 0 auto;">
-            <div style="position: absolute; top: -10px; right: 10px; font-size: 4rem; animation: thinkBubble 2s infinite alternate;">💭</div>
-            <div style="position: absolute; top: 10px; right: 70px; font-size: 3rem; animation: thinkBubble 2s infinite alternate; animation-delay: 0.5s;">💡</div>
-            <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/756d9713-87b5-4ec4-ae39-9f2352b8e280.png" 
-                 alt="Scratch Cat Studying" 
-                 style="position: absolute; top: 40px; left: 60px; width: 180px; z-index: 2; animation: bounceCat 0.4s infinite alternate; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
-            <div style="position: absolute; bottom: 0px; left: 85px; font-size: 7rem; z-index: 3;">💻</div>
+        <div class="quiz-container" style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-width: 800px; width: 100%; text-align: left; margin: 0 auto; color: #333;">
+            <p id="q-text" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 25px; color: #008080;">1. Agar karakter kita bisa memunculkan gelembung tulisan (berbicara), kita bisa menggunakan blok perintah dari kategori apa?</p>
+            <div id="q-options" style="display: flex; flex-direction: column; gap: 15px;">
+                <button class="quiz-opt" onclick="checkQuiz(this)">A. Events (Kuning)</button>
+                <button class="quiz-opt" onclick="checkQuiz(this)">B. Looks (Ungu)</button>
+                <button class="quiz-opt" onclick="checkQuiz(this)">C. Sound (Pink)</button>
+            </div>
+            <div style="margin-top: 25px; min-height: 50px;">
+                <p id="q-feedback" style="font-size: 1.2rem; font-weight: 700; margin: 0;"></p>
+                <button id="q-next" class="huge-btn" style="background: #f2c140; color: #333; padding: 10px 30px; font-size: 1.2rem; margin-top: 15px; display: none;" onclick="nextQuiz()">Soal Selanjutnya ➡️</button>
+            </div>
         </div>
+        <style>
+            .quiz-opt { padding: 15px 20px; text-align: left; font-size: 1.2rem; font-family: 'Fredoka', sans-serif; font-weight: 600; background: #f0f7ff; border: 2px solid #4c97ff; border-radius: 12px; cursor: pointer; transition: all 0.2s; color: #333; }
+            .quiz-opt:hover:not(:disabled) { background: #4c97ff; color: white; transform: translateX(10px); }
+            .quiz-opt:disabled { cursor: not-allowed; opacity: 0.8; }
+            .quiz-opt.correct { background: #22c55e !important; color: white !important; border-color: #16a34a !important; }
+            .quiz-opt.wrong { background: #ef4444 !important; color: white !important; border-color: #dc2626 !important; }
+        </style>
     </div>
 
-    <!-- Slide 21: Feedback -->
-    <div class="slide" id="slide21">
+    <!-- Slide 24: Feedback -->
+    <div class="slide" id="slide24">
         <h2 class="agenda-title" style="text-align: center; width: 100%; margin-bottom: 15px;">Bagaimana Kelas Hari Ini?</h2>
         <p style="font-size: 1.3rem; text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 30px; color: #555;">
             Bantu kami menjadi lebih baik dengan mengisi form feedback singkat ya!
@@ -838,10 +1027,178 @@
         }
     }
 
+    // Matching Game State
+    const gameData = [
+        { spriteName: 'Zebra', emoji: '🦓', theme: 'Savannah', bg: 'https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/e6848cc2-3e75-4f1d-9f77-f8f977779849.png' },
+        { spriteName: 'Guru', emoji: '👩‍🏫', theme: 'Kelas', bg: 'https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/9ec8b2cd-b109-4af5-9afa-9c539c310881.png' },
+        { spriteName: 'Petani', emoji: '👨‍🌾', theme: 'Kebun', bg: 'https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/7100475e-4945-4468-8298-4eeb03a18a8c.png' },
+        { spriteName: 'Penyihir', emoji: '🧙', theme: 'Hutan Ajaib', bg: 'https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/ad1d161e-2707-4f37-bb53-565ad87603af.png' }
+    ];
+
+    let currentSpriteIdx = 0;
+    let currentBgIdx = 1; // Mulai dengan background yang salah
+
+    function renderGame() {
+        const spriteData = gameData[currentSpriteIdx];
+        const bgData = gameData[currentBgIdx];
+        
+        document.getElementById('spriteGame').textContent = spriteData.emoji;
+        document.getElementById('themeLabel').textContent = 'Lokasi: ' + bgData.theme;
+        document.getElementById('gameViewport').style.backgroundImage = bgData.bg ? `url('${bgData.bg}')` : 'none';
+        
+        // Tambahkan overlay gelap sedikit agar emoji karakter lebih terlihat
+        document.getElementById('gameViewport').style.boxShadow = "inset 0 0 0 2000px rgba(0,0,0,0.3)";
+
+        document.getElementById('matchCheck').classList.remove('show');
+        document.getElementById('gameFeedback').textContent = '';
+        
+        // Reset buttons
+        document.getElementById('btnCheckMatch').disabled = false;
+        document.getElementById('btnNextSprite').disabled = true;
+    }
+
+    function changeGameBg(dir) {
+        currentBgIdx += dir;
+        if (currentBgIdx < 0) currentBgIdx = gameData.length - 1;
+        if (currentBgIdx >= gameData.length) currentBgIdx = 0;
+        renderGame();
+    }
+
+    function checkMatch() {
+        const spriteData = gameData[currentSpriteIdx];
+        const bgData = gameData[currentBgIdx];
+        const feedback = document.getElementById('gameFeedback');
+        const matchCheck = document.getElementById('matchCheck');
+        
+        if (currentBgIdx === currentSpriteIdx) {
+            feedback.style.color = '#a8c368';
+            feedback.textContent = 'Wah, benar sekali! ' + spriteData.spriteName + ' cocok di ' + bgData.theme + '!';
+            matchCheck.textContent = '✅';
+            matchCheck.classList.add('show');
+            document.getElementById('btnCheckMatch').disabled = true;
+            document.getElementById('btnNextSprite').disabled = false;
+            
+            // Animasi melompat untuk sprite
+            const spriteGame = document.getElementById('spriteGame');
+            spriteGame.style.animation = 'bounce 0.5s infinite alternate';
+            setTimeout(() => {
+                spriteGame.style.animation = '';
+            }, 2000);
+            
+            if (currentSpriteIdx === gameData.length - 1) {
+                document.getElementById('btnNextSprite').textContent = 'SELESAI 🎉';
+            }
+        } else {
+            feedback.style.color = '#ff6b6b';
+            feedback.textContent = 'Ups, sepertinya ' + spriteData.spriteName + ' kurang cocok di ' + bgData.theme + '. Coba lagi!';
+            matchCheck.textContent = '❌';
+            matchCheck.classList.add('show');
+            setTimeout(() => {
+                matchCheck.classList.remove('show');
+            }, 1000);
+        }
+    }
+
+    function nextGameSprite() {
+        if (currentSpriteIdx < gameData.length - 1) {
+            currentSpriteIdx++;
+            // Pastikan background yang muncul di awal selalu tidak cocok
+            currentBgIdx = (currentSpriteIdx + 1) % gameData.length;
+            renderGame();
+            document.getElementById('btnNextSprite').textContent = 'LANJUT ➜';
+        } else {
+            showModal('🏆', 'GAME SELESAI', 'Kamu hebat! Semua karakter sudah menemukan lokasi yang cocok!', 'Lanjut Belajar');
+        }
+    }
+
+    const demoBackdrops = [
+        'https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/ad1d161e-2707-4f37-bb53-565ad87603af.png', // Sisi Kiri (Hutan-A)
+        'https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/040b9af6-e9f9-48b7-8e00-39a10b96a03e.png' // Sisi Kanan (Hutan-B)
+    ];
+    let currentDemoBg = 0;
+    function demoNextBackdrop() {
+        currentDemoBg = (currentDemoBg + 1) % demoBackdrops.length;
+        document.getElementById('demo-backdrop-frame').style.backgroundImage = `url('${demoBackdrops[currentDemoBg]}')`;
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
         showSlide(currentSlide);
         initDnD();
+        renderGame(); // Initialize matching game
     });
+
+    // Quiz Logic
+    const quizData = [
+        {
+            q: "Agar karakter kita bisa memunculkan gelembung tulisan (berbicara), kita bisa menggunakan blok perintah dari kategori apa?",
+            opts: ["A. Events (Kuning)", "B. Looks (Ungu)", "C. Sound (Pink)"],
+            ans: 1,
+            exp: "Benar! Blok kategori Looks (warna ungu) digunakan untuk memunculkan teks/gelembung bicara."
+        },
+        {
+            q: "Susunan blok perintah dalam Scratch dibaca oleh komputer dari arah mana?",
+            opts: ["A. Bawah ke Atas", "B. Kanan ke Kiri", "C. Atas ke Bawah"],
+            ans: 2,
+            exp: "Tepat! Seperti membaca resep, program dieksekusi langkah demi langkah dari Atas ke Bawah."
+        },
+        {
+            q: "Blok apa yang biasanya dipasang paling atas agar program kita bisa langsung berjalan saat kita mulai (Bendera Hijau diklik)?",
+            opts: ["A. when 🚩 clicked", "B. say [Hello!]", "C. wait (1) seconds"],
+            ans: 0,
+            exp: "Betul sekali! Blok 'when 🚩 clicked' adalah blok kategori Events yang berfungsi untuk memulai jalannya program."
+        }
+    ];
+
+    let currentQIdx = 0;
+    function checkQuiz(btn) {
+        const opts = document.querySelectorAll('.quiz-opt');
+        opts.forEach(o => o.disabled = true); // disable all
+
+        const qData = quizData[currentQIdx];
+        const isCorrect = Array.from(opts).indexOf(btn) === qData.ans;
+        const feedback = document.getElementById('q-feedback');
+
+        if (isCorrect) {
+            btn.classList.add('correct');
+            feedback.style.color = '#22c55e';
+            feedback.textContent = qData.exp;
+        } else {
+            btn.classList.add('wrong');
+            opts[qData.ans].classList.add('correct'); // highlight correct
+            feedback.style.color = '#ef4444';
+            let correctLetter = qData.opts[qData.ans].charAt(0);
+            feedback.textContent = "Kurang tepat. Jawabannya " + correctLetter + "! " + qData.exp;
+        }
+        
+        if(currentQIdx < quizData.length - 1) {
+            document.getElementById('q-next').style.display = 'inline-block';
+        } else {
+            setTimeout(() => {
+                feedback.style.color = '#008080';
+                feedback.textContent = "Hore! Kamu sudah menyelesaikan semua kuis pemanasan memori ini! Hebat!";
+                document.getElementById('q-next').style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    function nextQuiz() {
+        currentQIdx++;
+        const qData = quizData[currentQIdx];
+        document.getElementById('q-text').textContent = (currentQIdx+1) + ". " + qData.q;
+        
+        const optsDiv = document.getElementById('q-options');
+        optsDiv.innerHTML = '';
+        qData.opts.forEach((optText, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-opt';
+            btn.textContent = optText;
+            btn.onclick = () => checkQuiz(btn);
+            optsDiv.appendChild(btn);
+        });
+
+        document.getElementById('q-feedback').textContent = '';
+        document.getElementById('q-next').style.display = 'none';
+    }
 </script>
 </body>
 </html>

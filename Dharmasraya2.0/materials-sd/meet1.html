@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sesi 1: Mengenal Dunia Pemrograman</title>
+    <title>RUANGGURU CODING</title>
+    <link rel="icon" href="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -157,25 +158,34 @@
             color: transparent;
             display: inline-block;
         }
+        
+        .game-title-gradient { 
+            background: linear-gradient(135deg, #f2c140 0%, #ffffff 50%, #00f2fe 100%); 
+            -webkit-background-clip: text; 
+            background-clip: text; 
+            color: transparent; 
+            filter: drop-shadow(0 0 20px rgba(242, 193, 64, 0.4)); 
+            display: inline-block; 
+        }
 
         /* Navigasi BARU */
         .nav-button {
-            background-color: rgba(0, 128, 128, 0.8); /* Teal Transparan */
-            color: white;
-            border: none;
+            background-color: #f2c140; /* Kuning yang mencolok */
+            color: #222; /* Ikon panah gelap */
+            border: 3px solid white; /* Garis tepi putih untuk pemisah dari BG gelap */
             position: fixed; /* Tombol diposisikan secara fixed terhadap viewport */
             top: 50%;
             transform: translateY(-50%);
             z-index: 100; /* Pastikan di atas semua elemen lain */
-            width: 40px; /* Kecil */
-            height: 40px; /* Kecil */
+            width: 50px; /* Sedikit diperbesar */
+            height: 50px; 
             border-radius: 50%; /* Bulat */
             cursor: pointer;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
             font-weight: 900;
             line-height: 1;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Shadow kuat */
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -187,15 +197,19 @@
         #nextBtn {
             right: 20px; /* Jarak dari tepi kanan layar */
         }
-        .nav-button:hover {
-            background-color: #f2c140; /* Kuning Hover */
-            color: #333;
-            transform: scale(1.1);
+        .nav-button:hover:not(:disabled) {
+            background-color: #ffab19; /* Oranye saat di-hover */
+            color: white;
+            transform: translateY(-50%) scale(1.15); /* Perbesar sedikit */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
         }
         .nav-button:disabled {
-            background-color: #ccc;
+            background-color: #e0e0e0;
+            color: #999;
+            border-color: #ccc;
             cursor: not-allowed;
-            transform: scale(1);
+            box-shadow: none;
+            transform: translateY(-50%);
         }
 
         /* Slide Content kompensasi untuk logo agar tidak tertutup */
@@ -617,6 +631,10 @@
         <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" 
              onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DS'"
              alt="Logo Disdik Dharmasraya">
+
+        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/24f1773d-33d0-4b51-a608-ba820f3c3b9e.png" 
+             onerror="this.onerror=null; this.src='https://placehold.co/40x40/ffffff/0070c0?text=DS'"
+             alt="Logo Dharmasraya Juara">
     </div>
     
     <!-- Logo Kanan Atas: Ruangguru Coding -->
@@ -634,10 +652,10 @@
         <svg class="starburst" style="top: 15%; left: 10%; width:100px; height:100px; color: #008080; transform: rotate(20deg); opacity: 0.7;"><use xlink:href="#starburst-svg"></use></svg>
             <svg class="starburst" style="bottom: 20%; right: 15%; transform: rotate(-15deg); color: #f2c140; opacity: 0.8;"><use xlink:href="#starburst-svg"></use></svg>
             <h1 class="cover-title">
-                <span>PERKENALAN KODING BERSAMA</span>
+                <span class="game-title-gradient">PERSIAPAN PROGRAMING BERSAMA</span>
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Scratchlogo.svg/3840px-Scratchlogo.svg.png" alt="Scratch" style="height: 80px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4)); z-index: 3; margin: 10px auto; display: block;">
             </h1>
-            <p class="cover-subtitle">SESI 1: Mengenal Dunia Pemrograman</p>
+            <p class="cover-subtitle">SESI 1: PERSIAPAN & EKSPLORASI AWAL</p>
             <div style="font-size: 8rem; z-index: 3;">💻📚💡✨</div>
     </div>
 
@@ -647,15 +665,15 @@
         <div class="agenda-grid">
             <div class="agenda-card">
                 <div class="agenda-card-icon">💻</div>
-                <p class="agenda-card-text">Apa itu koding?</p>
+                <p class="agenda-card-text">Memahami Programming</p>
             </div>
             <div class="agenda-card">
                 <div class="agenda-card-icon">📝</div>
-                <p class="agenda-card-text">Belajar langkah berurutan</p>
+                <p class="agenda-card-text">Refreshment: Menyusun langkah berurutan</p>
             </div>
             <div class="agenda-card">
-                <div class="agenda-card-icon">🏠</div>
-                <p class="agenda-card-text">Mengenal tampilan Scratch</p>
+                <div class="agenda-card-icon">😺</div>
+                <p class="agenda-card-text">Ingat Kembali tampilan Scratch</p>
             </div>
             <div class="agenda-card">
                 <div class="agenda-card-icon">🎨</div>
@@ -692,7 +710,7 @@
         </div>
 
         <!-- Draggables pool — horizontal scroll -->
-        <p style="font-size: 0.85rem; color: #888; margin: 0 0 6px 0; align-self: flex-start;"> → Geser untuk melihat semua pilihan</p>
+        <p style="font-size: 0.85rem; color: #888; margin: 0 0 6px 0; align-self: center;"> → Geser untuk melihat semua pilihan</p>
         <div class="draggables-pool" id="pool">
             <div class="draggable-btn" draggable="true" data-type="nyata">🏊 Berenang</div>
             <div class="draggable-btn" draggable="true" data-type="nyata">🚲 Bersepeda</div>
@@ -707,7 +725,7 @@
 
     <!-- Slide 4a: Hook - Apa itu Program Komputer -->
     <div class="slide" id="slide4">
-        <h2 class="agenda-title" style="text-align: center; width: 100%; margin-bottom: 30px;">Apa itu Program Komputer? 🤔</h2>
+        <h2 class="agenda-title" style="text-align: center; width: 100%; margin-bottom: 30px;">Ingat Kembali: Apa itu Program Komputer? 🤔</h2>
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 900px; text-align: center;">
             <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/34946cae-04cd-41f1-95b0-f09fb67e03df.png" alt="Ilustrasi program komputer"
                  style="width: 100%; max-width: 300px; height: auto; object-fit: contain; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.15)); margin-bottom: 40px;">
@@ -723,7 +741,7 @@
         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; max-width: 800px; text-align: center; background: rgba(255, 255, 255, 0.9); padding: 50px; border-radius: 20px; border: 4px dashed #008080; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
             <div style="font-size: 6rem; margin-bottom: 25px;">📜</div>
             <p style="font-size: 1.5rem; line-height: 1.8; color: #444; margin: 0;">
-                Semua itu bisa terjadi karena ada <strong style="color: #008080; font-size: 1.8rem; display: inline-block; margin: 10px 0;">Program Komputer</strong>!<br><br>
+                Semua itu bisa terjadi karena ada <strong style="color: #008080; font-size: 1.8rem; display: inline-block; margin: 5px 0;">Program Komputer</strong>!<br><br>
                 Program itu ibarat <em>resep rahasia</em> atau <strong style="color: #a8c368;">kumpulan instruksi</strong> yang kita tulis, supaya komputer tahu apa yang harus dilakukan.
             </p>
         </div>
@@ -900,7 +918,7 @@
 
     <!-- Slide 9: Mengenal Scratch -->
     <div class="slide" id="slide9">
-        <h2 class="agenda-title" style="text-align: center; width: 100%;">Mengenal Scratch</h2>
+        <h2 class="agenda-title" style="text-align: center; width: 100%;">Ingat Kembali: Scratch</h2>
         <p style="font-size: 1.5rem; text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 30px;">
             Scratch adalah tempat kita menyusun program. Kita menyusun <strong>Blok Perintah</strong> seperti potongan mainan untuk membuat cerita.
         </p>
@@ -1040,39 +1058,33 @@
         </div>
     </div>
 
-    <!-- Slide 17: Waktunya Kuis! -->
-    <div class="slide solid-teal-bg" id="slide17">
-        <style>
-            @keyframes bounceCat {
-                from { transform: translateY(0); }
-                to { transform: translateY(-10px); }
-            }
-            @keyframes thinkBubble {
-                0% { opacity: 0; transform: scale(0.8); }
-                50% { opacity: 1; transform: scale(1.1); }
-                100% { opacity: 0.8; transform: scale(1); }
-            }
-        </style>
-        <h1 class="main-header" style="color: #f2c140;">Waktunya Kuis!</h1>
-        <p class="main-body" style="font-size: 1.5rem; text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 20px;">Mari mengulas materi hari ini. Perhatikan layar ya!</p>
+    <!-- Slide 18: Kuis Interaktif -->
+    <div class="slide solid-teal-bg" id="slide18">
+        <h2 class="agenda-title" style="color: #f2c140; text-align: center; margin-bottom: 5px;">Review Materi! 🧠</h2>
         
-        <div style="position: relative; width: 340px; height: 280px; margin: 0 auto;">
-            <!-- Thought bubble -->
-            <div style="position: absolute; top: -10px; right: 10px; font-size: 4rem; animation: thinkBubble 2s infinite alternate;">💭</div>
-            <div style="position: absolute; top: 10px; right: 70px; font-size: 3rem; animation: thinkBubble 2s infinite alternate; animation-delay: 0.5s;">💡</div>
-            
-            <!-- Scratch Cat -->
-            <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/756d9713-87b5-4ec4-ae39-9f2352b8e280.png" 
-                 alt="Scratch Cat Studying" 
-                 style="position: absolute; top: 40px; left: 60px; width: 180px; z-index: 2; animation: bounceCat 0.4s infinite alternate; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));">
-            
-            <!-- Laptop -->
-            <div style="position: absolute; bottom: 0px; left: 85px; font-size: 7rem; z-index: 3;">💻</div>
+        <div class="quiz-container" style="background: white; padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); max-width: 800px; width: 100%; text-align: left; margin: 0 auto; color: #333;">
+            <p id="q-text" style="font-size: 1.6rem; font-weight: 800; margin-bottom: 25px; color: #008080;">1. Urutan instruksi atau langkah-langkah untuk menyelesaikan tugas disebut...</p>
+            <div id="q-options" style="display: flex; flex-direction: column; gap: 15px;">
+                <button class="quiz-opt" onclick="checkQuiz(this)">A. Pemrogram</button>
+                <button class="quiz-opt" onclick="checkQuiz(this)">B. Algoritma</button>
+                <button class="quiz-opt" onclick="checkQuiz(this)">C. Sprite</button>
+            </div>
+            <div style="margin-top: 25px; min-height: 50px;">
+                <p id="q-feedback" style="font-size: 1.2rem; font-weight: 700; margin: 0;"></p>
+                <button id="q-next" class="huge-btn" style="background: #f2c140; color: #333; padding: 10px 30px; font-size: 1.2rem; margin-top: 15px; display: none;" onclick="nextQuiz()">Soal Selanjutnya ➡️</button>
+            </div>
         </div>
+        <style>
+            .quiz-opt { padding: 15px 20px; text-align: left; font-size: 1.2rem; font-family: 'Fredoka', sans-serif; font-weight: 600; background: #f0f7ff; border: 2px solid #4c97ff; border-radius: 12px; cursor: pointer; transition: all 0.2s; color: #333; }
+            .quiz-opt:hover:not(:disabled) { background: #4c97ff; color: white; transform: translateX(10px); }
+            .quiz-opt:disabled { cursor: not-allowed; opacity: 0.8; }
+            .quiz-opt.correct { background: #22c55e !important; color: white !important; border-color: #16a34a !important; }
+            .quiz-opt.wrong { background: #ef4444 !important; color: white !important; border-color: #dc2626 !important; }
+        </style>
     </div>
 
-    <!-- Slide 18: Feedback -->
-    <div class="slide" id="slide18">
+    <!-- Slide 19: Feedback -->
+    <div class="slide" id="slide19">
         <h2 class="agenda-title" style="text-align: center; width: 100%; margin-bottom: 15px;">Bagaimana Kelas Hari Ini?</h2>
         <p style="font-size: 1.3rem; text-align: center; max-width: 800px; margin: 0 auto; margin-bottom: 30px; color: #555;">
             Bantu kami menjadi lebih baik dengan mengisi form feedback singkat ya!
@@ -1574,6 +1586,79 @@
         renderProgGrid();
         const pool = document.getElementById('blockPool');
         document.querySelectorAll('#programZone .cmd-block').forEach(b => pool.appendChild(b));
+    }
+
+    // Quiz Logic
+    const quizData = [
+        {
+            q: "Urutan instruksi atau langkah-langkah untuk menyelesaikan tugas disebut...",
+            opts: ["A. Pemrogram", "B. Algoritma", "C. Sprite"],
+            ans: 1,
+            exp: "Benar! Algoritma adalah urutan langkah atau instruksi untuk menyelesaikan sesuatu."
+        },
+        {
+            q: "Karakter yang bergerak dan melakukan aksi di dalam layar Scratch disebut...",
+            opts: ["A. Backdrop", "B. Algoritma", "C. Sprite"],
+            ans: 2,
+            exp: "Tepat! Karakter yang kamu beri instruksi kode disebut Sprite."
+        },
+        {
+            q: "Di mana tempat karakter berada dan bermain di dalam project Scratch?",
+            opts: ["A. Backdrop (Panggung)", "B. Code Area (Tempat Kode)", "C. Costumes"],
+            ans: 0,
+            exp: "Betul sekali! Backdrop adalah latar belakang atau tempat Sprite bermain."
+        }
+    ];
+
+    let currentQIdx = 0;
+    function checkQuiz(btn) {
+        const opts = document.querySelectorAll('.quiz-opt');
+        opts.forEach(o => o.disabled = true); // disable all
+
+        const qData = quizData[currentQIdx];
+        const isCorrect = Array.from(opts).indexOf(btn) === qData.ans;
+        const feedback = document.getElementById('q-feedback');
+
+        if (isCorrect) {
+            btn.classList.add('correct');
+            feedback.style.color = '#22c55e';
+            feedback.textContent = qData.exp;
+        } else {
+            btn.classList.add('wrong');
+            opts[qData.ans].classList.add('correct'); // highlight correct
+            feedback.style.color = '#ef4444';
+            let correctLetter = qData.opts[qData.ans].charAt(0);
+            feedback.textContent = "Kurang tepat. Jawabannya " + correctLetter + "! " + qData.exp;
+        }
+        
+        if(currentQIdx < quizData.length - 1) {
+            document.getElementById('q-next').style.display = 'inline-block';
+        } else {
+            setTimeout(() => {
+                feedback.style.color = '#008080';
+                feedback.textContent = "Hore! Kamu sudah menyelesaikan semua kuis pemanasan memori ini! Hebat!";
+                document.getElementById('q-next').style.display = 'none';
+            }, 3000);
+        }
+    }
+
+    function nextQuiz() {
+        currentQIdx++;
+        const qData = quizData[currentQIdx];
+        document.getElementById('q-text').textContent = (currentQIdx+1) + ". " + qData.q;
+        
+        const optsDiv = document.getElementById('q-options');
+        optsDiv.innerHTML = '';
+        qData.opts.forEach((optText, i) => {
+            const btn = document.createElement('button');
+            btn.className = 'quiz-opt';
+            btn.textContent = optText;
+            btn.onclick = () => checkQuiz(btn);
+            optsDiv.appendChild(btn);
+        });
+
+        document.getElementById('q-feedback').textContent = '';
+        document.getElementById('q-next').style.display = 'none';
     }
 </script>
 

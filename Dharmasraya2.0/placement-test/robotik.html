@@ -446,6 +446,22 @@
       line-height: 1.6;
     }
 
+    .privacy-note {
+      margin: 0 0 24px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: #ecfdf5;
+      border: 2px solid #86efac;
+      color: #14532d;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.55;
+    }
+
+    .privacy-note strong {
+      color: #166534;
+    }
+
     .landing-label {
       display: block;
       margin-bottom: 10px;
@@ -3382,7 +3398,7 @@
       <div class="overlay-box">
         <div class="big">🛑</div>
         <h1 style="">Maaf, Test Sudah Ditutup!</h1>
-        <p style="font-size:18px; margin-bottom:0;">Lanjut besok lagi ya!</p>
+        <p style="font-size:18px; margin-bottom:0;">Waktu pengerjaan test untuk hari ini sudah habis. Silakan lakukan test kembali besok tanggal 5 Mei dari jam 08:00 - 17:00 WIB.</p>
       </div>
     </div>
 
@@ -3390,7 +3406,7 @@
       <div class="overlay-box">
         <div class="big">🛑</div>
         <h1 style="">Maaf, Test Sudah Ditutup!</h1>
-        <p style="font-size:18px; margin-bottom:0;">Nantikan jadwal test susulan ya, semoga beruntung!</p>
+        <p style="font-size:18px; margin-bottom:0;">Mohon maaf, waktu test sudah selesai. Terima kasih atas minatnya, sampai jumpa di lain waktu!</p>
       </div>
     </div>
 
@@ -3411,7 +3427,7 @@
 
       <div
         style="margin-top:24px; padding:16px; background:rgba(255,255,255,0.1); border-radius:16px; font-size:14px; font-weight:800;">
-        🗓️ 29 - 30 April 2026 · 08:00 - 17:00 WIB
+        🗓️ 04 - 05 Mei 2026 · 08:00 - 17:00 WIB
       </div>
     </div>
 
@@ -3466,6 +3482,9 @@
               <div class="landing-form-card">
                 <h3 class="landing-form-title">Masuk ke Screening Test 👋</h3>
                 <p class="landing-form-subtitle">Silakan lengkapi data dirimu untuk mulai.</p>
+                <div class="privacy-note">
+                  <strong>Privasi peserta:</strong> halaman ini tidak meminta data pribadi sensitif. Data yang diisi hanya asal sekolah, kelas, dan nama peserta, lalu digunakan khusus untuk validasi peserta serta pencatatan hasil Screening Test Robotik Dharmasraya 2026.
+                </div>
 
                 <label class="landing-label">Asal Sekolah</label>
                 <div class="k-select" id="schoolK">
@@ -3778,10 +3797,10 @@
 
     function checkTimeGate() {
       const now = new Date();
-      const startDay1 = new Date('2026-04-29T08:00:00');
-      const endDay1 = new Date('2026-04-29T17:00:00');
-      const startDay2 = new Date('2026-04-30T08:00:00');
-      const endDay2 = new Date('2026-04-30T17:00:00');
+      const startDay1 = new Date('2026-05-04T08:00:00+07:00');
+      const endDay1 = new Date('2026-05-04T17:00:00+07:00');
+      const startDay2 = new Date('2026-05-05T08:00:00+07:00');
+      const endDay2 = new Date('2026-05-05T17:00:00+07:00');
 
       if (masterState.phase !== 'school' && masterState.phase !== 'waiting') return;
 

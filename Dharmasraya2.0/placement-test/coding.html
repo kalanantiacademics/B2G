@@ -1456,13 +1456,11 @@
           <p style="font-size:16px; color:#fca5a5;">Terima kasih atas partisipasinya! Kalau kamu merasa ini adalah sebuah kesalahan, minta tolong ayah/ibu atau guru untuk menghubungi tim Ruangguru ya!</p>
           <button style="margin-top:24px; background:#fff; color:#b91c1c; border:3px solid #fecaca; border-bottom:6px solid #f87171; border-radius:16px; padding:12px 32px; font-size:18px; font-weight:900; cursor:pointer; transition:all 0.15s;" onmousedown="this.style.transform='translateY(4px)'; this.style.borderBottomWidth='3px';" onmouseup="this.style.transform='none'; this.style.borderBottomWidth='6px';" onmouseleave="this.style.transform='none'; this.style.borderBottomWidth='6px';" onclick="document.getElementById('duplicateBothOverlay').classList.remove('show')">Kembali</button>
         </div>
-      </div>
-
-      <div id="closeTomorrowOverlay" class="overlay" style="z-index:99999;">
+         <div id="closeTomorrowOverlay" class="overlay" style="z-index:99999;">
         <div class="overlay-box">
           <div class="big">🛑</div>
           <h1 style="">Maaf, Test Sudah Ditutup!</h1>
-          <p style="font-size:18px; margin-bottom:0;">Lanjut lagi saat jadwal dibuka ya!</p>
+          <p style="font-size:18px; margin-bottom:0;">Waktu pengerjaan test untuk hari ini sudah habis. Silakan lakukan test kembali besok tanggal 5 Mei dari jam 08:00 - 17:00 WIB.</p>
         </div>
       </div>
 
@@ -1470,8 +1468,9 @@
         <div class="overlay-box">
           <div class="big">🛑</div>
           <h1 style="">Maaf, Test Sudah Ditutup!</h1>
-          <p style="font-size:18px; margin-bottom:0;">Nantikan jadwal test susulan ya, semoga beruntung!</p>
+          <p style="font-size:18px; margin-bottom:0;">Mohon maaf, waktu test sudah selesai. Terima kasih atas minatnya, sampai jumpa di lain waktu!</p>
         </div>
+      </div>
       </div>
 
       <div id="phase_waiting" class="master-intro" style="display:none; background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%); color: #fff; border:none;">
@@ -1486,7 +1485,7 @@
         </div>
 
         <div style="margin-top:24px; padding:16px; background:rgba(255,255,255,0.1); border-radius:16px; font-size:14px; font-weight:800;">
-          🗓️ 29 - 30 April 2026 · 08:00 - 18:00 WIB
+          🗓️ 04 - 05 Mei 2026 · 08:00 - 17:00 WIB
         </div>
       </div>
 
@@ -1818,10 +1817,10 @@
 
     function checkTimeGate() {
       const now = new Date();
-      const startDay1 = new Date('2026-04-29T08:00:00+07:00');
-      const endDay1 = new Date('2026-04-29T18:00:00+07:00');
-      const startDay2 = new Date('2026-04-30T08:00:00+07:00');
-      const endDay2 = new Date('2026-04-30T18:00:00+07:00');
+      const startDay1 = new Date('2026-05-04T08:00:00+07:00');
+      const endDay1 = new Date('2026-05-04T17:00:00+07:00');
+      const startDay2 = new Date('2026-05-05T08:00:00+07:00');
+      const endDay2 = new Date('2026-05-05T17:00:00+07:00');
 
       if (masterState.phase !== 'school' && masterState.phase !== 'waiting') return;
 
@@ -1832,8 +1831,8 @@
       }
 
       if (now > endDay1 && now < startDay2) {
-          masterState.phase = 'waiting';
-          updateWaitingTimer(startDay2);
+          if (masterState.phase === 'waiting') masterState.phase = 'school';
+          document.getElementById('closeTomorrowOverlay').classList.add('show');
           return;
       }
 

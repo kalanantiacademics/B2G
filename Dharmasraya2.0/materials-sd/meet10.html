@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sesi 10: Latihan Melompat (Repeat y)</title>
+    <title>RUANGGURU CODING - SESI 10</title>
+    <link rel="icon" href="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <style>
         /* CSS Reset dan Global Styles */
         body { margin: 0; padding: 0; font-family: 'Fredoka', sans-serif; background: url('https://i.imgur.com/z221jXz.png') center/cover fixed no-repeat; display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; }
@@ -16,502 +18,809 @@
         .slide.is-next { transform: translateX(100%); visibility: visible; opacity: 1; z-index: 11; }
         .slide.is-exiting { transform: translateX(100%); opacity: 1; z-index: 11; }
         
-        #slide1 { background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://i.imgur.com/z221jXz.png') center/cover no-repeat; color: white; }
+        #slide1 { background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('https://i.imgur.com/z221jXz.png') center/cover no-repeat; color: white; align-items: center; text-align: center; justify-content: center; }
         .solid-teal-bg { background-color: #008080; color: white; }
+        .highlight-gradient { background: linear-gradient(to right, #008080, #a8c368, #f2c140); -webkit-background-clip: text; background-clip: text; color: transparent; display: inline-block; }
         
         /* Logos */
-        .slide-logo-left { position: fixed; top: 0; left: 0; background-color: white; padding: 10px 20px 10px 40px; border-bottom-right-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; gap: 15px; }
+        .slide-logo-left { position: fixed; top: 0; left: 0; background-color: white; padding: 10px 20px 10px 40px; border-bottom-right-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; gap: 15px; transition: opacity 0.3s ease; }
         .slide-logo-left img { height: 45px; width: auto; }
-        .slide-logo-right { position: fixed; top: 0; right: 0; background-color: white; padding: 10px 40px 10px 20px; border-bottom-left-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; }
+        .slide-logo-right { position: fixed; top: 0; right: 0; background-color: white; padding: 10px 40px 10px 20px; border-bottom-left-radius: 30px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); display: flex; align-items: center; z-index: 1000; transition: opacity 0.3s ease; }
         .slide-logo-right img { height: 45px; width: auto; }
 
-        .nav-button { background-color: rgba(0, 128, 128, 0.8); color: white; border: none; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; font-weight: 900; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3); transition: all 0.3s ease; display: flex; justify-content: center; align-items: center; }
-        #prevBtn { left: 20px; } #nextBtn { right: 20px; }
-        .nav-button:hover { background-color: #f2c140; color: #333; transform: scale(1.1); }
-        .nav-button:disabled { background-color: #ccc; cursor: not-allowed; transform: scale(1); }
+        .nav-button { background-color: #f2c140; color: #222; border: 3px solid white; position: fixed; top: 50%; transform: translateY(-50%); z-index: 100; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; font-weight: 900; line-height: 1; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; justify-content: center; align-items: center; }
+        #prevBtn { left: 20px; } 
+        #nextBtn { right: 20px; }
+        .nav-button:hover:not(:disabled) { background-color: #ffab19; color: white; transform: translateY(-50%) scale(1.15); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5); }
+        .nav-button:disabled { background-color: #e0e0e0; color: #999; border-color: #ccc; cursor: not-allowed; box-shadow: none; transform: translateY(-50%); }
         
-        .cover-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; line-height: 1.1; text-align: center; }
-        .cover-subtitle { font-size: 1.8rem; font-weight: 400; margin-bottom: 20px; border-bottom: 3px solid #f2c140; padding-bottom: 10px; display: inline-block; color: white; }
+        .cover-title { font-size: 4rem; font-weight: 900; margin-bottom: 10px; line-height: 1.1; z-index: 3; text-align: center; }
+        .cover-subtitle { font-size: 1.8rem; font-weight: 400; margin-bottom: 20px; border-bottom: 3px solid #f2c140; padding-bottom: 10px; display: inline-block; z-index: 3; color: white; }
         .agenda-title { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; color: #008080; line-height: 1.2; margin-bottom: 30px; width: 100%; text-align: center; }
         
-        /* Blocks Styling */
-        .block-stack { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; }
-        .block { padding: 10px 18px; border-radius: 4px 12px 12px 4px; color: white; font-weight: 600; font-size: 1.1rem; min-width: 180px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); position: relative; }
-        .block-blue { background: #4c97ff; }
-        .block-orange { background: #ffab19; color: #333; }
-        .block-purple { background: #9966ff; }
-        .block-event { background: #ffbf00; color: #333; border-radius: 20px 20px 4px 4px; padding-top: 15px; }
-
-        /* C-Block (Loop) Styling */
-        .block-repeat { background: #ffab19; color: #333; border-radius: 8px 12px 12px 8px; padding: 12px 15px 12px 25px; position: relative; min-height: 100px; width: fit-content; min-width: 220px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); display: flex; flex-direction: column; gap: 8px; }
-        .block-repeat::before { content: ""; position: absolute; top: 45px; left: 25px; right: 0; bottom: 45px; background: rgba(255, 255, 255, 0.95); border-top-left-radius: 8px; border-bottom-left-radius: 8px; z-index: 0; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05); }
-        .block-repeat > * { z-index: 1; }
-        .block-repeat .block-stack { margin-left: 10px; }
-
-        /* Modal DND */
-        .dnd-modal-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.45); display: flex; justify-content: center; align-items: center; z-index: 500; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
-        .dnd-modal-overlay.show { opacity: 1; pointer-events: auto; }
-        .dnd-modal { background: white; border-radius: 24px; padding: 40px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.3); transform: scale(0.7); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-width: 400px; }
-        .dnd-modal-title { font-size: 1.8rem; font-weight: 900; color: #008080; margin-bottom: 8px; }
-        .dnd-modal-btn { background: #008080; color: white; border: none; padding: 12px 30px; border-radius: 30px; font-weight: 700; cursor: pointer; }
-
-        /* Utilities */
-        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); border: 4px solid #f0f0f0; transition: transform 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .card:hover { transform: translateY(-5px); border-color: #008080; }
+        .game-title-gradient { background: linear-gradient(135deg, #f2c140 0%, #ffffff 50%, #00f2fe 100%); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 20px rgba(242, 193, 64, 0.4)); display: inline-block; }
+        
+        /* Modern Utilities */
+        .txt-blue { color: #4c97ff; font-weight: 800; }
+        .txt-purple { color: #9966ff; font-weight: 800; }
         .txt-teal { color: #008080; font-weight: 800; }
-        .txt-orange { color: #ffab19; font-weight: 800; }
-        .huge-btn { padding: 15px 30px; border: none; border-radius: 10px; color: white; font-weight: 800; cursor: pointer; font-size: 1.1rem; }
-        
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
-        @keyframes floatSprite { from { transform: translateY(0); } to { transform: translateY(-20px); } }
-        
-        /* Coordinate Experiment */
-        .stage-area { width: 400px; height: 300px; background: #e0f7fa; border-radius: 20px; border: 4px solid #008080; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-        .axis-y { position: absolute; height: 100%; width: 2px; background: rgba(0,128,128,0.3); }
-        .label-val { font-weight: 900; font-size: 1.5rem; color: #008080; }
+        .txt-yellow { color: #f2c140; font-weight: 800; }
+        .txt-green { color: #a8c368; font-weight: 800; }
 
-        /* Builder Blocks */
-        .builder-slot { border: 3px dashed #ccc; border-radius: 10px; min-height: 50px; padding: 5px; margin-bottom: 5px; cursor: pointer; transition: all 0.2s; }
-        .builder-slot:hover { border-color: #008080; background: #f0f9f9; }
-        .builder-slot.correct { border-style: solid; border-color: #4caf50; background: #e8f5e9; }
+        /* Grid Cards */
+        .grid-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; width: 100%; max-width: 900px; }
+        .card { background: white; padding: 25px; border-radius: 20px; box-shadow: 0 8px 15px rgba(0,0,0,0.05); border: 2px solid #f0f0f0; transition: transform 0.3s; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .card-icon { font-size: 3rem; margin-bottom: 15px; }
+        .huge-btn { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(to right, #008080, #f2c140); color: white; text-decoration: none; font-size: 1.5rem; font-weight: 700; padding: 15px 40px; border-radius: 50px; cursor: pointer; border: none; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,128,128,0.3); }
+        .huge-btn:hover { transform: scale(1.05); }
+
+        @keyframes floatSprite { from { transform: translateY(0); } to { transform: translateY(-15px); } }
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+        @keyframes successPop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
+
+        /* Drag & Drop Enhancements */
+        .drag-pool { background: rgba(255,255,255,0.5); padding: 15px; border-radius: 15px; border: 2px dashed #ccc; width: 100%; display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .drop-col { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .drop-header { padding: 10px; border-radius: 10px; font-weight: 800; text-align: center; color: white; }
+        .bg-ai { background: #008080; }
+        .bg-not-ai { background: #ff6b6b; }
+        .drop-target { background: #fff; border: 3px dashed #ddd; border-radius: 15px; min-height: 200px; padding: 15px; display: flex; flex-direction: column; gap: 8px; transition: 0.3s; }
+        .drop-target.active { border-color: #008080; background: #f0fdf4; }
         
-        .huge-btn-scratch { display: inline-flex; align-items: center; justify-content: center; gap: 15px; background: linear-gradient(to right, #008080, #f2c140); color: white; text-decoration: none; font-size: 2.5rem; font-weight: 900; padding: 25px 60px; border-radius: 50px; box-shadow: 0 10px 30px rgba(0,128,128,0.4); transition: transform 0.2s; }
+        /* Input Styles */
+        .modern-input { width: 100%; padding: 12px 20px; border: 2px solid #eee; border-radius: 12px; font-family: 'Fredoka', sans-serif; font-size: 1.1rem; transition: 0.3s; box-sizing: border-box; }
+        .modern-input:focus { border-color: #008080; outline: none; box-shadow: 0 0 10px rgba(0,128,128,0.1); }
+        .submit-btn { background: #008080; color: white; border: none; padding: 12px 30px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,128,128,0.3); }
+
+        .success-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.95); z-index: 100; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-radius: 12px; }
+        .success-overlay.show { display: flex; animation: animate__fadeIn 0.5s; }
+
+        /* Quiz */
+        .quiz-opt { background: white; border: 2px solid #ccc; padding: 15px 20px; border-radius: 15px; font-size: 1.2rem; cursor: pointer; transition: 0.2s; text-align: left; margin-bottom: 10px; width: 100%; max-width: 500px; font-family: 'Fredoka', sans-serif; }
+        .quiz-opt:hover { border-color: #008080; background: #f0fdf4; }
+        .quiz-opt.correct { background: #dcfce7; border-color: #22c55e; }
+        .quiz-opt.wrong { background: #fee2e2; border-color: #ef4444; }
+
+        .draggable { background: #008080; color: white; padding: 10px 20px; border-radius: 12px; cursor: grab; font-weight: bold; font-size: 1.1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); user-select: none; }
+        .draggable.dragging { opacity: 0.5; }
     </style>
 </head>
 <body>
-    <div class="slide-logo-left">
+    <div class="slide-logo-left" id="globalLogoLeft">
         <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/hs/1%20Homepage%20RG/logo%20ruangguru.png" alt="Logo Ruangguru">
         <img src="https://upload.wikimedia.org/wikipedia/commons/f/f9/Lambang_Kabupaten_Dharmasraya.png" alt="Logo Kabupaten Dharmasraya">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQguI0U7hDXQP6UlNo24XCjT5nJKDttC7nSug&s" alt="Logo Disdik Dharmasraya">
+        <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/24f1773d-33d0-4b51-a608-ba820f3c3b9e.png" alt="Logo Dharmasraya Juara">
     </div>
-    <div class="slide-logo-right">
+    <div class="slide-logo-right" id="globalLogoRight">
         <img src="https://cdn-web-2.ruangguru.com/landing-pages/assets/e7d93748-818d-462d-be57-7db1e479cd62.png" alt="Logo Ruangguru Coding">
     </div>
 
-    <div class="presentation-container">
+    <div class="presentation-container" id="mainContainer">
+        
         <!-- Slide 1: Cover -->
         <div class="slide active" id="slide1">
-            <h1 class="cover-title">PERKENALAN KODING BERSAMA SCRATCH</h1>
-            <p class="cover-subtitle">SESI 10: Latihan Melompat (Loop)</p>
-            <div style="font-size: 8rem; animation: floatSprite 2s infinite alternate;">🦘 🚀 ✨</div>
+            <h1 class="cover-title">
+                <div style="line-height: 1.1; text-align: center;">
+                    <span style="font-size: 3rem; color: #fff; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">PROJECT:</span><br>
+                    <span class="game-title-gradient" style="font-size: 6.5rem;">OWL WIKICHATBOT</span>
+                </div>
+            </h1>
+            
+            <div style="display: flex; justify-content: center; align-items: center; gap: 30px; margin: 20px auto; z-index: 3;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Scratchlogo.svg/3840px-Scratchlogo.svg.png" 
+                     alt="Scratch" 
+                     style="height: 100px; width: auto; object-fit: contain; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));">
+                <span style="font-size: 3rem; color: white; font-weight: bold;">+</span>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTysI6tQs62DJ5f3bANwqlpKpU6fgjujV7ZmA&s" 
+                     alt="ML4K" 
+                     style="height: 100px; width: auto; object-fit: contain; background: #008080; padding: 10px; border-radius: 15px; filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));">
+            </div>
+
+            <p class="cover-subtitle">SESI 10: PENGENALAN AI & CHATBOT</p>
         </div>
 
-        <!-- Slide 2: Hari Ini Kita Belajar -->
+        <!-- Slide 2: Review -->
         <div class="slide" id="slide2">
-            <h2 class="agenda-title">Hari Ini Kita Belajar... 🚀</h2>
-            <div style="display: flex; gap: 20px; width: 100%; max-width: 1000px;">
-                <div class="card" style="flex: 1;">
-                    <h3 class="txt-teal" style="font-size: 1.3rem;">📍 1. Koordinat Y</h3>
-                    <p style="font-size: 0.95rem;">Memahami bagaimana angka membuat kita naik (Atas) dan turun (Bawah).</p>
+            <h2 class="agenda-title">Rangkuman Sebelumnya 🛤️</h2>
+            <div class="grid-container" style="max-width: 800px;">
+                <div class="card" style="padding: 30px;">
+                    <div class="card-icon" style="font-size: 4rem;">🧠</div>
+                    <h3 class="txt-teal" style="font-size: 1.8rem;">Evaluasi Model</h3>
+                    <p style="font-size: 1.2rem;">Kita belajar bahwa AI bisa salah tebak dan perlu diperbaiki dataset-nya agar lebih pintar.</p>
                 </div>
-                <div class="card" style="flex: 1;">
-                    <h3 class="txt-orange" style="font-size: 1.3rem;">⬆️ 2. Gerakan Melompat</h3>
-                    <p style="font-size: 0.95rem;">Menyambung Repeat "Naik" dan Repeat "Turun".</p>
-                </div>
-                <div class="card" style="flex: 1;">
-                    <h3 class="txt-teal" style="font-size: 1.3rem;">🧩 3. Efisiensi Kode</h3>
-                    <p style="font-size: 0.95rem;">Membuat gerakan melompat yang halus dengan Repeat.</p>
+                <div class="card" style="padding: 30px;">
+                    <div class="card-icon" style="font-size: 4rem;">💬</div>
+                    <h3 class="txt-purple" style="font-size: 1.8rem;">Respon Teks</h3>
+                    <p style="font-size: 1.2rem;">Menggunakan blok [Say] agar karakter kita bisa membalas dengan kata-kata manis!</p>
                 </div>
             </div>
-            <p style="margin-top: 30px; font-weight: 700; color: #008080; font-size: 1.3rem;">Misi: Membantu karakter melompati rintangan! 🦘</p>
         </div>
 
-        <!-- Slide 3: Mengapa Melompat? -->
+        <!-- Slide 3: Agenda -->
         <div class="slide" id="slide3">
-            <h2 class="agenda-title">Kenapa karakter harus melompat? 🤔</h2>
-            <div style="display: flex; gap: 40px; align-items: center; max-width: 1000px;">
-                <img src="https://media1.giphy.com/media/v1.Y2lkPTZjMDliOTUyY2F0Mzdtb2Y2b293bnMzN3phN2E4MHVmaDlwcnVmb3FkYmtwdWFtZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/euuaA2cwLEUuI/giphy.gif" style="width: 450px; border-radius: 20px; border: 5px solid #008080;">
-                <div style="text-align: left; background: #fff8f0; padding: 30px; border-radius: 25px; border: 4px dashed #ffab19;">
-                    <p style="font-size: 1.5rem; color: #e69916; font-weight: 800; margin: 0;">Super Mario, Dino Run, atau Flappy Bird!</p>
-                    <p style="font-size: 1.2rem; margin-top: 15px; line-height: 1.5;">
-                        Coba bayangkan kalau mereka tidak bisa melompat? Gamenya pasti langsung Game Over! 😱<br><br>
-                        <strong>💡 Melompat itu cuma perlu gerak Naik lalu Turun dengan sangat cepat!</strong>
+            <h2 class="agenda-title">Rencana Kita Hari Ini 🚀</h2>
+            <div class="grid-container" style="max-width: 900px; grid-template-columns: repeat(3, 1fr);">
+                <div class="card" style="padding: 20px;">
+                    <div class="card-icon" style="font-size: 3rem;">🦉</div>
+                    <h4 style="margin: 10px 0;">Konsep AI</h4>
+                    <p style="font-size: 0.95rem;">Mengenal AI, Machine Learning, dan <strong>Pretrained Model</strong>.</p>
+                </div>
+                <div class="card" style="padding: 20px;">
+                    <div class="card-icon" style="font-size: 3rem;">🌍</div>
+                    <h4 style="margin: 10px 0;">AI di Sekitar</h4>
+                    <p style="font-size: 0.95rem;">Melihat contoh nyata AI yang kita gunakan setiap hari.</p>
+                </div>
+                <div class="card" style="padding: 20px;">
+                    <div class="card-icon" style="font-size: 3rem;">🔄</div>
+                    <h4 style="margin: 10px 0;">Alur Chatbot</h4>
+                    <p style="font-size: 0.95rem;">Memahami alur kerja Wikipedia Bot: Input -> Wikipedia -> Output.</p>
+                </div>
+            </div>
+            <div style="margin-top: 40px; background: #e0f2f1; padding: 15px 30px; border-radius: 50px; border: 2px dashed #008080;">
+                <p style="margin: 0; color: #008080; font-weight: bold; font-size: 1.2rem;">Hari ini kita fokus MEMAHAMI konsepnya dulu ya! 💡</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: AI Recall -->
+        <div class="slide" id="slide4">
+            <h2 class="agenda-title">Ayo Mengingat! 🧠</h2>
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 800px;">
+                <div style="font-size: 6rem; margin-bottom: 20px;">🤔✨🤖</div>
+                <p style="font-size: 1.8rem; line-height: 1.4;">
+                    Kemarin kita sudah mempelajari <strong>Machine Learning</strong>. Tapi, apakah kamu tahu apa itu <strong>AI</strong> secara umum?
+                </p>
+                <div style="background: #e0f2f1; padding: 20px 40px; border-radius: 20px; border: 3px dashed #008080; margin-top: 30px;">
+                    <p style="margin: 0; font-size: 1.4rem; font-weight: bold; color: #008080;">Apa menurutmu AI itu?</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: AI Explanation -->
+        <div class="slide" id="slide5">
+            <h2 class="agenda-title">Apa itu AI? 🤖</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
+                <div style="font-size: 10rem; animation: floatSprite 2s infinite alternate;">🤖💡</div>
+                <div style="max-width: 600px; text-align: left;">
+                    <p style="font-size: 1.4rem; line-height: 1.6;">
+                        <strong>AI (Artificial Intelligence)</strong> atau Kecerdasan Buatan adalah teknologi yang membuat mesin/komputer bisa "berpikir" dan bertindak seperti manusia.
+                    </p>
+                    <p style="font-size: 1.2rem; color: #555; background: #f0fdf4; padding: 15px; border-radius: 15px;">
+                        Bayangkan robot yang bisa belajar dari kesalahannya, mengenali wajah temanmu, atau bahkan memenangkan permainan catur!
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 4: Eksperimen Koordinat Y (Interaktif) -->
-        <div class="slide" id="slide4">
-            <h2 class="agenda-title">Eksperimen Koordinat Y 📍</h2>
-            <p style="margin-bottom: 25px;">Klik tombol di bawah untuk melihat bagaimana nilai Y berubah!</p>
-            <div style="display: flex; gap: 40px; align-items: center;">
-                <div class="stage-area">
-                    <div class="axis-y"></div>
-                    <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="experimentCat" style="width: 100px; transition: top 0.3s ease; position: absolute; top: 100px;">
-                    <div style="position: absolute; bottom: 10px; right: 20px;" class="label-val">Y: <span id="yVal">0</span></div>
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 20px;">
-                    <button class="huge-btn" style="background: #4caf50;" onclick="moveExp(10)">change y by 10 <br/> NAIK (+10) ⬆️</button>
-                    <button class="huge-btn" style="background: #f44336;" onclick="moveExp(-10)">change y by -10 <br/> TURUN (-10) ⬇️</button>
-                    <button class="huge-btn" style="background: #008080;" onclick="resetExp()">set y 0 <br/> RESET (0) 🔄</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 5: Analogi Melompat -->
-        <div class="slide solid-teal-bg" id="slide5">
-            <h2 class="agenda-title" style="color: #f2c140;">Analogi: Trampolin 🤸</h2>
-            <div style="display: flex; gap: 50px; align-items: center;">
-                <div style="font-size: 10rem;">🤸</div>
-                <div style="text-align: left; max-width: 600px;">
-                    <div style="background: white; color: #333; padding: 20px; border-radius: 20px; margin-bottom: 20px;">
-                        <h3 style="margin: 0; color: #008080;">1. Tenaga Naik (Power)</h3>
-                        <p>Kaki kita menekan trampolin untuk mendorong ke <b>ATAS</b> (Change Y by Positive).</p>
-                    </div>
-                    <div style="background: white; color: #333; padding: 20px; border-radius: 20px;">
-                        <h3 style="margin: 0; color: #e69916;">2. Gravitasi Turun (Fall)</h3>
-                        <p>Bumi menarik kita kembali ke <b>BAWAH</b> (Change Y by Negative).</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 6: Blok Motion Baru -->
+        <!-- Slide 6: ML Explanation -->
         <div class="slide" id="slide6">
-            <h2 class="agenda-title">Berkenalan dengan Blok: Change Y 🪄</h2>
-            <p style="font-size: 1.2rem; margin-bottom: 40px;">Gunakan blok biru kategori <b>Motion</b> ini untuk naik-turun!</p>
-            <div style="display: flex; gap: 40px;">
-                <div class="card" style="padding: 40px; border-color: #4c97ff;">
-                    <div class="block block-blue" style="margin-bottom: 20px; font-size: 1.5rem;">change y by (10)</div>
-                    <p style="font-weight: 700;">Membuat karakter bergerak ke atas.</p>
+            <h2 class="agenda-title">Apa itu Machine Learning? 🧠</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
+                <div style="max-width: 600px; text-align: left;">
+                    <p style="font-size: 1.4rem; line-height: 1.6;">
+                        <strong>Machine Learning</strong> adalah "cara" AI belajar. Alih-alih diberi perintah kaku, komputer belajar dari <strong>CONTOH (Data)</strong> yang kita berikan.
+                    </p>
+                    <p style="font-size: 1.2rem; color: #555; background: #fff8e1; padding: 15px; border-radius: 15px;">
+                        Sama seperti kalian belajar mengenal buah apel: kalian melihat banyak gambar apel sampai akhirnya tahu ciri-ciri apel itu seperti apa!
+                    </p>
                 </div>
-                <div class="card" style="padding: 40px; border-color: #ff4d4d;">
-                    <div class="block block-blue" style="margin-bottom: 20px; font-size: 1.5rem;">change y by (-10)</div>
-                    <p style="font-weight: 700;">Membuat karakter bergerak ke bawah.</p>
-                </div>
+                <div style="font-size: 10rem; animation: bounce 1s infinite alternate;">📖🍎</div>
             </div>
         </div>
 
-        <!-- Slide 7: Lab Jam 1 (Manual) -->
+        <!-- Slide 7: AI in Daily Life -->
         <div class="slide" id="slide7">
-            <h2 class="agenda-title">Tanpa Loop: Melompat Manual 😫</h2>
-            <div style="display: flex; gap: 30px; width: 100%; max-width: 1050px; align-items: stretch;">
-                <div style="flex: 1; background: #fff8f0; border-radius: 25px; padding: 20px; border: 4px solid #ff4d4d;">
-                    <h3 class="txt-orange">Tumpukan Blok (Lelah...)</h3>
-                    <div style="max-height: 250px; overflow-y: auto; background: white; padding: 10px; border-radius: 10px;">
-                        <div class="block block-blue">change y by 10</div>
-                        <div class="block block-blue">change y by 10</div>
-                        <div class="block block-blue">change y by 10</div>
-                        <div class="block block-blue">change y by 10</div>
-                        <div class="block block-blue">change y by 10</div>
-                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
-                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
-                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
-                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
-                        <div class="block block-blue" style="background:#9966ff">change y by -10</div>
-                    </div>
+            <h2 class="agenda-title">AI di Sekitar Kita 🌍</h2>
+            <div class="grid-container" style="grid-template-columns: repeat(3, 1fr); max-width: 1000px; gap: 15px;">
+                <div class="card" style="padding: 15px;">
+                    <div style="font-size: 3rem;">📺</div>
+                    <h4 class="txt-teal" style="margin: 5px 0;">YouTube</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.3;">AI menyarankan video seru berdasarkan apa yang kamu tonton!</p>
                 </div>
-                <div style="width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
-                    <div class="stage-area" style="width: 250px; height: 350px;">
-                        <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="manualCat" style="width: 100px; position: absolute; bottom: 20px;">
-                    </div>
-                    <button class="huge-btn" style="background: #ff4d4d; width: 100%;" onclick="runJumpManual()">LOMPAT MANUAL! 😫</button>
+                <div class="card" style="padding: 15px;">
+                    <div style="font-size: 3rem;">🖼️</div>
+                    <h4 class="txt-teal" style="margin: 5px 0;">Google Photos</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.3;">AI mengenali wajah temanmu di foto secara otomatis.</p>
+                </div>
+                <div class="card" style="padding: 15px;">
+                    <div style="font-size: 3rem;">⌨️</div>
+                    <h4 class="txt-teal" style="margin: 5px 0;">Autocorrect</h4>
+                    <p style="font-size: 0.85rem; line-height: 1.3;">AI membetulkan ejaanmu yang salah saat mengetik chat.</p>
+                </div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; width: 100%; max-width: 1000px; margin-top: 15px;">
+                <div class="card" style="padding: 10px; flex-direction: row; gap: 15px; text-align: left;">
+                    <div style="font-size: 2rem;">💬</div>
+                    <p style="font-size: 0.85rem; margin: 0;"><strong>Chatbot:</strong> Belajar cara menjawab pertanyaanmu dengan luwes.</p>
+                </div>
+                <div class="card" style="padding: 10px; flex-direction: row; gap: 15px; text-align: left;">
+                    <div style="font-size: 2rem;">🛡️</div>
+                    <p style="font-size: 0.85rem; margin: 0;"><strong>Safety Filter:</strong> Mendeteksi kata-kata yang tidak sopan / berbahaya.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 8: Lab Jam 2 (Repeat) -->
+        <!-- Slide 8: Interactive 1 - Where is AI? -->
         <div class="slide" id="slide8">
-            <h2 class="agenda-title">Dengan Loop: Melompat dengan Repeat 😎</h2>
-            <div style="display: flex; gap: 30px; width: 100%; max-width: 1050px; align-items: stretch;">
-                <div style="flex: 1; background: #f0fdf4; border-radius: 25px; padding: 20px; border: 4px solid #008080;">
-                    <h3 class="txt-teal">Kode Rapi & Halus</h3>
-                    <div style="display: flex; flex-direction: column; gap: 10px; align-items: center;">
-                        <div class="block-repeat" id="repeatUp">
-                            <span style="font-weight: 800;">repeat (10)</span>
-                            <div class="block block-blue" style="margin-left: 20px;">change y by (10)</div>
-                        </div>
-                        <div class="block-repeat" id="repeatDown">
-                            <span style="font-weight: 800;">repeat (10)</span>
-                            <div class="block block-blue" style="margin-left: 20px; background: #ff4d4d;">change y by (-10)</div>
-                        </div>
+            <h2 class="agenda-title">Di Mana AI Digunakan? 🤔</h2>
+            <div style="display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 900px;">
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
+                    <div class="drop-col">
+                        <div class="drop-header bg-ai">Recommendation</div>
+                        <div class="drop-target" data-ans="TikTok For You Page"></div>
+                    </div>
+                    <div class="drop-col">
+                        <div class="drop-header bg-ai">Text AI</div>
+                        <div class="drop-target" data-ans="Google Translate"></div>
+                    </div>
+                    <div class="drop-col">
+                        <div class="drop-header bg-ai">Image AI</div>
+                        <div class="drop-target" data-ans="Face ID"></div>
+                    </div>
+                    <div class="drop-col">
+                        <div class="drop-header bg-ai">Voice AI</div>
+                        <div class="drop-target" data-ans="Siri"></div>
                     </div>
                 </div>
-                <div style="width: 300px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px;">
-                    <div class="stage-area" style="width: 250px; height: 350px;">
-                        <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="repeatCat" style="width: 100px; position: absolute; bottom: 20px;">
-                    </div>
-                    <button class="huge-btn" style="background: #008080; width: 100%;" onclick="runJumpRepeat()">LOMPAT REPEAT! 🔄</button>
+                <div class="drag-pool" id="pool8">
+                    <div class="draggable" draggable="true" data-val="Siri">Siri</div>
+                    <div class="draggable" draggable="true" data-val="Face ID">Face ID</div>
+                    <div class="draggable" draggable="true" data-val="Google Translate">Google Translate</div>
+                    <div class="draggable" draggable="true" data-val="TikTok For You Page">TikTok For You Page</div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 9: Interactive Builder (KLIK-KLIK) -->
+        <!-- Slide 9: AI or Not AI -->
         <div class="slide" id="slide9">
-            <h2 class="agenda-title">🪄 Menyusun Blok Melompat </h2>
-            <p style="margin-bottom: 20px;">Klik blok di bawah dalam urutan yang benar agar kucing bisa melompat!</p>
-            <div style="display: flex; gap: 30px; width: 100%; max-width: 1000px;">
-                <div style="flex: 1; background: #fff; padding: 20px; border-radius: 20px; border: 3px solid #ccc; text-align: left;">
-                    <h4 style="margin-top: 0;">Pilihan Blok:</h4>
-                    <div style="display: flex; flex-direction: column; gap: 10px;">
-                        <div class="block block-orange" style="cursor:pointer" onclick="addBlock('repeat')">repeat (10)</div>
-                        <div class="block block-blue" style="cursor:pointer" onclick="addBlock('up')">change y by (10)</div>
-                        <div class="block block-blue" style="cursor:pointer; background: #ff4d4d;" onclick="addBlock('down')">change y by (-10)</div>
-                    </div>
-                    <button class="huge-btn" style="background: #666; width: 100%; margin-top: 20px;" onclick="resetBuilder()">MULAI LAGI 🔄</button>
+            <h2 class="agenda-title">Aktivitas 1 — AI or Not AI? 🕵️‍♂️</h2>
+            <p style="margin-bottom: 20px; font-weight: 600;">Geser contoh di bawah ke kotak yang benar!</p>
+            <div style="display: flex; gap: 20px; width: 100%; max-width: 1000px; height: 350px;">
+                <div class="drop-col">
+                    <div class="drop-header bg-ai">TEKNOLOGI AI 🤖</div>
+                    <div class="drop-target" data-type="ai" style="min-height: 280px; flex-wrap: wrap; flex-direction: row; justify-content: center; align-content: flex-start;"></div>
                 </div>
-                <div style="flex: 1.5; background: #f9f9f9; padding: 20px; border-radius: 20px; border: 4px dashed #008080;">
-                    <h4 style="margin-top: 0;">Urutan Melompat (Wajib 4 Langkah):</h4>
-                    <div id="slots">
-                        <div class="builder-slot" id="slot0">1. ???</div>
-                        <div class="builder-slot" id="slot1">2. ???</div>
-                        <div class="builder-slot" id="slot2">3. ???</div>
-                        <div class="builder-slot" id="slot3">4. ???</div>
-                    </div>
-                    <button class="huge-btn" id="runBuilderBtn" style="background: #ffab19; width: 100%; margin-top: 15px;" onclick="checkBuilder()" disabled>TEST LOMPATAN! 🧪</button>
+                <div class="drop-col">
+                    <div class="drop-header bg-not-ai">BUKAN AI ❌</div>
+                    <div class="drop-target" data-type="not-ai" style="min-height: 280px; flex-wrap: wrap; flex-direction: row; justify-content: center; align-content: flex-start;"></div>
                 </div>
-                <div style="flex: 1; display: flex; align-items: center; justify-content: center;">
-                    <div class="stage-area" style="width: 200px; height: 300px;">
-                        <img src="https://images.seeklogo.com/logo-png/43/2/scratch-cat-logo-png_seeklogo-431721.png" id="builderCat" style="width: 80px; position: absolute; bottom: 20px;">
-                    </div>
-                </div>
+            </div>
+            <div class="drag-pool" id="pool9" style="margin-top: 15px;">
+                <div class="draggable" draggable="true" data-cat="ai">YouTube Recommendation</div>
+                <div class="draggable" draggable="true" data-cat="not-ai">Kalkulator (5+7)</div>
+                <div class="draggable" draggable="true" data-cat="ai">Google Translate</div>
+                <div class="draggable" draggable="true" data-cat="not-ai">Saklar Lampu</div>
+                <div class="draggable" draggable="true" data-cat="ai">Face Unlock</div>
+                <div class="draggable" draggable="true" data-cat="not-ai">Jam Dinding</div>
             </div>
         </div>
 
-        <!-- Slide 10: Latihan Grid 1 (Kanguru 1) -->
+        <!-- Slide 10: Sort the AI -->
         <div class="slide" id="slide10">
-            <h2 class="agenda-title">Latihan 1: Kanguru Melompat 🦘</h2>
-            <p style="margin-bottom: 20px;">Gunakan REPEAT agar Kanguru sampai ke Bendera 🚩!</p>
-            <div style="display: flex; gap: 40px; align-items: center; justify-content: center;">
-                <div class="control-panel" style="background: #fff8f0; padding: 25px; border-radius: 25px; border: 4px solid #ffab19;">
-                    <div style="font-weight: 800; margin-bottom: 10px;">Arah: 
-                        <select id="dir10" class="repeat-input" style="width: 100px;">
-                            <option value="right">➡️ Kanan</option>
-                            <option value="up">⬆️ Atas</option>
-                        </select>
-                    </div>
-                    <div style="font-weight: 800; margin-bottom: 20px;">Ulangi: 
-                        <input type="number" id="num10" class="repeat-input" value="3" min="1" max="4">
-                    </div>
-                    <button class="huge-btn" style="background: #ffab19; width: 100%;" onclick="gameAction(10)">JALAN! 🦘</button>
+            <h2 class="agenda-title" style="margin-bottom: 15px;">Aktivitas 2 — Sort the AI 🧩</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 950px;">
+                <div class="drop-col">
+                    <div class="drop-header" style="background:#4c97ff; padding: 8px; font-size: 0.9rem;">Text AI</div>
+                    <div class="drop-target" data-ans="Google Translate" style="min-height: 120px; padding: 10px;"></div>
                 </div>
-                <div id="grid10" style="display: grid; grid-template-columns: repeat(4, 70px); gap: 5px; background: #eee; padding: 10px; border-radius: 15px;"></div>
+                <div class="drop-col">
+                    <div class="drop-header" style="background:#9966ff; padding: 8px; font-size: 0.9rem;">Voice AI</div>
+                    <div class="drop-target" data-ans="Siri" style="min-height: 120px; padding: 10px;"></div>
+                </div>
+                <div class="drop-col">
+                    <div class="drop-header" style="background:#f2c140; color:#333; padding: 8px; font-size: 0.9rem;">Image AI</div>
+                    <div class="drop-target" data-ans="Face ID" style="min-height: 120px; padding: 10px;"></div>
+                </div>
+                <div class="drop-col">
+                    <div class="drop-header" style="background:#ff6b6b; padding: 8px; font-size: 0.9rem;">Recommendation</div>
+                    <div class="drop-target" data-ans="YouTube Recommendation" style="min-height: 120px; padding: 10px;"></div>
+                </div>
+                <div class="drop-col">
+                    <div class="drop-header" style="background:#008080; padding: 8px; font-size: 0.9rem;">Safety AI</div>
+                    <div class="drop-target" data-ans="Spam Filter" style="min-height: 120px; padding: 10px;"></div>
+                </div>
+                <div class="drop-col">
+                    <div class="drop-header" style="background:#444; padding: 8px; font-size: 0.9rem;">Search AI</div>
+                    <div class="drop-target" data-ans="Wikipedia Bot" style="min-height: 120px; padding: 10px;"></div>
+                </div>
+            </div>
+            <div class="drag-pool" id="pool10" style="margin-top: 15px; scale: 0.85;">
+                <div class="draggable" draggable="true" data-val="Google Translate" style="font-size: 0.9rem; padding: 6px 12px;">Google Translate</div>
+                <div class="draggable" draggable="true" data-val="Siri" style="font-size: 0.9rem; padding: 6px 12px;">Siri</div>
+                <div class="draggable" draggable="true" data-val="Face ID" style="font-size: 0.9rem; padding: 6px 12px;">Face ID</div>
+                <div class="draggable" draggable="true" data-val="YouTube Recommendation" style="font-size: 0.9rem; padding: 6px 12px;">YouTube Recommendation</div>
+                <div class="draggable" draggable="true" data-val="Spam Filter" style="font-size: 0.9rem; padding: 6px 12px;">Spam Filter</div>
+                <div class="draggable" draggable="true" data-val="Wikipedia Bot" style="font-size: 0.9rem; padding: 6px 12px;">Wikipedia Bot</div>
             </div>
         </div>
 
-        <!-- Slide 11: Latihan Grid 2 (Lompat Lubang) -->
+        <!-- Slide 11: AI Detective -->
         <div class="slide" id="slide11">
-            <h2 class="agenda-title">Latihan 2: Awas Ada Lubang! 🕳️</h2>
-            <p style="margin-bottom: 20px;">Kanguru harus melompat ke atas melewati lubang 🕳️!</p>
-            <div style="display: flex; gap: 40px; align-items: center;">
-                <div class="control-panel" style="background: #f0f7ff; padding: 25px; border-radius: 25px; border: 4px solid #4c97ff;">
-                    <button class="huge-btn" style="background: #4c97ff; width: 100%; margin-bottom: 10px;" onclick="gameJump(11)">LONCAT! 🚀</button>
-                    <button class="huge-btn" style="background: #ffab19; width: 100%;" onclick="gameAction(11, 'right', 1)">JALAN KANAN ➡️</button>
-                </div>
-                <div id="grid11" style="display: grid; grid-template-columns: repeat(4, 70px); gap: 5px; background: #eee; padding: 10px; border-radius: 15px; border: 2px solid #4c97ff;"></div>
-            </div>
-        </div>
-
-        <!-- Slide 12: Latihan Grid 3 (Super Kanguru) -->
-        <div class="slide" id="slide12" style="background: #f0fdf4;">
-            <h2 class="agenda-title">Latihan 3: Misi Terakhir! 🏁</h2>
-            <p style="margin-bottom: 20px;">Kanguru harus melompat dan melompat! <b>WAJIB REPEAT!</b></p>
-            <div style="display: flex; gap: 40px; align-items: center;">
-                <div id="grid12" style="display: grid; grid-template-columns: repeat(4, 70px); gap: 5px; background: #dcfce7; padding: 10px; border-radius: 15px; border: 2px solid #a8c368;"></div>
-                <div class="control-panel" style="background: white; padding: 25px; border-radius: 25px; border: 4px solid #a8c368;">
-                    <div style="font-weight: 800; margin-bottom: 10px;">Lompat Sejauh: 
-                        <input type="number" id="num12" class="repeat-input" value="3" min="1" max="4">
+            <h2 class="agenda-title" style="margin-bottom: 15px;">Aktivitas 3 — AI Detective 🔍</h2>
+            <div class="card" style="max-width: 700px; width: 100%; padding: 25px; position: relative;">
+                <div id="detectiveForm">
+                    <p style="font-size: 1.2rem; margin-bottom: 15px; font-weight: 600;">Coba analisis aplikasi yang sering kamu pakai!</p>
+                    <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; text-align: left;">
+                        <div>
+                            <label style="font-weight: bold; display: block; margin-bottom: 3px; font-size: 0.9rem;">1. Nama Aplikasi:</label>
+                            <input type="text" class="modern-input" style="padding: 10px 15px; font-size: 1rem;" placeholder="Contoh: TikTok, Instagram...">
+                        </div>
+                        <div>
+                            <label style="font-weight: bold; display: block; margin-bottom: 3px; font-size: 0.9rem;">2. Fitur AI yang digunakan:</label>
+                            <input type="text" class="modern-input" style="padding: 10px 15px; font-size: 1rem;" placeholder="Contoh: Rekomendasi video, Filter wajah...">
+                        </div>
+                        <div>
+                            <label style="font-weight: bold; display: block; margin-bottom: 3px; font-size: 0.9rem;">3. Apa yang dilakukan AI di situ?</label>
+                            <textarea class="modern-input" style="height: 70px; resize: none; padding: 10px 15px; font-size: 1rem;" placeholder="Ceritakan apa yang AI lakukan..."></textarea>
+                        </div>
+                        <button class="submit-btn" style="padding: 10px 25px;" onclick="submitDetective()">Kirim Laporan Detektif! 🚀</button>
                     </div>
-                    <button class="huge-btn" style="background: #a8c368; width: 100%; color: white;" onclick="gameAction(12, 'right', document.getElementById('num12').value)">MAJU JAUH! 🦘</button>
+                </div>
+                <div class="success-overlay" id="detectiveSuccess">
+                    <div style="font-size: 4rem; margin-bottom: 10px;">🕵️‍♂️✨✅</div>
+                    <h2 class="txt-teal" style="font-size: 2rem;">LAPORAN DITERIMA!</h2>
+                    <p style="font-size: 1.2rem;">Luar biasa! Kamu sudah memahami cara kerja AI di sekitarmu.</p>
+                    <button class="submit-btn" style="background: #ccc;" onclick="resetDetective()">Isi Lagi</button>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 13: Buka Scratch -->
+        <!-- Slide 12: Human vs AI -->
+        <div class="slide" id="slide12">
+            <h2 class="agenda-title" style="margin-bottom: 15px;">Aktivitas 4 — Human vs AI 🆚</h2>
+            <div style="background: #fff3e0; padding: 10px 25px; border-radius: 12px; border-left: 5px solid #ff9800; margin-bottom: 15px; max-width: 900px;">
+                <p style="margin: 0; font-size: 1rem; color: #e65100;"><strong>MISI:</strong> Kelompokkan cara kerja Manusia dan Wikipedia Bot. Geser teks ke kolom yang tepat!</p>
+            </div>
+            <div style="display: flex; gap: 15px; width: 100%; max-width: 1000px; height: 240px;">
+                <div class="drop-col">
+                    <div class="drop-header" style="background: #2196f3; padding: 8px;">MANUSIA 👱‍♂️</div>
+                    <div class="drop-target" data-role="human" style="min-height: 180px; flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: flex-start; padding: 10px; gap: 5px;"></div>
+                </div>
+                <div class="drop-col">
+                    <div class="drop-header" style="background: #008080; padding: 8px;">WIKIPEDIA BOT 🤖</div>
+                    <div class="drop-target" data-role="bot" style="min-height: 180px; flex-direction: row; flex-wrap: wrap; justify-content: center; align-content: flex-start; padding: 10px; gap: 5px;"></div>
+                </div>
+            </div>
+            <div class="drag-pool" id="pool12" style="margin-top: 10px; scale: 0.9;">
+                <div class="draggable" draggable="true" data-role="human" style="padding: 6px 12px; font-size: 0.9rem;">Baca Buku</div>
+                <div class="draggable" draggable="true" data-role="bot" style="padding: 6px 12px; font-size: 0.9rem;">Cari Data Wikipedia</div>
+                <div class="draggable" draggable="true" data-role="human" style="padding: 6px 12px; font-size: 0.9rem;">Pilih Info Penting</div>
+                <div class="draggable" draggable="true" data-role="bot" style="padding: 6px 12px; font-size: 0.9rem;">Ringkasan Otomatis</div>
+                <div class="draggable" draggable="true" data-role="human" style="padding: 6px 12px; font-size: 0.9rem;">Berpikir Kritis</div>
+                <div class="draggable" draggable="true" data-role="bot" style="padding: 6px 12px; font-size: 0.9rem;">Butuh Instruksi</div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Design Helper -->
         <div class="slide" id="slide13">
-            <h2 class="agenda-title">Misi Melompat di Scratch! 🚀</h2>
-            <div style="text-align: center;">
-                <img src="https://media0.giphy.com/avatars/scratchfoundation/TRGiyW3EqeCF.GIF" style="width: 150px; margin-bottom: 30px;">
-                <br>
-                <a href="https://scratch.mit.edu" target="_blank" class="huge-btn-scratch">👉 BUKA SCRATCH DI SINI 👈</a>
-                <p style="font-size: 1.2rem; color: #555; margin-top: 30px;">Mari kita buat animasi melompat kita sendiri!</p>
-            </div>
-        </div>
-
-        <!-- Slide 14: Ringkasan -->
-        <div class="slide" id="slide14">
-            <h2 class="agenda-title">Apa yang Kita Pelajari? 📝</h2>
-            <div style="display: flex; flex-direction: column; gap: 20px; width: 100%; max-width: 800px;">
-                <div class="card" style="flex-direction: row; gap: 20px; text-align: left;">
-                    <div style="font-size: 3rem;">📍</div>
-                    <div><h4 style="margin:0">Koordinat Y</h4><p style="margin:0">Nilai (+) ke Atas, Nilai (-) ke Bawah.</p></div>
+            <h2 class="agenda-title">Design Your AI Helper 🎨</h2>
+            <div style="display: flex; gap: 30px; width: 100%; max-width: 1000px;">
+                <!-- Left: Example -->
+                <div class="card" style="flex: 1; border: 3px solid #008080; background: #f0fdf4; padding: 25px; position: relative; overflow: hidden;">
+                    <div style="position: absolute; top: -10px; right: -10px; background: #008080; color: white; padding: 10px 20px; transform: rotate(15deg); font-weight: bold;">CONTOH</div>
+                    <div style="font-size: 4rem; margin-bottom: 10px;">🦉💡</div>
+                    <h3 class="txt-teal" style="margin: 0 0 15px 0;">StudyBot 3000</h3>
+                    <div style="text-align: left; font-size: 1rem; display: flex; flex-direction: column; gap: 8px;">
+                        <p><strong>🌟 Membantu:</strong> Menjelaskan PR Matematika</p>
+                        <p><strong>🧩 Tipe AI:</strong> Text & Calculation AI</p>
+                        <p><strong>⌨️ Input:</strong> "Apa itu Pythagoras?"</p>
+                        <p><strong>📢 Output:</strong> Rumus segitiga siku-siku...</p>
+                    </div>
                 </div>
-                <div class="card" style="flex-direction: row; gap: 20px; text-align: left;">
-                    <div style="font-size: 3rem;">🦘</div>
-                    <div><h4 style="margin:0">Melompat = Gabungan Loop</h4><p style="margin:0">Repeat Naik digabung dengan Repeat Turun.</p></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 15: Kuis -->
-        <div class="slide solid-teal-bg" id="slide15">
-            <h2 class="agenda-title" style="color: #f2c140;">Waktunya Kuis! ⚡</h2>
-            <div style="font-size: 8rem; margin-bottom: 20px; animation: bounce 1s infinite alternate;">🏆</div>
-            <p style="font-size: 1.8rem; text-align: center;">Mari kita ulas apa itu Loop bersama-sama!</p>
-        </div>
-
-        <!-- Slide 16: Feedback -->
-        <div class="slide" id="slide16">
-            <h2 class="agenda-title" style="margin-bottom: 15px;">Bagaimana Kelas Hari Ini? 💖</h2>
-            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%; max-width: 900px;">
-                <div style="position: relative; width: 300px; height: 300px;">
-                    <div style="position: absolute; top: 20px; left: 20px; font-size: 3rem; animation: floatSprite 2s infinite alternate;">💖</div>
-                    <img src="https://uob-1328237036.cos.ap-singapore.myqcloud.com//file-uploader/images/756d9713-87b5-4ec4-ae39-9f2352b8e280.png" style="width: 250px; animation: bounce 1s infinite alternate;">
-                </div>
-                <div style="background: white; border-radius: 20px; padding: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.1); border: 2px solid #eee; text-align: center;">
-                    <h3 style="color: #008080;">Pindai di Sini!</h3>
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://bit.ly/feedback_class_dms" style="width: 150px; border: 4px solid #333; margin: 15px 0;">
-                    <div style="background: #e0f2f1; padding: 10px 20px; border-radius: 30px;">
-                        <a href="http://bit.ly/feedback_class_dms" target="_blank" style="color: #008080; font-weight: bold; text-decoration: none;">bit.ly/feedback_class_dms</a>
+                <!-- Right: Form -->
+                <div class="card" style="flex: 1.2; padding: 25px; position: relative;">
+                    <div id="helperForm">
+                        <h4 style="margin: 0 0 15px 0; font-size: 1.3rem;">Rancang AI Milikmu:</h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px; text-align: left;">
+                            <input type="text" class="modern-input" placeholder="Nama AI-mu...">
+                            <input type="text" class="modern-input" placeholder="Membantu orang untuk...">
+                            <input type="text" class="modern-input" placeholder="Jenis AI (Text/Image/Voice/dll)...">
+                            <input type="text" class="modern-input" placeholder="Contoh Pertanyaan (Input)...">
+                            <input type="text" class="modern-input" placeholder="Contoh Jawaban (Output)...">
+                            <button class="submit-btn" onclick="submitHelper()">Simpan Rancangan! ✨</button>
+                        </div>
+                    </div>
+                    <div class="success-overlay" id="helperSuccess">
+                        <div style="font-size: 5rem; margin-bottom: 15px;">🚀✨🏆</div>
+                        <h3 class="txt-teal">RANCANGAN HEBAT!</h3>
+                        <p style="font-size: 1.1rem; padding: 0 20px;"> Baiklah! Selamat, kamu sudah paham cara merancang kecerdasan buatan.</p>
+                        <button class="submit-btn" style="background: #ccc;" onclick="resetHelper()">Ubah Desain</button>
                     </div>
                 </div>
             </div>
         </div>
 
+        <!-- Slide 14: Dataset Reminder -->
+        <div class="slide" id="slide14">
+            <h2 class="agenda-title">Ingat Tentang Dataset? 📊</h2>
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 850px;">
+                <div style="font-size: 10rem;">🗂️✨🤖</div>
+                <p style="font-size: 1.5rem; line-height: 1.6;">
+                    Kita sudah pernah latihan membuat dataset (kata baik & buruk). Kita melakukan itu supaya kalian paham kalau <strong>AI belajar dari data yang kita beri.</strong>
+                </p>
+                <div style="background: #f0fdf4; padding: 20px; border-radius: 20px; border: 2px solid #a8c368; margin-top: 20px;">
+                    <p style="margin: 0; color: #15803d; font-weight: bold;">Tanpa data, AI tidak bisa tahu apa-apa!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Pretrained Model -->
+        <div class="slide" id="slide15">
+            <h2 class="agenda-title">Apa itu Pretrained Model? 🧠</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
+                <div style="max-width: 500px; text-align: left;">
+                    <p style="font-size: 1.4rem;">
+                        <strong>Pretrained Model</strong> adalah model AI yang SUDAH dilatih oleh orang lain atau perusahaan besar.
+                    </p>
+                    <div style="background: #fff8e1; padding: 20px; border-radius: 15px; margin-top: 20px;">
+                        <p style="margin: 0; font-size: 1.1rem; color: #856404;">
+                            Kita tidak perlu kasih ribuan contoh lagi, kita bisa langsung menggunakannya!
+                        </p>
+                    </div>
+                </div>
+                <div class="card" style="background: #e0f2f1; border-color: #008080;">
+                    <p style="font-size: 1.2rem;">Sama seperti kita beli <strong>roti yang sudah jadi</strong>, alih-alih membuat tepung dan memanggangnya dari awal!</p>
+                    <div style="font-size: 4rem;">🥖✅</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 16: Interactive 3 - Training Type -->
+        <div class="slide" id="slide16">
+            <h2 class="agenda-title">Ayo Cocokkan! 🧩</h2>
+            <div style="display: flex; flex-direction: column; gap: 30px; width: 100%; max-width: 800px;">
+                <div class="card" style="text-align: left; align-items: flex-start; width: 100%;">
+                    <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                        <div class="drop-zone drop-target" data-ans="Trained by us" style="width: 200px; min-height: 50px; margin: 0; padding: 10px; border: 3px dashed #ccc; border-radius: 10px;">Drop Here</div>
+                        <span>berarti kita memberi contoh dulu, baru AI belajar dari kita.</span>
+                    </div>
+                </div>
+                <div class="card" style="text-align: left; align-items: flex-start; width: 100%;">
+                    <div style="display: flex; align-items: center; gap: 10px; width: 100%;">
+                        <div class="drop-zone drop-target" data-ans="Pre-trained" style="width: 200px; min-height: 50px; margin: 0; padding: 10px; border: 3px dashed #ccc; border-radius: 10px;">Drop Here</div>
+                        <span>berarti AI sudah siap, jadi kita bisa langsung pakai.</span>
+                    </div>
+                </div>
+                <div class="drag-pool" id="pool16">
+                    <div class="draggable" draggable="true" data-val="Trained by us">Trained by us</div>
+                    <div class="draggable" draggable="true" data-val="Pre-trained">Pre-trained</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 17: WikiBot Alur -->
+        <div class="slide" id="slide17">
+            <h2 class="agenda-title">Alur Kerja WikiBot 🦉</h2>
+            <div style="display: flex; gap: 20px; align-items: center; justify-content: center; width: 100%;">
+                <div class="card" style="flex:1;">
+                    <div class="card-icon">⌨️</div>
+                    <h4 style="margin: 10px 0;">1. Input</h4>
+                    <p style="font-size: 0.9rem;">Siswa bertanya: "What is Mars?"</p>
+                </div>
+                <div style="font-size: 2rem;">➡️</div>
+                <div class="card" style="flex:1;">
+                    <div class="card-icon">🔍</div>
+                    <h4 style="margin: 10px 0;">2. Wikipedia</h4>
+                    <p style="font-size: 0.9rem;">AI mencari ringkasan di Wikipedia.</p>
+                </div>
+                <div style="font-size: 2rem;">➡️</div>
+                <div class="card" style="flex:1;">
+                    <div class="card-icon">💬</div>
+                    <h4 style="margin: 10px 0;">3. Output</h4>
+                    <p style="font-size: 0.9rem;">Chatbot menjawab hasil pencarian.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 18: Project Demo -->
+        <div class="slide" id="slide18">
+            <h2 class="agenda-title" style="margin-bottom: 15px;">Mari Kita Lihat Hasilnya! 🎬</h2>
+            <div style="background: #f0f0f0; border: 4px dashed #008080; border-radius: 20px; width: 100%; max-width: 600px; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                <div style="position: absolute; top: 10px; left: 10px; font-size: 2rem; z-index: 2;">🦉📱✨</div>
+                <img src="https://cdn-web.ruangguru.com/file-uploader/cc4c03e8-7283-4b53-a987-76668badbcea.gif" style="width: 100%; height: 100%; object-fit: contain;">
+            </div>
+            <p style="margin-top: 10px; font-size: 1.1rem;">Siswa akan bisa bertanya apa saja ke burung hantu pintar kita!</p>
+        </div>
+
+        <!-- Slide 19: Quiz -->
+        <div class="slide solid-teal-bg" id="slide19">
+            <h2 class="agenda-title" style="color: #f2c140; margin-bottom: 15px;">Kuis Kilat! ⏱️</h2>
+            <div style="background: white; color: #333; padding: 25px; border-radius: 20px; width: 100%; max-width: 700px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
+                <h3 id="q-text" style="font-size: 1.4rem; margin-top: 0; color: #008080; line-height: 1.3; margin-bottom: 20px;">1. Apa perbedaan Pretrained Model dengan model yang kita latih sendiri?</h3>
+                <div id="q-options" style="display: flex; flex-direction: column; gap: 10px;">
+                    <button class="quiz-opt" onclick="checkQuiz(this, false)" style="padding: 12px 20px; font-size: 1.1rem;">A. Pretrained model lebih bodoh</button>
+                    <button class="quiz-opt" onclick="checkQuiz(this, true)" style="padding: 12px 20px; font-size: 1.1rem;">B. Pretrained model sudah siap pakai tanpa latihan lagi</button>
+                    <button class="quiz-opt" onclick="checkQuiz(this, false)" style="padding: 12px 20px; font-size: 1.1rem;">C. Tidak ada perbedaannya</button>
+                </div>
+                <div id="q-feedback" style="margin-top: 15px; font-weight: bold; font-size: 1.2rem; min-height: 30px; text-align: center;"></div>
+                <div style="display: flex; justify-content: center; margin-top: 10px;">
+                    <button id="q-next" class="huge-btn" style="display: none; padding: 10px 30px; font-size: 1.1rem;" onclick="nextQuiz()">Soal Berikutnya ➜</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 20: Summary -->
+        <div class="slide" id="slide20">
+            <h2 class="agenda-title">Ringkasan Hari Ini 📝</h2>
+            <div class="grid-container" style="max-width: 1000px; grid-template-columns: repeat(2, 1fr); gap: 25px;">
+                <div class="card" style="padding: 30px; border-left: 12px solid #008080; align-items: flex-start; text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="font-size: 4rem;">🤖</div>
+                        <div>
+                            <h4 class="txt-teal" style="margin: 0; font-size: 1.5rem;">AI & ML</h4>
+                            <p style="font-size: 1.1rem; margin: 8px 0 0; color: #555;">Komputer cerdas yang belajar dari contoh data.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 30px; border-left: 12px solid #f2c140; align-items: flex-start; text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="font-size: 4rem;">🥖</div>
+                        <div>
+                            <h4 class="txt-yellow" style="margin: 0; font-size: 1.5rem;">Pretrained</h4>
+                            <p style="font-size: 1.1rem; margin: 8px 0 0; color: #555;">Model siap pakai yang sudah pintar tanpa harus dilatih lagi.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 30px; border-left: 12px solid #4c97ff; align-items: flex-start; text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="font-size: 4rem;">🔍</div>
+                        <div>
+                            <h4 class="txt-blue" style="margin: 0; font-size: 1.5rem;">AI di Sekitar</h4>
+                            <p style="font-size: 1.1rem; margin: 8px 0 0; color: #555;">Mulai dari YouTube, TikTok, hingga Google Translate.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="padding: 30px; border-left: 12px solid #9966ff; align-items: flex-start; text-align: left;">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="font-size: 4rem;">🦉</div>
+                        <div>
+                            <h4 class="txt-purple" style="margin: 0; font-size: 1.5rem;">WikiBot Alur</h4>
+                            <p style="font-size: 1.1rem; margin: 8px 0 0; color: #555;">Mencari informasi otomatis dari Wikipedia secara cerdas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 21: Feedback -->
+        <div class="slide" id="slide21">
+            <h2 class="agenda-title" style="margin-bottom: 10px;">Bagaimana Kelas Hari Ini? 💖</h2>
+            <div style="display: flex; gap: 30px; align-items: center; justify-content: center; width: 100%; max-width: 950px; position: relative;">
+                <div id="feedbackForm" style="display: flex; gap: 30px; width: 100%; align-items: center;">
+                    <div style="flex: 1; text-align: center;">
+                        <div style="font-size: 8rem; animation: bounce 2s infinite alternate;">💖✨</div>
+                        <p style="font-size: 1.4rem; color: #555; font-weight: 600; margin-top: 10px;">Bantu kami menjadi lebih baik dengan mengisi form feedback!</p>
+                    </div>
+                    <div style="background: white; border-radius: 25px; padding: 30px; box-shadow: 0 15px 40px rgba(0,0,0,0.1); border: 2px solid #eee; text-align: center; width: 100%; max-width: 400px;">
+                        <h3 style="color: #008080; margin: 0 0 20px 0; font-size: 1.8rem;">Scan QR Code</h3>
+                        <div style="width: 160px; height: 160px; border: 4px solid #333; border-radius: 20px; padding: 10px; margin: 0 auto 20px auto; background: white;">
+                            <img src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=http://bit.ly/feedback_class_dms" style="width: 100%;">
+                        </div>
+                        <a href="http://bit.ly/feedback_class_dms" target="_blank" class="huge-btn" style="padding: 12px 30px; font-size: 1.2rem;">Kirim Feedback ➜</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
         <button class="nav-button" id="prevBtn" onclick="changeSlide(-1)" disabled>&#9664;</button>
         <button class="nav-button" id="nextBtn" onclick="changeSlide(1)">&#9658;</button>
     </div>
 
-    <!-- Modals -->
-    <div class="dnd-modal-overlay" id="globalSuccessModal">
-        <div class="dnd-modal">
-            <span id="modalEmoji" style="font-size: 4rem; display: block; margin-bottom: 12px;">🎉</span>
-            <div class="dnd-modal-title" id="modalTitle">Hebat!</div>
-            <p id="modalMsg"></p>
-            <button class="dnd-modal-btn" onclick="closeModal()">Lanjutkan ➜</button>
-        </div>
-    </div>
-
     <script>
         const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
         let currentSlide = 0;
 
         function showSlide(index, direction = 'next') {
-            slides.forEach(s => s.classList.remove('active', 'is-next', 'is-exiting'));
-            slides[index].classList.add('active');
-            currentSlide = index;
-            document.getElementById('prevBtn').disabled = index === 0;
-            document.getElementById('nextBtn').disabled = index === slides.length - 1;
-            if (index >= 9 && index <= 11) initGrid(index + 1);
-        }
-
-        function changeSlide(d) {
-            const n = currentSlide + d;
-            if (n >= 0 && n < slides.length) showSlide(n, d === 1 ? 'next' : 'prev');
-        }
-
-        // Slide 4: Coord Exp
-        let yPos = 100;
-        function moveExp(val) {
-            yPos -= val; // Higher Y = Lower Top
-            if (yPos < 20) yPos = 20; if (yPos > 200) yPos = 200;
-            document.getElementById('experimentCat').style.top = yPos + 'px';
-            document.getElementById('yVal').innerText = (100 - yPos);
-        }
-        function resetExp() { yPos = 100; moveExp(0); }
-
-        // Slide 7 & 8: Jump Lab
-        async function runJumpManual() {
-            const cat = document.getElementById('manualCat');
-            for (let i = 0; i < 5; i++) { cat.style.bottom = (20 + (i+1)*15) + 'px'; await new Promise(r=>setTimeout(r,150)); }
-            for (let i = 5; i > 0; i--) { cat.style.bottom = (20 + (i-1)*15) + 'px'; await new Promise(r=>setTimeout(r,150)); }
-        }
-        async function runJumpRepeat() {
-            const cat = document.getElementById('repeatCat');
-            const bUp = document.getElementById('repeatUp');
-            const bDown = document.getElementById('repeatDown');
-            bUp.classList.add('highlight-block');
-            for (let i = 0; i < 10; i++) { cat.style.bottom = (20 + (i+1)*10) + 'px'; await new Promise(r=>setTimeout(r,50)); }
-            bUp.classList.remove('highlight-block');
-            bDown.classList.add('highlight-block');
-            for (let i = 10; i > 0; i--) { cat.style.bottom = (20 + (i-1)*10) + 'px'; await new Promise(r=>setTimeout(r,50)); }
-            bDown.classList.remove('highlight-block');
-        }
-
-        // Slide 9: Builder
-        let chosen = [];
-        function addBlock(type) {
-            if (chosen.length >= 4) return;
-            const labels = { repeat: 'repeat (10)', up: 'change y by (10)', down: 'change y by (-10)' };
-            document.getElementById('slot' + chosen.length).innerText = labels[type];
-            document.getElementById('slot' + chosen.length).classList.add('correct');
-            chosen.push(type);
-            if (chosen.length === 4) document.getElementById('runBuilderBtn').disabled = false;
-        }
-        function resetBuilder() {
-            chosen = [];
-            for (let i=0; i<4; i++) { 
-                document.getElementById('slot' + i).innerText = (i+1) + '. ???';
-                document.getElementById('slot' + i).classList.remove('correct');
-            }
-            document.getElementById('runBuilderBtn').disabled = true;
-        }
-        async function checkBuilder() {
-            const correctOrder = ['repeat', 'up', 'repeat', 'down'];
-            const cat = document.getElementById('builderCat');
-            if (JSON.stringify(chosen) === JSON.stringify(correctOrder)) {
-                for (let i=0;i<10;i++){cat.style.bottom=(20+(i+1)*8)+'px';await new Promise(r=>setTimeout(r,30));}
-                for (let i=10;i>0;i--){cat.style.bottom=(20+(i-1)*8)+'px';await new Promise(r=>setTimeout(r,30));}
-                alertModal("🎉 Hebat!", "Lompatan sempurna! Kodenya sudah benar.");
+            if (index === currentSlide && slides[index].classList.contains('active')) return;
+            const oldSlide = slides[currentSlide];
+            const newSlide = slides[index];
+            slides.forEach(slide => { 
+                slide.classList.remove('active', 'is-next', 'is-exiting'); 
+                slide.style.zIndex = 1; 
+            });
+            if (direction === 'next') {
+                oldSlide.style.zIndex = 10;
+                newSlide.style.zIndex = 11;
+                newSlide.classList.add('is-next');
+                requestAnimationFrame(() => { 
+                    newSlide.classList.add('active'); 
+                    newSlide.classList.remove('is-next'); 
+                });
             } else {
-                cat.style.transform = 'rotate(90deg)'; await new Promise(r=>setTimeout(r,500)); cat.style.transform='rotate(0deg)';
-                alertModal("❌ Hmm...", "Urutannya belum pas nih. Harus Repeat (Naik) dulu baru Repeat (Turun)!");
+                oldSlide.style.zIndex = 11;
+                newSlide.style.zIndex = 10;
+                newSlide.classList.add('active');
+                oldSlide.classList.add('is-exiting');
+            }
+            currentSlide = index;
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === slides.length - 1;
+
+            const isDarkSlide = slides[index].id === 'slide1' || slides[index].classList.contains('solid-teal-bg');
+            if (isDarkSlide) {
+                prevBtn.style.backgroundColor = 'rgba(255,255,255,0.2)'; 
+                nextBtn.style.backgroundColor = 'rgba(255,255,255,0.2)';
+                prevBtn.style.color = 'white';
+                nextBtn.style.color = 'white';
+            } else {
+                prevBtn.style.backgroundColor = '#f2c140'; 
+                nextBtn.style.backgroundColor = '#f2c140';
+                prevBtn.style.color = '#222';
+                nextBtn.style.color = '#222';
             }
         }
 
-        // Grid Games
-        const games = {
-            10: { r: [0,3], t: [3,3], theme: '🦘', goal: '🚩', obs: [], bg: '#eee' },
-            11: { r: [0,3], t: [3,0], theme: '🦘', goal: '🚩', obs: [[1,3],[2,3]], bg: '#eee' },
-            12: { r: [0,3], t: [3,3], theme: '🦘', goal: '🌟', obs: [[1,2],[2,1]], bg: '#dcfce7' }
-        };
-        let active = JSON.parse(JSON.stringify(games));
+        function changeSlide(direction) {
+            const newIndex = currentSlide + direction;
+            if (newIndex >= 0 && newIndex < slides.length) {
+                showSlide(newIndex, direction === 1 ? 'next' : 'prev');
+            }
+        }
 
-        function initGrid(id) {
-            const g = active[id]; const el = document.getElementById('grid' + id); if (!el) return;
-            el.innerHTML = '';
-            for (let y=0; y<4; y++) {
-                for (let x=0; x<4; x++) {
-                    const c = document.createElement('div'); c.className = 'game-cell';
-                    if (x===g.r[0] && y===g.r[1]) c.innerHTML = g.theme;
-                    else if (x===g.t[0] && y===g.t[1]) c.innerHTML = g.goal;
-                    else if (g.obs.some(o=>o[0]===x && o[1]===y)) c.innerHTML = '🕳️';
-                    el.appendChild(c);
+        // Quiz Logic
+        const quizData = [
+            {
+                q: "Apa perbedaan Pretrained Model dengan model yang kita latih sendiri?",
+                opts: ["A. Pretrained model lebih bodoh", "B. Pretrained model sudah siap pakai tanpa latihan lagi", "C. Tidak ada perbedaannya"],
+                ans: 1,
+                exp: "Benar! Pretrained model menghemat waktu karena sudah dilatih oleh ahli menggunakan data yang sangat besar."
+            },
+            {
+                q: "Contoh AI yang digunakan untuk menyarankan video di YouTube disebut...",
+                opts: ["A. Image AI", "B. Recommendation AI", "C. Sound AI"],
+                ans: 1,
+                exp: "Tepat! Recommendation AI bertugas mempelajari pola kesukaan pengguna."
+            }
+        ];
+
+        let currentQIdx = 0;
+        function checkQuiz(btn) {
+            const quizSlideId = slides[currentSlide].id;
+            const opts = document.querySelectorAll(`#${quizSlideId} .quiz-opt`);
+            const qNext = document.getElementById('q-next');
+            const feedback = document.getElementById('q-feedback');
+            
+            opts.forEach(o => o.disabled = true);
+            const qData = quizData[currentQIdx];
+            const isCorrect = Array.from(opts).indexOf(btn) === qData.ans;
+
+            if (isCorrect) {
+                btn.classList.add('correct');
+                feedback.style.color = '#22c55e';
+                feedback.textContent = qData.exp;
+            } else {
+                btn.classList.add('wrong');
+                opts[qData.ans].classList.add('correct');
+                feedback.style.color = '#ef4444';
+                feedback.textContent = "Kurang tepat. " + qData.exp;
+            }
+            
+            if (currentQIdx < quizData.length - 1) {
+                qNext.style.display = 'inline-block';
+                qNext.textContent = "Soal Berikutnya ➜";
+            } else {
+                qNext.style.display = 'inline-block';
+                qNext.textContent = "Selesai! Lanjut ke Slide ➜";
+                qNext.onclick = () => changeSlide(1);
+            }
+        }
+
+        function nextQuiz() {
+            currentQIdx++;
+            const qData = quizData[currentQIdx];
+            const qNext = document.getElementById('q-next');
+            
+            document.getElementById('q-text').textContent = (currentQIdx + 1) + ". " + qData.q;
+            const optsDiv = document.getElementById('q-options');
+            optsDiv.innerHTML = '';
+            
+            qData.opts.forEach((optText, i) => {
+                const btn = document.createElement('button');
+                btn.className = 'quiz-opt';
+                btn.style.padding = '12px 20px';
+                btn.style.fontSize = '1.1rem';
+                btn.textContent = optText;
+                btn.onclick = () => checkQuiz(btn);
+                optsDiv.appendChild(btn);
+            });
+            
+            document.getElementById('q-feedback').textContent = '';
+            qNext.style.display = 'none';
+        }
+
+        // Form Submissions
+        function submitDetective() {
+            document.getElementById('detectiveForm').style.display = 'none';
+            document.getElementById('detectiveSuccess').classList.add('show');
+        }
+        function resetDetective() {
+            document.getElementById('detectiveForm').style.display = 'block';
+            document.getElementById('detectiveSuccess').classList.remove('show');
+            const inputs = document.querySelectorAll('#detectiveForm .modern-input');
+            inputs.forEach(i => i.value = '');
+        }
+
+        function submitHelper() {
+            document.getElementById('helperForm').style.display = 'none';
+            document.getElementById('helperSuccess').classList.add('show');
+        }
+        function resetHelper() {
+            document.getElementById('helperForm').style.display = 'block';
+            document.getElementById('helperSuccess').classList.remove('show');
+            const inputs = document.querySelectorAll('#helperForm .modern-input');
+            inputs.forEach(i => i.value = '');
+        }
+
+        // Drag & Drop Logic
+        let draggedItem = null;
+        document.addEventListener('dragstart', (e) => {
+            if (e.target.classList.contains('draggable')) {
+                draggedItem = e.target;
+                e.target.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', ''); // for firefox
+            }
+        });
+
+        document.addEventListener('dragend', (e) => {
+            if (e.target.classList.contains('draggable')) {
+                e.target.classList.remove('dragging');
+            }
+        });
+
+        document.addEventListener('dragover', (e) => {
+            e.preventDefault();
+        });
+
+        document.addEventListener('dragenter', (e) => {
+            const target = e.target.closest('.drop-target');
+            if (target) target.classList.add('active');
+        });
+
+        document.addEventListener('dragleave', (e) => {
+            const target = e.target.closest('.drop-target');
+            if (target) target.classList.remove('active');
+        });
+
+        document.addEventListener('drop', (e) => {
+            e.preventDefault();
+            const dropTarget = e.target.closest('.drop-target');
+            if (dropTarget && draggedItem) {
+                dropTarget.classList.remove('active');
+                
+                let isCorrect = false;
+                
+                // Logic check based on activity type
+                const expectedAns = dropTarget.getAttribute('data-ans');
+                const expectedType = dropTarget.getAttribute('data-type');
+                const expectedRole = dropTarget.getAttribute('data-role');
+
+                if (expectedAns && draggedItem.getAttribute('data-val') === expectedAns) isCorrect = true;
+                if (expectedType && draggedItem.getAttribute('data-cat') === expectedType) isCorrect = true;
+                if (expectedRole && draggedItem.getAttribute('data-role') === expectedRole) isCorrect = true;
+
+                if (isCorrect) {
+                    draggedItem.setAttribute('draggable', 'false');
+                    draggedItem.style.cursor = 'default';
+                    draggedItem.classList.add('animate__animated', 'animate__bounceIn');
+                    dropTarget.appendChild(draggedItem);
+                } else {
+                    // Visual feedback for wrong choice
+                    draggedItem.classList.add('animate__animated', 'animate__headShake');
+                    setTimeout(() => draggedItem.classList.remove('animate__headShake'), 500);
                 }
             }
-        }
+            draggedItem = null;
+        });
 
-        async function gameAction(id, customDir, customNum) {
-            const dir = customDir || document.getElementById('dir' + id).value;
-            const num = customNum || parseInt(document.getElementById('num' + id).value);
-            const g = active[id];
-            for (let i=0; i<num; i++) {
-                let nx=g.r[0], ny=g.r[1];
-                if (dir==='right') nx++; else if (dir==='left') nx--; else if (dir==='up') ny--; else if (dir==='down') ny++;
-                if (nx<0 || nx>3 || ny<0 || ny>3 || g.obs.some(o=>o[0]===nx && o[1]===ny)) { alertModal("❌ Ups!", "Awas jatuh!"); break; }
-                g.r = [nx, ny]; initGrid(id); await new Promise(r=>setTimeout(r,400));
-                if (nx===g.t[0] && ny===g.t[1]) { alertModal("🎉 Sukses!", "Misi selesai!"); break; }
-            }
-        }
-        async function gameJump(id) {
-            const g = active[id];
-            // Jump = Logic move up then move right then move down
-            let nx=g.r[0], ny=g.r[1];
-            ny--; if (ny>=0) { g.r=[nx,ny]; initGrid(id); await new Promise(r=>setTimeout(r,300)); }
-            nx++; if (nx<=3) { g.r=[nx,ny]; initGrid(id); await new Promise(r=>setTimeout(r,300)); }
-            ny++; if (ny<=3) { g.r=[nx,ny]; initGrid(id); await new Promise(r=>setTimeout(r,300)); }
-            if (nx===g.t[0] && ny===g.t[1]) alertModal("🎉 Lompatan Hebat!", "Satu rintangan terlewati!");
-        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') changeSlide(1);
+            else if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
 
-        function alertModal(title, msg) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalMsg').innerText = msg;
-            document.getElementById('globalSuccessModal').classList.add('show');
-        }
-        function closeModal() { document.getElementById('globalSuccessModal').classList.remove('show'); }
-
-        document.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') changeSlide(1); else if (e.key === 'ArrowLeft') changeSlide(-1); });
         document.addEventListener('DOMContentLoaded', () => showSlide(0));
     </script>
 </body>

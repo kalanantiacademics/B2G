@@ -94,20 +94,6 @@
         .huge-btn { display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(to right, #008080, #f2c140); color: white; text-decoration: none; font-size: 1.5rem; font-weight: 700; padding: 15px 40px; border-radius: 50px; cursor: pointer; border: none; transition: transform 0.2s; box-shadow: 0 4px 15px rgba(0,128,128,0.3); }
         .huge-btn:hover { transform: scale(1.05); }
 
-        /* Scratch Blocks */
-        .block-stack { display: flex; flex-direction: column; gap: 0px; align-items: flex-start; }
-        .block { padding: 8px 15px; min-width: 150px; font-weight: 600; color: white; font-size: 0.95rem; position: relative; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(0,0,0,0.1); }
-        .block-event { background: #ffbf00; color: #333; border-radius: 20px 20px 4px 4px; padding-top: 15px; margin-bottom: 2px; }
-        .block-control { background: #ffab19; color: white; }
-        .block-looks { background: #9966ff; color: white; }
-        .block-sensing { background: #4c97ff; color: white; }
-        .block-ai { background: #008080; color: white; border-radius: 4px; }
-        .block-if { background: #ffab19; color: white; padding-right: 30px; border-radius: 4px; }
-        .block-indent { margin-left: 20px; border-left: 10px solid #ffab19; padding-left: 10px; width: calc(100% - 30px); }
-        .block-cap { height: 10px; width: 100%; background: #ffab19; border-radius: 0 0 10px 10px; margin-bottom: 10px; }
-        .input-white { background: white; color: #333; padding: 2px 8px; border-radius: 10px; font-size: 0.85rem; font-weight: bold; }
-        .input-shape { background: rgba(0,0,0,0.1); padding: 2px 8px; border-radius: 20px; font-size: 0.85rem; }
-
         /* Step Grid */
         .step-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; max-width: 1000px; width: 100%; }
         .step-card { background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); border: 2px solid #f0f0f0; display: flex; flex-direction: column; }
@@ -124,6 +110,28 @@
         @keyframes floatSprite { from { transform: translateY(0); } to { transform: translateY(-15px); } }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
         @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+
+        /* Scratch Blocks */
+        .block-stack { display: flex; flex-direction: column; gap: 0px; align-items: flex-start; font-family: sans-serif; scale: 0.9; transform-origin: top center; }
+        .block { padding: 6px 12px; min-width: 180px; font-weight: 600; color: white; font-size: 0.85rem; position: relative; display: flex; align-items: center; gap: 6px; border: 1px solid rgba(0,0,0,0.1); width: fit-content; }
+        .block-event { background: #ffbf00; color: #333; border-radius: 20px 20px 4px 4px; padding-top: 12px; margin-bottom: 2px; }
+        .block-control { background: #ffab19; color: white; border-radius: 4px; }
+        .block-looks { background: #9966ff; color: white; border-radius: 4px; }
+        .block-sensing { background: #4c97ff; color: white; border-radius: 4px; }
+        .block-ai { background: #008080; color: white; border-radius: 4px; border: 2px solid #004d4d; }
+        .block-if { background: #ffab19; color: white; border-radius: 4px 4px 0 0; padding-right: 20px; }
+        .block-indent { margin-left: 15px; border-left: 12px solid #ffab19; padding-left: 8px; display: flex; flex-direction: column; width: calc(100% - 15px); }
+        .block-end-if { background: #ffab19; height: 12px; width: 100%; border-radius: 0 0 4px 4px; margin-bottom: 4px; }
+        .block-forever { background: #ffab19; color: white; border-radius: 4px 4px 0 0; padding-right: 40px; }
+        .block-indent-forever { margin-left: 15px; border-left: 12px solid #ffab19; padding-left: 8px; display: flex; flex-direction: column; }
+        .block-end-forever { background: #ffab19; height: 20px; width: 100px; border-radius: 0 0 4px 4px; position: relative; }
+        .block-end-forever::after { content: ''; position: absolute; right: -20px; top: 0; width: 20px; height: 100%; background: #ffab19; border-radius: 0 10px 10px 0; }
+        
+        .input-white { background: white; color: #333; padding: 1px 8px; border-radius: 4px; font-size: 0.8rem; }
+        .input-oval { background: white; color: #333; padding: 1px 10px; border-radius: 20px; font-size: 0.8rem; border: 1px solid #ccc; }
+        .input-diamond { background: rgba(0,0,0,0.2); padding: 2px 10px; border-radius: 4px; clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%); font-size: 0.75rem; color: #fff; min-width: 60px; text-align: center; }
+        .diamond-ai { background: #004d4d; color: white; font-weight: bold; padding: 2px 12px; }
+        .icon-flag { width: 16px; height: 16px; background: #33a532; clip-path: polygon(0 0, 100% 50%, 0 100%); }
     </style>
 </head>
 <body>
@@ -177,143 +185,124 @@
                 </div>
             </div>
             <p style="font-size: 1.3rem; margin-top: 30px; text-align: center; font-weight: 600; color: #555;">
-                Tapi kok robotnya masih suka bingung ya? Mari kita perbaiki! 🔧
+                Tapi sepertinya prorgam masih kurang menarik ya? Mari kita perbaiki! 🔧
             </p>
         </div>
 
         <!-- Slide 3: Agenda -->
         <div class="slide" id="slide3">
             <h2 class="agenda-title">Rencana Kita Hari Ini 🚀</h2>
-            <div class="step-grid" style="grid-template-columns: 1fr 1fr 1fr; max-width: 1100px; gap: 15px;">
+            <div class="step-grid" style="grid-template-columns: 1fr 1fr; max-width: 800px; gap: 20px;">
                 <div class="step-card">
-                    <div class="step-header" style="background: #008080;"><div class="step-num-circle">1</div> Cari Kalimat Gagal</div>
-                    <div class="step-body">Menemukan kata-kata yang masih membuat AI salah tebak.</div>
+                    <div class="step-header" style="background: #008080;"><div class="step-num-circle">1</div> Load & Modif</div>
+                    <div class="step-body">Membuka kembali project Toxicity dan menambah respon suara/teks.</div>
                 </div>
                 <div class="step-card">
-                    <div class="step-header" style="background: #008080;"><div class="step-num-circle">2</div> Balasan Teks</div>
-                    <div class="step-body">Membuat karakter bisa membalas dengan kata-kata, bukan cuma muka!</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-header" style="background: #008080;"><div class="step-num-circle">3</div> Emosi Marah</div>
-                    <div class="step-body">Mencoba menambahkan label emosi baru agar robot makin ekspresif.</div>
+                    <div class="step-header" style="background: #008080;"><div class="step-num-circle">2</div> Evaluasi Model</div>
+                    <div class="step-body">Memahami kenapa AI kadang masih salah dan bagaimana cara mengatasinya.</div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 4: Open ML4K -->
+        <!-- Slide 4: Membuka Kembali Project -->
         <div class="slide" id="slide4">
-            <h2 class="agenda-title">Langkah 1: Tambah Data Lagi! 🧠</h2>
-            <div class="step-grid" style="grid-template-columns: 1fr 1fr 1fr; max-width: 1000px;">
-                <div class="step-card">
-                    <div class="step-header"><div class="step-num-circle">1</div> Buka ML4K</div>
-                    <div class="step-body">Login dan buka project <strong>Make Me Happy</strong>.</div>
+            <h2 class="agenda-title">Langkah 1: Membuka Kembali Project 📂</h2>
+            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%; max-width: 1000px;">
+                <div style="flex: 1; text-align: left;">
+                    <p style="font-size: 1.4rem; line-height: 1.6;">
+                        Buka kembali project <strong>Toxicity</strong> yang sudah kalian buat di pertemuan sebelumnya. <br><br>
+                        Ingat untuk memilih menu <strong>File > Load from your computer</strong> di dalam editor Scratch ML4K!
+                    </p>
+                    <div style="background: #fff8e1; padding: 15px; border-radius: 15px; border-left: 5px solid #f2c140; margin-top: 20px;">
+                        <p style="margin: 0; font-size: 1.1rem; color: #856404;">Gunakan file <strong>.sb3</strong> yang kalian simpan di komputer masing-masing.</p>
+                    </div>
                 </div>
-                <div class="step-card">
-                    <div class="step-header"><div class="step-num-circle">2</div> Klik Train</div>
-                    <div class="step-body">Masuk ke menu <strong>Train</strong> untuk melihat datasets lama kita.</div>
-                </div>
-                <div class="step-card">
-                    <div class="step-header"><div class="step-num-circle">3</div> Siap Mengajar</div>
-                    <div class="step-body">Siapkan daftar kata-kata baru yang mau diajarkan ke robot.</div>
+                <div style="flex: 1; background: #f0f0f0; border-radius: 20px; border: 3px dashed #ccc; height: 300px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                    <img src="https://roboguru-forum-cdn.ruangguru.com//image/b95ee38c-8380-45b4-b4a8-cb3cbcafa9b4.png" alt="Load Project" style="max-width: 100%; max-height: 100%; object-fit: contain;">
                 </div>
             </div>
         </div>
 
-        <!-- Slide 5: More Data -->
-        <div class="slide" id="slide5">
-            <h2 class="agenda-title">Berikan Banyak Contoh! 📈</h2>
-            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
-                <div style="flex: 1; background: #f0fdf4; border: 3px solid #a8c368; padding: 25px; border-radius: 20px;">
-                    <h3 class="txt-green">Tips Cerdas:</h3>
-                    <p style="font-size: 1.2rem;">Gunakan <strong>Google Translate</strong> kalau bingung mencari variasi kata dalam bahasa Inggris!</p>
-                    <p style="font-size: 1.1rem; color: #555;">Contoh: "You are the best", "I am so proud", "This is boring", "I hate this".</p>
-                </div>
-                <div style="flex: 1.2; text-align: center;">
-                    <img src="https://roboguru-forum-cdn.ruangguru.com//image/c2fb6b3d-8d68-4281-8f0c-c7881c817c3c.png" style="width: 450px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
-                </div>
+        <!-- Slide 5: Link ke Editor Scratch -->
+        <div class="slide" id="slide5" style="background: #e0f2f1;">
+            <h2 class="agenda-title">Siap untuk Modifikasi? 🚀</h2>
+            <div style="text-align: center; max-width: 800px;">
+                <p style="font-size: 1.5rem; margin-bottom: 30px;">Klik tombol di bawah untuk langsung menuju editor Scratch ML4K:</p>
+                <a href="https://machinelearningforkids.co.uk/scratch/" target="_blank" class="huge-btn" style="padding: 25px 60px; font-size: 2rem; animation: pulse 2s infinite;">
+                    BUKA SCRATCH ML4K 🌐
+                </a>
+                <p style="margin-top: 40px; font-size: 1.2rem; color: #666;">
+                    Setelah terbuka, jangan lupa <strong>Load</strong> project kalian ya!
+                </p>
             </div>
-            <p style="margin-top: 30px; font-weight: bold; color: #008080;">Target: Tambahkan minimal 10 kata baru di setiap label!</p>
         </div>
 
-        <!-- Slide 6: Scratch Load Step -->
+        <!-- Slide 6: Menambah Respon Teks -->
         <div class="slide" id="slide6">
-            <h2 class="agenda-title">Langkah 2: Siapkan Editor Scratch 🖥️</h2>
-            <div class="step-grid" style="grid-template-columns: 1fr 1fr; max-width: 900px;">
-                <div class="step-card">
-                    <div class="step-header" style="background: #008080;"><div class="step-num-circle">1</div> Menu Make</div>
-                    <div class="step-body">
-                        Di ML4K, klik <strong>Make</strong> -> <strong>Scratch 3</strong> -> <strong>Straight into Scratch now</strong>.
-                    </div>
-                </div>
-                <div class="step-card">
-                    <div class="step-header" style="background: #f2c140; color: #333;"><div class="step-num-circle">2</div> Load File</div>
-                    <div class="step-body">
-                        Ingat! Kita harus memuat ulang file <code style="background: #eee; padding: 2px 5px;">.sb3</code> yang kita simpan kemarin.
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 7: How to Load -->
-        <div class="slide" id="slide7">
-            <h2 class="agenda-title">Cara Load Project Kemarin 📂</h2>
-            <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
-                <div style="background: white; padding: 25px; border-radius: 25px; border: 3px solid #eee; box-shadow: 0 10px 20px rgba(0,0,0,0.05);">
-                    <img src="https://roboguru-forum-cdn.ruangguru.com//image/b95ee38c-8380-45b4-b4a8-cb3cbcafa9b4.png" alt="Load from Computer" style="width: 500px; border-radius: 10px;">
-                    <p style="margin-top: 15px; font-weight: bold; color: #008080;">Pilih [File] > [Load from your computer]</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Slide 8: Modifikasi Program -->
-        <div class="slide" id="slide8">
-            <h2 class="agenda-title">Langkah 4: Menambah Respon Teks 💬</h2>
-            <div style="display: flex; gap: 30px; width: 100%; align-items: flex-start; justify-content: center;">
-                <div class="block-stack" style="transform: scale(0.9); transform-origin: top;">
-                    <div class="block block-event">when <img src="https://scratch.mit.edu/static/blocks-media/green-flag.svg" style="height: 15px;"> clicked</div>
-                    <div class="block block-looks">switch costume to <span class="input-white">not sure ▾</span></div>
-                    <div class="block block-control">forever</div>
-                    <div class="block-indent" style="min-height: 250px;">
-                        <div class="block block-sensing">ask <span class="input-white">type a message</span> and wait</div>
-                        
-                        <div class="block block-if">if <span class="input-shape" style="background: #a8c368; color: #333; font-size: 0.75rem;">ML recognise text [answer] = bad_words</span> then</div>
-                        <div class="block-indent" style="margin-left: 20px; border-left-color: #ffab19;">
-                            <div class="block block-looks">switch costume to <span class="input-white">sad ▾</span></div>
-                            <div class="block block-looks" style="background: #9966ff;">say <span class="input-white">Ummmmm, okay sorry</span> for <span class="input-white">2</span> secs</div>
+            <h2 class="agenda-title">Langkah 2: Menambah Respon Teks 💬</h2>
+            <div style="display: flex; gap: 30px; width: 100%; align-items: center; justify-content: center;">
+                <div style="background: #f8f9fa; padding: 30px; border-radius: 25px; border: 2px solid #dee2e6; box-shadow: inset 0 0 20px rgba(0,0,0,0.05); min-width: 500px;">
+                    <div class="block-stack">
+                        <div class="block block-event">
+                            <div class="icon-flag"></div> when green flag clicked
                         </div>
-                        <div class="block-cap"></div>
-
-                        <div class="block block-if">if <span class="input-shape" style="background: #a8c368; color: #333; font-size: 0.75rem;">ML recognise text [answer] = good_words</span> then</div>
-                        <div class="block-indent" style="margin-left: 20px; border-left-color: #ffab19;">
-                            <div class="block block-looks">switch costume to <span class="input-white">happy ▾</span></div>
-                            <div class="block block-looks" style="background: #9966ff;">say <span class="input-white">Yeaayy, thank you very much!</span> for <span class="input-white">2</span> secs</div>
+                        <div class="block block-looks">
+                            switch costume to <span class="input-white">not sure</span>
                         </div>
-                        <div class="block-cap"></div>
+                        <div class="block block-forever">
+                            forever
+                        </div>
+                        <div class="block-indent-forever">
+                            <div class="block block-sensing">
+                                ask <span class="input-white">hey, say something nice to me</span> and wait
+                            </div>
+                            <!-- IF TOXIC -->
+                            <div class="block block-if">
+                                if <span class="input-diamond diamond-ai">probability [answer] toxic > 70</span> then
+                            </div>
+                            <div class="block-indent">
+                                <div class="block block-looks">
+                                    switch costume to <span class="input-white">sad</span>
+                                </div>
+                                <div class="block block-looks">
+                                    say <span class="input-white">Uuummmm, well i'm sorry for that</span> for <span class="input-oval">2</span> seconds
+                                </div>
+                            </div>
+                            <div class="block block-end-if"></div>
+                            
+                            <!-- IF NOT TOXIC -->
+                            <div class="block block-if">
+                                if <span class="input-diamond diamond-ai">probability [answer] NOT toxic > 70</span> then
+                            </div>
+                            <div class="block-indent">
+                                <div class="block block-looks">
+                                    switch costume to <span class="input-white">happy</span>
+                                </div>
+                                <div class="block block-looks">
+                                    say <span class="input-white">Yay! Thank you so much</span> for <span class="input-oval">2</span> seconds
+                                </div>
+                            </div>
+                            <div class="block block-end-if"></div>
+                        </div>
+                        <div class="block-end-forever"></div>
                     </div>
-                    <div class="block-cap" style="width: 100%;"></div>
                 </div>
                 
-                <div style="max-width: 380px; display: flex; flex-direction: column; gap: 20px;">
-                    <div style="background: #f0fdf4; padding: 20px; border-radius: 20px; border: 2px solid #a8c368; text-align: left;">
-                        <h4 style="margin: 0 0 10px 0;">Apa yang Baru? ✨</h4>
-                        <p style="margin: 0; font-size: 1rem; color: #444;">
-                            Kita menambahkan blok <strong>[Say]</strong> di bawah ganti kostum. <br><br>
-                            Sekarang si Emoji tidak hanya ganti muka, tapi juga bisa respon lewat teks!
-                        </p>
-                    </div>
-                    <div style="background: white; border: 2px solid #eee; padding: 20px; border-radius: 20px; text-align: center;">
-                        <div style="font-size: 4rem; animation: floatSprite 2s infinite alternate;">😄</div>
-                        <div style="background: #eee; padding: 10px; border-radius: 15px; margin-top: 10px; position: relative;">
-                            Yeaayy, thank you very much!
-                            <div style="position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #eee;"></div>
-                        </div>
+                <div style="max-width: 350px; display: flex; flex-direction: column; gap: 20px;">
+                    <div style="background: #f0fdf4; padding: 25px; border-radius: 20px; border: 2px solid #a8c368; text-align: left;">
+                        <h4 style="margin: 0 0 10px 0; color: #008080;">Apa yang Baru? ✨</h4>
+                        <ul style="margin: 0; padding-left: 20px; font-size: 1.1rem; color: #444; line-height: 1.5;">
+                            <li>Menambahkan blok <strong>[Say]</strong> di setiap kondisi.</li>
+                            <li>Karakter tidak hanya ganti muka, tapi juga membalas teks!</li>
+                            <li>Gunakan blok <strong>probability</strong> untuk akurasi lebih baik.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 9: Testing Phase -->
-        <div class="slide" id="slide9">
+        <!-- Slide 7: Uji Coba Lagi -->
+        <div class="slide" id="slide7">
             <h2 class="agenda-title">Langkah 3: Uji Coba Lagi! 🧪</h2>
             <div style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 900px;">
                 <div style="font-size: 8rem; animation: floatSprite 2s infinite alternate;">💭⌨️✨</div>
@@ -326,8 +315,8 @@
             </div>
         </div>
 
-        <!-- Slide 10: Gimmick / Ngeles AI -->
-        <div class="slide" id="slide10" style="background: #fff8e1;">
+        <!-- Slide 8: Kenapa AI Masih Ngaco -->
+        <div class="slide" id="slide8" style="background: #fff8e1;">
             <h2 class="agenda-title" style="color: #856404;">Kenapa AI-ku Masih Ngaco? 🤨</h2>
             <div style="display: flex; gap: 40px; align-items: center; justify-content: center; width: 100%;">
                 <div style="font-size: 10rem;">🤖💦</div>
@@ -343,44 +332,49 @@
             </div>
         </div>
 
-        <!-- Slide 11: Don't Give Up -->
-        <div class="slide" id="slide11">
-            <h2 class="agenda-title">Jangan Menyerah!🚀🌞🔥</h2>
-            <p style="font-size: 1.8rem; text-align: center; max-width: 800px; color: #333; font-weight: 700;">
-                Emang begitulah dunia AI. Para ilmuwan hebat pun butuh waktu bertahun-tahun untuk bikin robot pintar!
-            </p>
-            <p style="font-size: 1.3rem; margin-top: 20px; color: #666;">
-                Kalian sudah melakukan hal yang luar biasa hari ini. Kita akan lanjut belajar AI yang lebih seru di materi selanjutnya!
-            </p>
-        </div>
-
-        <!-- Slide 12: Summary -->
-        <div class="slide" id="slide12">
-            <h2 class="agenda-title">Ringkasan Hari Ini 📝</h2>
-            <div class="grid-container" style="max-width: 800px; grid-template-columns: 1fr;">
-                <div class="card" style="flex-direction: row; text-align: left; gap: 20px; padding: 20px 30px;">
-                    <div class="card-icon" style="margin: 0; font-size: 2.5rem;">🔍</div>
-                    <p style="margin: 0; font-size: 1.2rem;"><strong>Evaluasi:</strong> Mencari tahu kelemahan AI kita dan memperbaikinya dengan data baru.</p>
-                </div>
-                <div class="card" style="flex-direction: row; text-align: left; gap: 20px; padding: 20px 30px;">
-                    <div class="card-icon" style="margin: 0; font-size: 2.5rem;">⚙️</div>
-                    <p style="margin: 0; font-size: 1.2rem;"><strong>Iterasi:</strong> Proses melatih ulang (Re-train) berkali-kali agar hasilnya semakin sempurna.</p>
-                </div>
-                <div class="card" style="flex-direction: row; text-align: left; gap: 20px; padding: 20px 30px;">
-                    <div class="card-icon" style="margin: 0; font-size: 2.5rem;">✨</div>
-                    <p style="margin: 0; font-size: 1.2rem;"><strong>Modifikasi:</strong> Menambahkan fitur baru di Scratch (seperti teks balasan) agar proyek lebih menarik.</p>
+        <!-- Slide 9: Jangan Menyerah -->
+        <div class="slide" id="slide9">
+            <h2 class="agenda-title" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.1);">JANGAN MENYERAH! 💪</h2>
+            <div style="display: flex; flex-direction: column; align-items: center; text-align: center; max-width: 850px;">
+                <div style="font-size: 6rem; margin-bottom: 20px;">🚀🌞🔥</div>
+                <p style="font-size: 1.6rem; line-height: 1.6; color: #333; font-weight: 600;">
+                    Emang begitulah dunia AI. Melatih AI itu butuh kesabaran ekstra!
+                </p>
+                <div style="background: #f0fdf4; padding: 25px 40px; border-radius: 20px; border: 3px dashed #a8c368; margin-top: 20px; text-align: left;">
+                    <p style="margin: 0; font-size: 1.25rem; color: #333; line-height: 1.6;">
+                        Apalagi kita menggunakan <strong>Pretrained Model</strong> hari ini. Itu artinya ada orang lain yang sudah membuat dataset-nya, dan sangat wajar jika datanya masih ada kekurangan atau tidak cocok dengan semua kata yang kita ketik. Gak apa-apa, itu bagian dari proses belajar!
+                    </p>
                 </div>
             </div>
         </div>
 
-        <!-- Slide 13: Quiz -->
-        <div class="slide solid-teal-bg" id="slide13">
+        <!-- Slide 10: Ringkasan -->
+        <div class="slide" id="slide10">
+            <h2 class="agenda-title">Ringkasan Hari Ini 📝</h2>
+            <div class="grid-container" style="max-width: 800px; grid-template-columns: 1fr;">
+                <div class="card" style="flex-direction: row; text-align: left; gap: 20px; padding: 20px 30px;">
+                    <div class="card-icon" style="margin: 0; font-size: 2.5rem;">🔍</div>
+                    <p style="margin: 0; font-size: 1.2rem;"><strong>Evaluasi:</strong> Memahami bahwa AI bisa salah tebak karena keterbatasan data atau model pretrained.</p>
+                </div>
+                <div class="card" style="flex-direction: row; text-align: left; gap: 20px; padding: 20px 30px;">
+                    <div class="card-icon" style="margin: 0; font-size: 2.5rem;">💬</div>
+                    <p style="margin: 0; font-size: 1.2rem;"><strong>Interaksi:</strong> Menambah fitur blok [Say] agar karakter merespon secara visual dan teks.</p>
+                </div>
+                <div class="card" style="flex-direction: row; text-align: left; gap: 20px; padding: 20px 30px;">
+                    <div class="card-icon" style="margin: 0; font-size: 2.5rem;">🚀</div>
+                    <p style="margin: 0; font-size: 1.2rem;"><strong>Kesabaran:</strong> Belajar bahwa melatih AI adalah proses yang berulang dan membutuhkan kesabaran.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Kuis Kilat -->
+        <div class="slide solid-teal-bg" id="slide11">
             <h2 class="agenda-title" style="color: #f2c140;">Kuis Kilat Akhir! ⏱️</h2>
             <div style="background: white; color: #333; padding: 30px; border-radius: 20px; width: 100%; max-width: 700px; margin-top: 20px;">
                 <h3 id="q-text" style="font-size: 1.5rem; margin-top: 0; color: #008080;">1. Apa yang harus kita lakukan jika AI masih sering salah menebak?</h3>
                 <div id="q-options" style="display: flex; flex-direction: column; gap: 10px; margin-top: 20px;">
                     <button class="quiz-opt" onclick="checkQuiz(this, false)">A. Menghapus project</button>
-                    <button class="quiz-opt" onclick="checkQuiz(this, true)">B. Menambah variasi Datasets di menu Train</button>
+                    <button class="quiz-opt" onclick="checkQuiz(this, true)">B. Menambah variasi Datasets atau memahami batasan model</button>
                     <button class="quiz-opt" onclick="checkQuiz(this, false)">C. Memukul komputernya</button>
                 </div>
                 <div id="q-feedback" style="margin-top: 20px; font-weight: bold; font-size: 1.2rem; min-height: 30px;"></div>
@@ -388,8 +382,8 @@
             </div>
         </div>
 
-        <!-- Slide 14: Feedback -->
-        <div class="slide" id="slide14">
+        <!-- Slide 12: Feedback -->
+        <div class="slide" id="slide12">
             <h2 class="agenda-title" style="margin-bottom: 15px;">Bagaimana Kelas Hari Ini? 💖</h2>
             <p style="font-size: 1.3rem; text-align: center; max-width: 800px; margin-bottom: 30px; color: #555;">
                 Bantu kami menjadi lebih baik dengan mengisi form feedback singkat ya!
@@ -481,7 +475,7 @@
         const quizData = [
             {
                 q: "Apa yang harus kita lakukan jika AI masih sering salah menebak?",
-                opts: ["A. Menghapus project", "B. Menambah variasi Datasets di menu Train", "C. Memukul komputernya"],
+                opts: ["A. Menghapus project", "B. Menambah variasi Datasets atau memahami batasan model", "C. Memukul komputernya"],
                 ans: 1,
                 exp: "Betul! AI belajar dari data. Semakin banyak contoh yang kita berikan, ia akan semakin pintar."
             },
@@ -501,7 +495,7 @@
 
         let currentQIdx = 0;
         function checkQuiz(btn, isCorrectIdx) {
-            const opts = document.querySelectorAll('#slide13 .quiz-opt');
+            const opts = document.querySelectorAll('#slide11 .quiz-opt');
             opts.forEach(o => o.disabled = true);
 
             const qData = quizData[currentQIdx];

@@ -1,0 +1,1717 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Slide Perbandingan Soal</title>
+    <style>
+        
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Barlow:wght@400;500;600;700;800&display=swap');
+
+
+
+    
+    
+    html { height: 100%; }
+    body {
+        margin:0; 
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        background-color: #2563eb;
+        background-image: url('https://roboguru-forum-cdn.ruangguru.com//image/4c80831b-c741-478a-8c49-5b37b5bece3e.png');
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+        color: #1e293b;
+        transition: background 0.5s ease;
+    }
+    
+    .theme-P1 { background-image: url('https://roboguru-forum-cdn.ruangguru.com//image/39e64d7d-ac2a-46a3-bcf3-2fc28177226f.png'); }
+    .theme-P2 { background-image: url('https://roboguru-forum-cdn.ruangguru.com//image/39e64d7d-ac2a-46a3-bcf3-2fc28177226f.png'); }
+    .theme-P3 { background-image: url('https://roboguru-forum-cdn.ruangguru.com//image/39e64d7d-ac2a-46a3-bcf3-2fc28177226f.png'); }
+    
+    .loader-overlay { position:fixed; inset:0; background:rgba(255,255,255,0.9); z-index:9999; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .spinner { border: 8px solid #cbd5e1; border-top: 8px solid #3b82f6; border-radius: 50%; width: 60px; height: 60px; animation: spin 1s linear infinite; margin-bottom:16px;}
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    
+    .master-intro {
+        width:min(900px, 100%); background:rgba(255,255,255,0.95); backdrop-filter: blur(12px);
+        border: 4px solid #fff; border-radius: 32px; padding: 40px 32px; margin: 0 auto;
+        box-shadow: 0 25px 50px -12px rgba(0,0,0,0.3), 0 0 0 8px rgba(255,255,255,0.2);
+        text-align: center;
+        flex-direction: column; align-items: center; justify-content: center;
+    }
+    
+    .master-intro select, .master-intro input {
+        width: 100%; padding: 16px 20px; border-radius: 16px; border: 3px solid #cbd5e1;
+        font-size: 18px; font-weight: 800; outline: none; transition: 0.2s; color: #1e293b; background: #f8fafc;
+        margin-bottom: 16px;
+    }
+
+    /* Waiting Phase Styles */
+    .waiting-box {
+        background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.4);
+        border-radius: 24px; padding: 24px; display: inline-block; backdrop-filter: blur(10px);
+    }
+    .waiting-badge {
+        display: inline-block; background: #f59e0b; color: #fff; font-weight: 900;
+        font-size: 18px; padding: 8px 20px; border-radius: 999px; margin-bottom: 20px;
+        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4); text-transform: uppercase; letter-spacing: 1px;
+    }
+    .waiting-timer { font-size: 48px; font-weight: 900; color: #fff; text-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .waiting-emoji { font-size: 80px; margin-bottom: 10px; display: inline-block; animation: float 3s ease-in-out infinite; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+
+    .master-intro select:focus, .master-intro input:focus { border-color: #3b82f6; background: #fff; }
+    
+    .timer-pill { font-family: monospace; font-size: 18px; font-weight: 900; color: #fff; background: #ef4444; padding: 6px 12px; border-radius: 10px; border-bottom: 3px solid #b91c1c; display:inline-block; margin-left: 10px; }
+    .timer-pill.warning { animation: pop 1s infinite alternate; }
+    
+
+    
+    :root{
+      --primary: #3b82f6; --primary-dark: #2563eb; --primary-border: #1d4ed8; --primary-light: #eff6ff;
+      --secondary: #e2e8f0; --secondary-dark: #cbd5e1; --secondary-border: #94a3b8;
+      --accent: #f59e0b; --good: #22c55e; --good-border: #16a34a; --text: #1e293b; --muted: #64748b;
+      --font-title: 'Manrope', sans-serif;
+      --font-body: 'Barlow', sans-serif;
+    }
+    *{box-sizing:border-box; font-family: var(--font-body), system-ui, sans-serif;}
+    
+    h1, h2, h3, h4, .title, button, .badge, .seq-order, .pill { font-family: var(--font-title); }
+
+    #master_container {
+        width: 100%;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        overflow-y: auto;
+    }
+
+    #phase_school{
+        width:100%;
+        max-width:1360px;
+        margin:0 auto;
+        display:flex;
+        justify-content:center;
+    }
+    .school-landing{
+        position:relative;
+        width:100%;
+        min-height:calc(100vh - 64px);
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:center;
+        gap:0;
+        padding:24px 24px 36px;
+        overflow:visible;
+    }
+
+    .landing-logo-pill{
+        position:relative;
+        z-index:2;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        gap:24px;
+        padding:16px 42px;
+        border-radius:999px;
+        background:#ffffff;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border:1px solid rgba(210, 225, 242, 0.95);
+        margin-bottom: 24px;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    .landing-logo-pill img{display:block; object-fit:contain;}
+    .landing-logo-divider{
+        width:2px;
+        height:52px;
+        background:#dbe5f3;
+        border-radius:999px;
+    }
+    .landing-shell{
+        position:relative;
+        z-index:2;
+        width:min(1180px, 100%);
+        margin-top:0;
+        margin-left:auto;
+        margin-right:auto;
+        padding:20px;
+        border-radius:40px;
+        background:#f8fbff;
+        box-shadow:0 24px 48px rgba(24, 53, 106, 0.16);
+        border:2px solid rgba(233, 241, 251, 0.95);
+        overflow:visible;
+    }
+    .landing-shell-inner{
+        display:grid;
+        grid-template-columns:1.1fr 0.9fr;
+        align-items:center;
+        gap:32px;
+        min-height:620px;
+        overflow:visible;
+    }
+    .landing-visual{
+        position:relative;
+        min-height:584px;
+        border-radius:32px;
+        overflow:hidden;
+        background:linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+        box-shadow:inset 0 0 0 2px rgba(255,255,255,0.2);
+    }
+    .landing-visual::before{
+        content:'';
+        position:absolute;
+        inset:0;
+        background:
+          radial-gradient(circle at 20% 18%, rgba(107, 217, 255, 0.24) 0%, rgba(107, 217, 255, 0) 12%),
+          radial-gradient(circle at 17% 80%, rgba(107, 217, 255, 0.18) 0%, rgba(107, 217, 255, 0) 14%);
+        pointer-events:none;
+    }
+    .landing-visual-content{
+        position:relative;
+        z-index:2;
+        height:100%;
+        display:flex;
+        flex-direction:column;
+        justify-content:space-between;
+        padding:24px 20px 24px;
+    }
+    .landing-visual-top{
+        display:flex;
+        align-items:flex-start;
+        justify-content:space-between;
+        gap:16px;
+    }
+    .landing-badge-star{
+        color:#ffffff;
+        font-size:82px;
+        line-height:1;
+        font-weight:900;
+        text-shadow:none;
+    }
+    .landing-mini-note{
+        max-width:220px;
+        padding:16px 22px;
+        border-radius:22px;
+        background:rgba(255,255,255,0.16);
+        color:#ffffff;
+        font-size:12px;
+        font-weight:800;
+        line-height:1.5;
+        letter-spacing:0.12em;
+        text-transform:uppercase;
+    }
+    .landing-title-stage{
+        position:relative;
+        min-height:282px;
+        display:flex;
+        align-items:center;
+        justify-content:flex-start;
+    }
+    .landing-title-shadow{
+        position:absolute;
+        top:18px;
+        left:40px;
+        width:calc(100% - 60px);
+        height:184px;
+        background:rgba(14, 56, 117, 0.62);
+        z-index:0;
+    }
+    .landing-title-wrap{
+        position:relative;
+        z-index:1;
+        width:calc(100% - 40px);
+        max-width:none;
+        margin-left:20px;
+        padding:20px 18px 16px;
+        border-radius:0;
+        background:linear-gradient(90deg, #14b8c8 0%, #90c968 55%, #ffec4d 100%);
+        box-shadow:none;
+    }
+    .landing-title{
+        margin:0;
+        font-family:var(--font-title);
+        font-size:clamp(40px, 4.5vw, 64px);
+        line-height:1;
+        letter-spacing:-0.03em;
+        font-weight:900;
+        color:#fff;
+        text-shadow:none;
+    }
+    .landing-visual-footer{
+        display:flex;
+        flex-direction:column;
+        gap:12px;
+        max-width:320px;
+        color:#ffffff;
+    }
+    .landing-visual-footer-kicker{
+        font-size:12px;
+        font-weight:800;
+        opacity:1;
+    }
+    .landing-visual-footer-text{
+        font-size:15px;
+        line-height:1.65;
+        font-weight:700;
+        color:#ffffff;
+    }
+    .landing-form-side{
+        min-height:584px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        padding:8px;
+        overflow:visible;
+    }
+    .landing-form-card{
+        position:relative;
+        z-index:2;
+        width:min(470px, 100%);
+        margin-top:0;
+        background:transparent;
+        border:none;
+        border-radius:0;
+        padding:10px 10px 10px 18px;
+        box-shadow:none;
+        backdrop-filter:none;
+        overflow:visible;
+    }
+    .landing-form-title{
+        margin:0 0 8px;
+        font-size:44px;
+        font-weight:900;
+        color:#0f172a;
+        line-height:1.1;
+        letter-spacing:-0.02em;
+    }
+    .landing-form-subtitle{
+        margin:0 0 32px;
+        color:#64748b;
+        font-size:16px;
+        font-weight:700;
+        line-height:1.6;
+    }
+    .landing-label{
+        display:block;
+        margin-bottom:10px;
+        color:#334155;
+        font-size:15px;
+        font-weight:900;
+        letter-spacing: 0.02em;
+    }
+    #phase_school .k-select{margin-bottom:24px;}
+    #phase_school .k-select-trigger,
+    #phase_school #otherName{
+        min-height:64px;
+        padding:16px 24px;
+        border-radius:20px;
+        border:2px solid #e2e8f0;
+        background:#f8fafc;
+        color:#0f172a;
+        font-size:18px;
+        font-weight:800;
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+        transition: all 0.2s ease;
+    }
+    #phase_school .k-select-trigger:hover:not(.disabled),
+    #phase_school #otherName:hover{
+        border-color: #cbd5e1;
+        background: #f1f5f9;
+    }
+    #phase_school .k-select-trigger.open,
+    #phase_school #otherName:focus{
+        border-color:#3b82f6;
+        box-shadow:0 0 0 6px rgba(59, 130, 246, 0.15);
+        background:#fff;
+        outline: none;
+    }
+    #phase_school .k-select-trigger.disabled{
+        color:#94a3b8;
+        background:#f1f5f9;
+        border-color:#e2e8f0;
+    }
+    #phase_school .k-select-trigger:after{
+        color:#64748b;
+        font-size:16px;
+    }
+    #phase_school .k-options{
+        border-width:2px;
+        border-color:#e2e8f0;
+        border-radius:20px;
+        box-shadow: 0 20px 40px rgba(15, 23, 42, 0.1);
+        padding: 8px;
+        z-index:100000;
+        max-height:min(320px, 42vh);
+        overscroll-behavior:contain;
+    }
+    #phase_school #nameKOptions{
+        max-height:min(300px, 38vh);
+        top:auto;
+        bottom:calc(100% + 8px);
+    }
+    #phase_school .k-select.drop-up .k-options{
+        top:auto;
+        bottom:calc(100% + 8px);
+    }
+    #phase_school .k-search-box {
+        padding: 8px 8px 12px;
+        border-bottom: 2px solid #f1f5f9;
+        top: -8px;
+    }
+    #phase_school .k-search-box input {
+        border-radius: 14px;
+        background: #f8fafc;
+        border: 2px solid transparent;
+    }
+    #phase_school .k-search-box input:focus {
+        background: #fff;
+        border-color: #3b82f6;
+    }
+    #phase_school .k-option {
+        border-radius: 12px;
+        margin-bottom: 4px;
+    }
+    #phase_school .k-option:last-child {
+        margin-bottom: 0;
+    }
+    .landing-start-wrap{margin-top:36px;}
+    .landing-start-btn{
+        width:100%;
+        min-height:68px;
+        border-radius:24px;
+        border:none;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color:#fff;
+        font-size:22px;
+        font-weight:900;
+        cursor:pointer;
+        transition:all .2s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 12px 24px -8px rgba(16, 185, 129, 0.5), 0 6px 0 #047857;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+    .landing-start-btn:hover:not(:disabled){
+        transform:translateY(-2px);
+        box-shadow: 0 16px 32px -8px rgba(16, 185, 129, 0.6), 0 8px 0 #047857;
+    }
+    .landing-start-btn:active:not(:disabled){
+        transform:translateY(6px);
+        box-shadow: 0 4px 8px -4px rgba(16, 185, 129, 0.5), 0 0 0 #047857;
+    }
+    .landing-start-btn:disabled{
+        opacity:.5;
+        cursor:not-allowed;
+        background: #cbd5e1;
+        box-shadow: 0 6px 0 #94a3b8;
+    }
+    .landing-deco{
+        position:absolute;
+        pointer-events:none;
+        z-index:1;
+        color:#67d8ff;
+        text-shadow:0 0 18px rgba(103, 216, 255, 0.35);
+    }
+    .landing-deco.chevron-left{
+        left:13%;
+        top:27%;
+        font-size:96px;
+        transform:rotate(18deg);
+    }
+    .landing-deco.chevron-right-a{
+        right:16%;
+        top:12%;
+        font-size:205px;
+        font-weight:700;
+        line-height:1;
+        opacity:.82;
+    }
+    .landing-deco.chevron-right-b{
+        right:8%;
+        top:18%;
+        font-size:138px;
+        font-weight:700;
+        line-height:1;
+        opacity:.92;
+    }
+    .landing-deco.spark-a{
+        left:24%;
+        top:16%;
+        font-size:64px;
+        opacity:.6;
+    }
+    .landing-deco.spark-b{
+        left:12%;
+        bottom:10%;
+        font-size:124px;
+        opacity:.82;
+    }
+    .landing-deco.square-a{
+        right:14%;
+        top:20%;
+        font-size:48px;
+        opacity:.8;
+    }
+    .landing-deco.square-b{
+        left:28%;
+        bottom:21%;
+        font-size:42px;
+        opacity:.74;
+    }
+    .landing-deco.square-c{
+        right:21%;
+        bottom:16%;
+        font-size:40px;
+        opacity:.74;
+    }
+    .landing-deco.cursor{
+        left:9%;
+        top:26%;
+        font-size:94px;
+        transform:rotate(-18deg);
+        opacity:.95;
+    }
+    @media (max-width: 980px){
+        .school-landing{
+            min-height:auto;
+            padding:20px 12px 28px;
+        }
+
+        .landing-logo-pill{
+            gap:14px;
+            padding:14px 22px;
+        }
+        .landing-logo-pill img{max-width:84px;}
+        .landing-logo-divider{height:38px;}
+        .landing-shell{
+            padding:12px;
+        }
+        .landing-shell-inner{
+            display:flex;
+            flex-direction:column;
+            min-height:auto;
+            gap:14px;
+        }
+        .landing-visual,
+        .landing-form-side{
+            min-height:auto;
+            width:100%;
+        }
+        .landing-visual-content{
+            min-height:360px;
+            padding:20px 18px 22px;
+        }
+        .landing-title{
+            font-size:clamp(32px, 8vw, 48px);
+        }
+        .landing-form-card{
+            width:min(640px, 100%);
+            padding:12px 8px 4px;
+        }
+        .landing-form-title{
+            font-size:30px;
+        }
+        .landing-deco{display:none;}
+    }
+
+    .app{ min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 24px; width: 100%; }
+    .shell{
+      width: 85%; max-width: 1440px; background:rgba(255,255,255,0.9); backdrop-filter: blur(12px);
+      border: 4px solid #fff; border-radius: 32px; padding: 24px;
+      box-shadow: 0 25px 50px -12px rgba(37,99,235,0.15), 0 0 0 8px rgba(255,255,255,0.4);
+    }
+    .topbar{
+      display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 16px;
+      background: #fff; border: 3px solid var(--secondary); border-bottom-width: 6px;
+      border-radius: 24px; padding: 16px 24px; margin-bottom: 24px;
+    }
+    .title{font-weight:900; font-size:clamp(20px, 4vw, 28px); color:var(--primary); display:flex; align-items:center; gap:8px;}
+    .progress-wrap{width:100%; height:16px; background:var(--secondary); border-radius:12px; border: 2px solid var(--secondary-dark); overflow:hidden; margin-top:12px;}
+    .progress{height:100%; width:10%; background:var(--good); transition:width .4s cubic-bezier(0.4, 0, 0.2, 1); position:relative;}
+    .progress::after{content:''; position:absolute; top:0; left:0; right:0; height:6px; background:rgba(255,255,255,0.3);}
+    .meta{display:flex; gap:12px; font-weight:800; color:var(--muted);}
+    .pill{background:#f8fafc; border:2px solid var(--secondary); border-radius:12px; padding:8px 12px; font-size:14px;}
+    
+    .card{
+      background: #fff; border: 3px solid var(--secondary); border-radius: 24px; padding: 32px;
+      min-height: 540px; display:flex; flex-direction:column; position: relative;
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,0.5);
+    }
+    .card-anim{ animation: bounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; display: flex; flex-direction: column; height: 100%; flex: 1;}
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: translateY(15px) scale(0.98); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    
+    .badge{
+      display:inline-flex; align-items:center; padding: 8px 16px;
+      background: #fef3c7; color: #d97706; border: 2px solid #fcd34d; border-bottom-width: 4px;
+      border-radius: 16px; font-weight: 900; font-size: 14px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; width: max-content;
+    }
+    h2{margin:0 0 12px; font-size:clamp(26px, 4vw, 36px); font-weight:900; color:#0f172a; line-height:1.2;}
+    .desc{margin:0 0 24px; color:var(--muted); font-size:18px; font-weight:700;}
+    .prompt{
+      background: var(--primary-light); border: 2px solid #bfdbfe; border-radius: 20px;
+      padding: 20px; margin-bottom: 24px; font-size: 20px; font-weight: 800; color: #1e3a8a;
+    }
+    .prompt strong{color:#1e40af; background:#dbeafe; padding:4px 10px; border-radius:8px;}
+    
+    .option-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px;}
+    .option{
+      background: #fff; border: 3px solid var(--secondary); border-bottom-width: 6px;
+      border-radius: 20px; padding: 20px; text-align: left; cursor: pointer; transition: all .15s ease;
+      color: var(--text); min-height: 100px; display: flex; align-items: flex-start; gap: 16px; font-size: 18px; font-weight: 800;
+      line-height:1.4;
+    }
+    .option.selected{
+      border-color: var(--primary); border-bottom-color: var(--primary-border);
+      background: var(--primary-light); transform: translateY(2px); border-bottom-width: 4px; margin-top:2px;
+    }
+    .option:active{transform: translateY(4px); border-bottom-width: 2px; margin-top:4px;}
+    .opt-tag{
+      width: 40px; height: 40px; flex: 0 0 40px; border-radius: 12px; background: var(--secondary);
+      color: var(--muted); font-weight: 900; font-size:18px; display: flex; align-items: center; justify-content: center;
+      border-bottom: 3px solid var(--secondary-dark);
+    }
+    .option.selected .opt-tag{background: var(--primary); color: #fff; border-bottom-color: var(--primary-border);}
+    
+    .sequence-board{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px; margin-bottom: 24px;}
+    .seq-item{
+      border:3px solid var(--secondary); border-bottom-width:6px; border-radius:20px; padding:16px;
+      background:#fff; cursor:pointer; transition:all .15s ease; font-size:18px; font-weight:800;
+      display:flex; align-items:center; gap:16px; min-height:90px;
+    }
+    .seq-item:active{transform: translateY(4px); border-bottom-width: 2px; margin-top:4px;}
+    .seq-item.used{opacity:0.6; pointer-events:none; background:#f8fafc; border-bottom-width:3px; transform:translateY(3px); margin-top:3px;}
+    .seq-order{
+      width:44px; height:44px; border-radius:12px; background:#eff6ff; color:#1d4ed8;
+      display:flex; align-items:center; justify-content:center; font-weight:900; font-size:20px;
+      border:3px solid #bfdbfe; flex: 0 0 44px;
+    }
+    .answer-strip{
+      display:flex; flex-wrap:wrap; gap:12px; min-height:84px;
+      border:3px dashed var(--secondary-dark); border-radius:24px; padding:16px; background:#f8fafc;
+      margin-bottom:20px; align-items:center;
+    }
+    .picked{
+      background:var(--primary); color:#fff; border-bottom:4px solid var(--primary-border);
+      border-radius:16px; padding:12px 16px; font-weight:800; font-size:16px; display:flex; align-items:center; gap:8px;
+      animation: pop 0.2s ease forwards;
+    }
+    @keyframes pop{0%{transform:scale(0.8)}100%{transform:scale(1)}}
+
+    /* Custom Select Styles */
+    .k-select { position: relative; margin-bottom: 20px; }
+    .k-select-trigger {
+        width: 100%; padding: 16px 20px; border-radius: 16px; border: 3px solid #cbd5e1;
+        font-size: 18px; font-weight: 800; color: #1e293b; background: #f8fafc;
+        cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: 0.2s;
+    }
+    .k-select-trigger:after { content: '▼'; font-size: 14px; color: #64748b; margin-left: 10px; transition: 0.2s; }
+    .k-select-trigger.open:after { transform: rotate(180deg); }
+    .k-select-trigger.open { border-color: #3b82f6; background: #fff; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1); }
+    .k-select-trigger.disabled { opacity: 0.6; cursor: not-allowed; background: #f1f5f9; }
+
+    .k-options {
+        position: absolute; top: calc(100% + 8px); left: 0; right: 0; background: #fff;
+        border: 3px solid #3b82f6; border-radius: 16px;
+        z-index: 1000; max-height: 350px; overflow-y: auto; display: none; 
+        box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    .k-options.show { display: block; animation: slideDown 0.2s ease-out; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .k-search-box { 
+        padding: 12px; position: sticky; top: 0; background: #fff; border-bottom: 2px solid #e2e8f0; 
+        z-index: 2;
+    }
+    .k-search-box input {
+        width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #cbd5e1;
+        font-size: 16px; font-weight: 700; color: #1e293b; outline: none; margin-bottom: 0 !important;
+    }
+    .k-search-box input:focus { border-color: #3b82f6; }
+
+    .k-option { padding: 14px 20px; cursor: pointer; transition: 0.1s; font-size: 17px; font-weight: 700; color: #475569; }
+    .k-option:hover { background: #eff6ff; color: #1d4ed8; }
+    .k-option.selected { background: #3b82f6; color: #fff; }
+    .k-option.no-res { color: #94a3b8; font-style: italic; text-align: center; cursor: default; }
+    .k-option.no-res:hover { background: transparent; }
+
+    /* Drag & Drop Sequence (Q1) */
+    .dnd-layout{display:grid; grid-template-columns:1fr auto; gap:20px; align-items:stretch; margin-bottom:20px;}
+    .dnd-left{display:flex; flex-direction:column; gap:12px;}
+    .dnd-right{display:flex; flex-direction:column; gap:10px; min-width:230px;}
+    .dnd-guide{
+      display:flex;
+      align-items:center;
+      gap:16px;
+      margin:0 0 18px;
+      padding:14px 16px;
+      background:#f8fafc;
+      border:3px solid #dbeafe;
+      border-bottom-width:5px;
+      border-radius:20px;
+    }
+    .dnd-guide img{
+      width:min(320px, 42vw);
+      max-height:150px;
+      object-fit:contain;
+      border-radius:14px;
+      border:2px solid #bfdbfe;
+      background:#fff;
+      flex:0 0 auto;
+    }
+    .dnd-guide-text{
+      color:#1e3a8a;
+      font-size:16px;
+      font-weight:900;
+      line-height:1.45;
+    }
+    
+    .scene-box{
+      background: linear-gradient(135deg,#e0f2fe 0%,#bae6fd 100%);
+      border: 3px solid #7dd3fc; border-radius:24px; padding:20px;
+      display:flex; align-items:center; justify-content:space-around;
+      position:relative; overflow:hidden;
+    }
+    .scene-box::before{
+      content:''; position:absolute; inset:0;
+      background: radial-gradient(circle at 70% 40%, rgba(255,255,255,0.5) 0%, transparent 60%);
+      pointer-events:none;
+    }
+    .scene-robot{
+      font-size:72px; filter: drop-shadow(0 8px 12px rgba(0,0,0,0.15));
+      animation: robotBob 2s ease-in-out infinite;
+      position:relative; z-index:1;
+    }
+    @keyframes robotBob{
+      0%,100%{transform:translateY(0px)}
+      50%{transform:translateY(-8px)}
+    }
+    .scene-right{display:flex; flex-direction:column; align-items:center; gap:16px; z-index:1;}
+    .scene-switch{
+      background:#fff; border:3px solid #94a3b8; border-radius:16px;
+      padding:10px 14px; display:flex; flex-direction:column; align-items:center; gap:6px;
+      font-size:13px; font-weight:800; color:#475569; cursor:default;
+      box-shadow: 0 4px 0 #94a3b8;
+    }
+    .switch-btn{
+      width:36px; height:60px; background:#cbd5e1; border-radius:10px;
+      border:3px solid #94a3b8; position:relative; overflow:hidden;
+      transition: background .4s;
+    }
+    .switch-btn::after{
+      content:''; position:absolute; left:50%; transform:translateX(-50%);
+      width:20px; height:26px; border-radius:6px;
+      background:#64748b; top:4px; transition: top .4s, background .4s;
+    }
+    .switch-btn.on{background:#bbf7d0;}
+    .switch-btn.on::after{top:30px; background:#16a34a;}
+    .scene-lamp{
+      background:#fff; border:3px solid #94a3b8; border-radius:16px;
+      padding:10px 14px; display:flex; flex-direction:column; align-items:center; gap:4px;
+      font-size:13px; font-weight:800; color:#475569;
+      box-shadow: 0 4px 0 #94a3b8; transition: all .6s;
+    }
+    .scene-lamp.on{
+      background:#fef9c3; border-color:#facc15;
+      box-shadow: 0 4px 0 #eab308, 0 0 30px 8px rgba(250,204,21,0.4);
+    }
+    .lamp-bulb{font-size:42px; transition: filter .6s; filter: grayscale(0.8);}
+    .scene-lamp.on .lamp-bulb{filter: grayscale(0) drop-shadow(0 0 12px #fbbf24);}
+    .lamp-label{font-size:12px;}
+
+    .drag-source-pool{
+      background:#f8fafc; border:3px dashed #cbd5e1; border-radius:20px;
+      padding:14px; display:flex; flex-direction:column; gap:10px;
+    }
+    .drag-card{
+      background:#fff; border:3px solid var(--secondary); border-bottom-width:5px;
+      border-radius:16px; padding:12px 16px; cursor:grab; font-size:16px; font-weight:800;
+      display:flex; align-items:center; gap:10px; transition: all .15s; user-select:none;
+      color:var(--text);
+    }
+    .drag-card:active{cursor:grabbing; border-bottom-width:2px; transform:translateY(3px);}
+    .drag-card.dragging{opacity:0.4; border-style:dashed;}
+    .drag-card.placed{opacity:0.35; pointer-events:none; border-style:dashed; background:#f1f5f9;}
+    .drag-card-icon{font-size:22px;}
+
+    .drop-slot{
+      background:#fff; border:3px dashed #cbd5e1; border-radius:16px;
+      padding:10px 14px; min-height:62px; display:flex; align-items:center; gap:10px;
+      transition: all .2s; cursor:default; position:relative;
+    }
+    .drop-slot.drag-over{
+      border-color:var(--primary); background:var(--primary-light);
+      transform:scale(1.02);
+    }
+    .drop-slot.filled{
+      border-style:solid; border-color:var(--primary); background:var(--primary-light);
+    }
+    .drop-slot.correct{
+      border-color:var(--good); background:#f0fdf4;
+    }
+    .slot-number{
+      width:32px; height:32px; border-radius:10px; background:var(--secondary);
+      color:var(--muted); font-weight:900; font-size:16px;
+      display:flex; align-items:center; justify-content:center;
+      border-bottom:3px solid var(--secondary-dark); flex:0 0 32px;
+      transition:all .2s;
+    }
+    .drop-slot.filled .slot-number{
+      background:var(--primary); color:#fff; border-bottom-color:var(--primary-border);
+    }
+    .slot-content{font-size:14px; font-weight:800; color:var(--text); flex:1; line-height:1.3;}
+    .slot-empty-hint{font-size:13px; font-weight:700; color:#94a3b8; font-style:italic;}
+    .slot-remove{font-size:16px; cursor:pointer; color:#ef4444; padding:2px 6px; border-radius:8px; border:none; background:none; font-weight:900; line-height:1; transition:opacity .15s;}
+    .slot-remove:hover{opacity:0.7;}
+    
+    .actions{display:flex; justify-content:space-between; gap:16px; margin-top:auto; padding-top:24px;}
+    .btn{
+      border:3px solid; border-radius:20px; padding:14px 24px; font-size:18px; font-weight:900;
+      cursor:pointer; transition:all .15s ease; display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .btn.secondary{background:#fff; color:var(--muted); border-color:var(--secondary); border-bottom-width:6px; border-bottom-color:var(--secondary-dark);}
+    .btn.secondary:active{transform:translateY(4px); border-bottom-width:2px; margin-top:4px;}
+    .btn.primary{background:var(--primary); color:#fff; border-color:var(--primary); border-bottom-width:6px; border-bottom-color:var(--primary-border);}
+    .btn.primary:active{transform:translateY(4px); border-bottom-width:2px; margin-top:4px;}
+    .btn.primary:disabled, .btn.secondary:disabled{opacity:0.5; cursor:not-allowed; transform:none !important; border-bottom-width:6px !important; margin-top:0 !important;}
+    
+    .mini-grid{
+      width:140px; height:140px; border-radius:20px; background:var(--secondary); border:4px solid var(--secondary-dark);
+      display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); padding:8px; gap:6px; flex:0 0 auto;
+    }
+    .cell{
+      border-radius:10px; background:#fff; display:flex; align-items:center; justify-content:center;
+      font-size:26px; font-weight:800; box-shadow:0 3px 0 rgba(0,0,0,0.05);
+    }
+    .formula{
+      background:#fff; color:#0f172a; padding:20px; border-radius:24px; font-weight:800;
+      border:3px solid var(--secondary); border-bottom-width:6px; font-size:18px; line-height:2;
+      display:flex; flex-direction:column; gap:8px; margin-bottom: 24px;
+    }
+    .formula .block{
+      background:#f1f5f9; border:2px solid #cbd5e1; border-bottom-width:4px;
+      padding:10px 18px; border-radius:14px; display:inline-flex; align-items:center; width:fit-content; color: #334155; font-size:16px;
+    }
+    .formula .block.start{background:#fef08a; border-color:#facc15; border-bottom-color:#eab308; color:#854d0e;}
+    
+    .result{text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;}
+    .emoji{font-size:90px; margin-bottom:16px; animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;}
+    .score{font-size:96px; font-weight:900; line-height:1; color:var(--primary); margin:16px 0 12px; text-shadow: 0 6px 0 var(--primary-border);}
+    .score-box{
+      background:#fff; border:4px solid var(--primary-light); border-radius:32px; padding:32px;
+      width:min(460px,100%); margin:24px auto; box-shadow: 0 16px 30px rgba(37,99,235,0.1);
+    }
+    .helper{font-size:16px; font-weight:700; color:var(--muted); margin-bottom:16px;}
+    
+    @media (max-width: 740px){
+      .app{padding:12px;} .shell{padding:16px;} .card{padding:24px;}
+      .option-grid, .sequence-board{grid-template-columns:1fr;}
+      .dnd-guide{flex-direction:column; align-items:flex-start;}
+      .dnd-guide img{width:100%; max-height:180px;}
+      .actions{flex-direction:column-reverse;} .btn{width:100%;}
+    }
+  
+
+  @keyframes q4Robot {
+    0%     { left: 7%;  bottom: 47px; opacity: 1; }
+    12%    { left: 7%;  bottom: 58px; }
+    24%    { left: 30%; bottom: 47px; }
+    36%    { left: 30%; bottom: 58px; }
+    48%    { left: 51%; bottom: 47px; }
+    62%    { left: 60%; bottom: 118px; }
+    72%    { left: 71%; bottom: 47px; }
+    87%    { left: 71%; bottom: 47px; opacity: 1; }
+    93%    { left: 71%; bottom: 47px; opacity: 0; }
+    97%    { left: 7%;  bottom: 47px; opacity: 0; }
+    100%   { left: 7%;  bottom: 47px; opacity: 1; }
+  }
+  @keyframes q4L1 { 0%,9%{opacity:0} 13%,23%{opacity:1} 27%,100%{opacity:0} }
+  @keyframes q4L2 { 0%,33%{opacity:0} 37%,47%{opacity:1} 51%,100%{opacity:0} }
+
+
+
+    
+    :root{
+      --primary: #3b82f6; --primary-dark: #2563eb; --primary-border: #1d4ed8; --primary-light: #eff6ff;
+      --secondary: #e2e8f0; --secondary-dark: #cbd5e1; --secondary-border: #94a3b8;
+      --accent: #f59e0b; --good: #22c55e; --good-border: #16a34a; --text: #1e293b; --muted: #64748b;
+      --danger: #ef4444; --danger-dark: #b91c1c; --pink: #ec4899;
+    }
+    *{box-sizing:border-box; font-family: 'Nunito', system-ui, sans-serif;}
+    
+    .app{min-height:100vh; display:flex; justify-content:center; align-items:flex-start; padding: 24px;}
+    .shell{
+      width: 85%; max-width: 1440px; background:rgba(255,255,255,0.9); backdrop-filter: blur(12px);
+      border: 4px solid #fff; border-radius: 32px; padding: 24px;
+      box-shadow: 0 25px 50px -12px rgba(37,99,235,0.15), 0 0 0 8px rgba(255,255,255,0.4);
+    }
+    .topbar{
+      display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 16px;
+      background: #fff; border: 3px solid var(--secondary); border-bottom-width: 6px;
+      border-radius: 24px; padding: 16px 24px; margin-bottom: 24px;
+    }
+    .title{font-weight:900; font-size:clamp(20px, 4vw, 28px); color:var(--primary); display:flex; align-items:center; gap:8px;}
+    .muted{color:var(--muted); font-weight:700;}
+    .progress-wrap{width:100%; height:16px; background:var(--secondary); border-radius:12px; border: 2px solid var(--secondary-dark); overflow:hidden; margin-top:12px;}
+    .progress{height:100%; width:10%; background:var(--good); transition:width .4s cubic-bezier(0.4, 0, 0.2, 1); position:relative;}
+    .progress::after{content:''; position:absolute; top:0; left:0; right:0; height:6px; background:rgba(255,255,255,0.3);}
+    .meta{display:flex; gap:12px; font-weight:800; color:var(--muted); flex-wrap:wrap; justify-content:flex-end;}
+    .pill{background:#f8fafc; border:2px solid var(--secondary); border-radius:12px; padding:8px 12px; font-size:14px;}
+
+    .card{
+      background: #fff; border: 3px solid var(--secondary); border-radius: 24px; padding: 32px;
+      min-height: 540px; display:flex; flex-direction:column; position: relative;
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,0.5);
+    }
+    .card-anim{ animation: bounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; display: flex; flex-direction: column; height: 100%; flex: 1;}
+    @keyframes bounceIn { 0% { opacity: 0; transform: translateY(15px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes pop { 0% { transform: scale(0.8) } 100% { transform: scale(1) } }
+    @keyframes mosquito-wiggle { 0%,100%{transform:rotate(-8deg) scale(1);} 50%{transform:rotate(8deg) scale(1.1);} }
+    .mosquito { animation: mosquito-wiggle 0.5s ease-in-out infinite; display:inline-block; }
+    .tiger-word {
+      display:inline; cursor:default; /* intentionally invisible */
+    }
+    @keyframes toast-in  { from { opacity:0; transform:translateY(20px) scale(.9); } to { opacity:1; transform:translateY(0) scale(1); } }
+    @keyframes toast-out { from { opacity:1; } to { opacity:0; } }
+    #paste-toast {
+      position:fixed; bottom:32px; left:50%; transform:translateX(-50%);
+      background:#ef4444; color:#fff; font-weight:900; font-size:18px;
+      padding:16px 28px; border-radius:20px; border:3px solid #b91c1c;
+      box-shadow:0 8px 24px rgba(239,68,68,0.35); z-index:9999;
+      display:none; white-space:nowrap; animation:toast-in .25s ease;
+    }
+
+
+    .badge{
+      display:inline-flex; align-items:center; padding: 8px 16px;
+      background: #fef3c7; color: #d97706; border: 2px solid #fcd34d; border-bottom-width: 4px;
+      border-radius: 16px; font-weight: 900; font-size: 14px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; width: max-content;
+    }
+    h2{margin:0 0 12px; font-size:clamp(26px, 4vw, 36px); font-weight:900; color:#0f172a; line-height:1.2;}
+    .desc{margin:0 0 24px; color:var(--muted); font-size:18px; font-weight:700;}
+    .prompt{
+      background: var(--primary-light); border: 2px solid #bfdbfe; border-radius: 20px;
+      padding: 20px; margin-bottom: 24px; font-size: 19px; font-weight: 800; color: #1e3a8a; line-height: 1.6;
+    }
+    .prompt strong{color:#1e40af; background:#dbeafe; padding:3px 8px; border-radius:8px;}
+
+    .actions{display:flex; justify-content:space-between; gap:16px; margin-top:auto; padding-top:24px;}
+    .btn{
+      border:3px solid; border-radius:20px; padding:14px 24px; font-size:18px; font-weight:900;
+      cursor:pointer; transition:all .15s ease; display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .btn.secondary{background:#fff; color:var(--muted); border-color:var(--secondary); border-bottom-width:6px; border-bottom-color:var(--secondary-dark);}
+    .btn.secondary:active,.btn.secondary:hover{transform:translateY(4px); border-bottom-width:2px; margin-top:4px; background:#f8fafc;}
+    .btn.primary{background:var(--primary); color:#fff; border-color:var(--primary); border-bottom-width:6px; border-bottom-color:var(--primary-border);}
+    .btn.primary:active,.btn.primary:hover{transform:translateY(4px); border-bottom-width:2px; margin-top:4px; background:var(--primary-dark);}
+    .btn.primary:disabled,.btn.secondary:disabled{opacity:0.5; cursor:not-allowed; transform:none !important; border-bottom-width:6px !important; margin-top:0 !important;}
+    .helper{color:var(--muted); font-size:16px; margin-bottom:16px; font-weight:800;}
+
+    .option-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px;}
+    .option{
+      background: #fff; border: 3px solid var(--secondary); border-bottom-width: 6px;
+      border-radius: 20px; padding: 20px; text-align: left; cursor: pointer; transition: all .15s ease;
+      color: var(--text); min-height: 100px; display: flex; align-items: flex-start; gap: 16px; font-size: 18px; font-weight: 800; line-height:1.4;
+    }
+    .option.selected{
+      border-color: var(--primary); border-bottom-color: var(--primary-border);
+      background: var(--primary-light); transform: translateY(4px); border-bottom-width: 2px; margin-top:4px;
+    }
+    .option:active{transform: translateY(4px); border-bottom-width: 2px; margin-top:4px;}
+    .opt-tag{
+      width: 48px; height: 48px; flex: 0 0 48px; border-radius: 14px; background: var(--secondary);
+      color: var(--muted); font-weight: 900; font-size:22px; display: flex; align-items: center; justify-content: center;
+    }
+    .option.selected .opt-tag{background: var(--primary); color: #fff;}
+
+    .typing-wrap{display:flex; flex-direction:column; gap:16px; max-width:640px}
+    input[type="text"]{
+      width:100%; padding:18px 24px; border-radius:20px; border:3px solid var(--secondary-dark); font-size:20px; font-weight:800; outline:none; transition: .2s ease; color:var(--text); background:#fff;
+    }
+    input[type="text"]:focus{border-color:var(--primary); box-shadow:0 0 0 6px var(--primary-light);}
+    .status{font-size:16px; font-weight:800; color:var(--muted); background:#f8fafc; border:3px dashed var(--secondary-dark); border-radius:16px; padding:12px 16px; display:inline-flex; align-items:center; gap:8px; flex-wrap:wrap;}
+
+    .long-scroll{
+      height:280px; overflow:auto; padding:24px; margin-bottom:16px; border-radius:24px; border:3px solid var(--secondary-dark); background: repeating-linear-gradient(0deg, #f8fafc, #f8fafc 40px, #f1f5f9 40px, #f1f5f9 41px);
+    }
+    .long-scroll p{margin:0 0 20px; line-height:1.7; color:#334155; font-size:18px; font-weight:700;}
+    .hidden-bottom{display:flex; justify-content:center; padding-top:20px;}
+    .ok-btn{
+      background:var(--good); color:#fff; border:3px solid var(--good-border); border-bottom-width:6px; border-radius:20px; padding:16px 32px; font-size:20px; font-weight:900; cursor:pointer;
+    }
+    .ok-btn:active{transform:translateY(4px); border-bottom-width:2px; margin-top:4px;}
+
+    .result{text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;}
+    .emoji{font-size:90px; margin-bottom:16px; animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;}
+    .score{font-size:96px; font-weight:900; line-height:1; color:var(--primary); margin:16px 0 12px; text-shadow: 0 6px 0 var(--primary-border);}
+    .score-box{
+      background:#fff; border:4px solid var(--primary-light); border-radius:32px; padding:32px;
+      width:min(460px,100%); margin:24px auto; box-shadow: 0 16px 30px rgba(37,99,235,0.1);
+    }
+
+    .overlay{position:fixed; inset:0; background:var(--danger); color:#fff; display:none; align-items:center; justify-content:center; text-align:center; padding:24px; z-index:50;}
+    .overlay.show{display:flex}
+    .overlay-box{max-width:520px; background:var(--danger-dark); border-radius:32px; padding:40px; border:4px solid #fca5a5; box-shadow:0 20px 40px rgba(0,0,0,0.3);}
+    .overlay-box .big{font-size:80px; margin-bottom:16px; animation: pop 1s infinite alternate;}
+    .overlay-box h1{font-weight:900; margin:0 0 16px;}
+    .overlay-box p{font-size:20px; font-weight:700;}
+
+    @media (max-width: 780px){
+      .app{padding:12px;} .shell{padding:16px;} .card{padding:20px;}
+      .option-grid{grid-template-columns:1fr;}
+      .actions{flex-direction:column-reverse;} .btn{width:100%;}
+      .topbar{flex-direction:column; align-items:flex-start;}
+    }
+  
+
+    
+    :root{
+      --primary: #4f46e5; --primary-dark: #4338ca; --primary-border: #3730a3; --primary-light: #eef2ff;
+      --secondary: #e2e8f0; --secondary-dark: #cbd5e1; --secondary-border: #94a3b8;
+      --accent: #f59e0b; --good: #22c55e; --good-border: #16a34a; --text: #1e293b; --muted: #64748b;
+      --danger: #ef4444; --danger-dark: #b91c1c; --pink: #ec4899;
+    }
+    *{box-sizing:border-box; font-family: 'Nunito', system-ui, sans-serif;}
+    
+    .app{min-height:100vh; display:flex; justify-content:center; align-items:center; padding: 24px;}
+    .shell{
+      width: 85%; max-width: 1440px; background:rgba(255,255,255,0.9); backdrop-filter: blur(12px);
+      border: 4px solid #fff; border-radius: 32px; padding: 24px;
+      box-shadow: 0 25px 50px -12px rgba(79,70,229,0.15), 0 0 0 8px rgba(255,255,255,0.4);
+    }
+    .topbar{
+      display:flex; justify-content:space-between; align-items:center; flex-wrap: wrap; gap: 16px;
+      background: #fff; border: 3px solid var(--secondary); border-bottom-width: 6px;
+      border-radius: 24px; padding: 16px 24px; margin-bottom: 24px;
+    }
+    .title{font-weight:900; font-size:clamp(20px, 4vw, 28px); color:var(--primary); display:flex; align-items:center; gap:8px;}
+    .muted{color:var(--muted); font-weight:700;}
+    .progress-wrap{width:100%; height:16px; background:var(--secondary); border-radius:12px; border: 2px solid var(--secondary-dark); overflow:hidden; margin-top:12px;}
+    .progress{height:100%; width:10%; background:var(--good); transition:width .4s cubic-bezier(0.4, 0, 0.2, 1); position:relative;}
+    .progress::after{content:''; position:absolute; top:0; left:0; right:0; height:6px; background:rgba(255,255,255,0.3);}
+    .meta{display:flex; gap:12px; font-weight:800; color:var(--muted); flex-wrap:wrap; justify-content:flex-end;}
+    .pill{background:#f8fafc; border:2px solid var(--secondary); border-radius:12px; padding:8px 12px; font-size:14px;}
+
+    .card{
+      background: #fff; border: 3px solid var(--secondary); border-radius: 24px; padding: 32px;
+      min-height: 540px; display:flex; flex-direction:column; position: relative;
+      box-shadow: inset 0 0 0 4px rgba(255,255,255,0.5);
+    }
+    .card-anim{ animation: bounceIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; display: flex; flex-direction: column; height: 100%; flex: 1;}
+    @keyframes bounceIn { 0% { opacity: 0; transform: translateY(15px) scale(0.98); } 100% { opacity: 1; transform: translateY(0) scale(1); } }
+    @keyframes pop { 0% { transform: scale(0.8) } 100% { transform: scale(1) } }
+
+    .badge{
+      display:inline-flex; align-items:center; padding: 8px 16px;
+      background: #fef3c7; color: #d97706; border: 2px solid #fcd34d; border-bottom-width: 4px;
+      border-radius: 16px; font-weight: 900; font-size: 14px; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; width: max-content;
+    }
+    h2{margin:0 0 12px; font-size:clamp(26px, 4vw, 36px); font-weight:900; color:#0f172a; line-height:1.2;}
+    .desc{margin:0 0 24px; color:var(--muted); font-size:18px; font-weight:700;}
+    .prompt{
+      background: var(--primary-light); border: 2px solid #c7d2fe; border-radius: 20px;
+      padding: 20px; margin-bottom: 24px; font-size: 19px; font-weight: 800; color: #3730a3; line-height: 1.6;
+    }
+    .prompt strong{color:#312e81; background:#e0e7ff; padding:3px 8px; border-radius:8px;}
+
+    .actions{display:flex; justify-content:space-between; gap:16px; margin-top:auto; padding-top:24px;}
+    .btn{
+      border:3px solid; border-radius:20px; padding:14px 24px; font-size:18px; font-weight:900;
+      cursor:pointer; transition:all .15s ease; display:flex; align-items:center; justify-content:center; gap:8px;
+    }
+    .btn.secondary{background:#fff; color:var(--muted); border-color:var(--secondary); border-bottom-width:6px; border-bottom-color:var(--secondary-dark);}
+    .btn.secondary:active,.btn.secondary:hover{transform:translateY(4px); border-bottom-width:2px; margin-top:4px; background:#f8fafc;}
+    .btn.primary{background:var(--primary); color:#fff; border-color:var(--primary); border-bottom-width:6px; border-bottom-color:var(--primary-border);}
+    .btn.primary:active,.btn.primary:hover{transform:translateY(4px); border-bottom-width:2px; margin-top:4px; background:var(--primary-dark);}
+    .btn.primary:disabled,.btn.secondary:disabled{opacity:0.5; cursor:not-allowed; transform:none !important; border-bottom-width:6px !important; margin-top:0 !important;}
+    
+    .option-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px;}
+    .option{
+      background: #fff; border: 3px solid var(--secondary); border-bottom-width: 6px;
+      border-radius: 20px; padding: 20px; text-align: left; cursor: pointer; transition: all .15s ease;
+      color: var(--text); min-height: 100px; display: flex; align-items: center; gap: 16px; font-size: 18px; font-weight: 800; line-height:1.4;
+    }
+    .option.selected{
+      border-color: var(--primary); border-bottom-color: var(--primary-border);
+      background: var(--primary-light); transform: translateY(4px); border-bottom-width: 2px; margin-top:4px;
+    }
+    .option:active{transform: translateY(4px); border-bottom-width: 2px; margin-top:4px;}
+    
+    .svg-shape { cursor: pointer; transition: all 0.2s; }
+    .svg-shape:hover { filter: brightness(1.1); transform: scale(1.02); }
+    .svg-shape.selected { stroke: #eab308; stroke-width: 4; filter: drop-shadow(0 0 8px rgba(234,179,8,0.8)); transform: scale(1.05); }
+
+    .result{text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%;}
+    .emoji{font-size:90px; margin-bottom:16px; animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;}
+    .score{font-size:96px; font-weight:900; line-height:1; color:var(--primary); margin:16px 0 12px; text-shadow: 0 6px 0 var(--primary-border);}
+    .score-box{
+      background:#fff; border:4px solid var(--primary-light); border-radius:32px; padding:32px;
+      width:min(460px,100%); margin:24px auto; box-shadow: 0 16px 30px rgba(79,70,229,0.1);
+    }
+
+    .overlay{position:fixed; inset:0; background:var(--danger); color:#fff; display:none; align-items:center; justify-content:center; text-align:center; padding:24px; z-index:50;}
+    .overlay.show{display:flex}
+    .overlay-box{max-width:520px; background:var(--danger-dark); border-radius:32px; padding:40px; border:4px solid #fca5a5; box-shadow:0 20px 40px rgba(0,0,0,0.3);}
+    .overlay-box .big{font-size:80px; margin-bottom:16px; animation: pop 1s infinite alternate;}
+    .overlay-box h1{font-weight:900; margin:0 0 16px;}
+    .overlay-box p{font-size:20px; font-weight:700;}
+
+    @media (max-width: 780px){
+      .app{padding:12px;} .shell{padding:16px;} .card{padding:20px;}
+      .option-grid{grid-template-columns:1fr;}
+      .actions{flex-direction:column-reverse;} .btn{width:100%;}
+      .topbar{flex-direction:column; align-items:flex-start;}
+    }
+
+    /* Compact desktop quiz scale: keeps 100% browser zoom from feeling oversized. */
+    .app{
+      min-height: 100vh;
+      padding: 14px 20px;
+      align-items: center;
+    }
+    #master_container.quiz-active{
+      justify-content:center !important;
+      padding-top:32px !important;
+      padding-bottom:32px !important;
+    }
+    .shell{
+      width: min(74vw, 1180px);
+      max-width: calc(100vw - 72px);
+      padding: 18px;
+      border-radius: 24px;
+      border-width: 3px;
+      box-shadow: 0 18px 36px -16px rgba(37,99,235,0.18), 0 0 0 6px rgba(255,255,255,0.38);
+    }
+    .topbar{
+      gap: 12px;
+      padding: 12px 18px;
+      margin-bottom: 18px;
+      border-width: 2px;
+      border-bottom-width: 4px;
+      border-radius: 18px;
+    }
+    .title{font-size:clamp(18px, 2.2vw, 22px);}
+    .muted{font-size:15px;}
+    .progress-wrap{height:12px; margin-top:9px;}
+    .meta{gap:9px;}
+    .pill{padding:6px 10px; font-size:12px; border-radius:10px;}
+    .card{
+      min-height: 430px;
+      padding: 24px;
+      border-width: 2px;
+      border-radius: 20px;
+    }
+    .badge{
+      padding: 6px 12px;
+      margin-bottom: 14px;
+      border-radius: 12px;
+      font-size:12px;
+      border-bottom-width:3px;
+    }
+    h2{font-size:clamp(22px, 2.8vw, 28px); margin-bottom:8px;}
+    .desc{font-size:15px; margin-bottom:16px;}
+    .prompt{
+      padding:14px 16px;
+      margin-bottom:16px;
+      border-radius:16px;
+      font-size:16px;
+      line-height:1.45;
+    }
+    .option-grid,
+    .sequence-board{gap:12px;}
+    .option,
+    .seq-item{
+      min-height:76px;
+      padding:14px 16px;
+      border-width:2px;
+      border-bottom-width:4px;
+      border-radius:16px;
+      gap:12px;
+      font-size:15px !important;
+      line-height:1.32;
+    }
+    .opt-tag{
+      width:36px;
+      height:36px;
+      flex-basis:36px;
+      border-radius:10px;
+      font-size:16px;
+    }
+    .seq-order{
+      width:36px;
+      height:36px;
+      flex-basis:36px;
+      border-radius:10px;
+      font-size:16px;
+    }
+    .answer-strip{
+      min-height:64px;
+      padding:12px;
+      margin-bottom:14px;
+      border-radius:18px;
+      gap:9px;
+    }
+    .picked{padding:9px 12px; border-radius:12px; font-size:14px;}
+    .actions{gap:12px; padding-top:16px;}
+    .btn{
+      padding:11px 18px;
+      border-width:2px;
+      border-radius:15px;
+      font-size:15px;
+    }
+    .btn.primary,
+    .btn.secondary{border-bottom-width:4px;}
+    .formula{
+      padding:14px;
+      margin-bottom:16px;
+      border-radius:18px;
+      font-size:15px;
+      line-height:1.65;
+    }
+    .formula .block{padding:7px 12px; border-radius:10px; font-size:14px;}
+    .helper{font-size:14px; margin-bottom:12px;}
+    .dnd-question-card .dnd-guide{
+      align-items:center;
+      gap:12px;
+      margin:0 0 14px;
+      padding:10px 12px;
+      border-width:2px;
+      border-bottom-width:4px;
+      border-radius:16px;
+    }
+    .dnd-question-card .dnd-guide img{
+      width:min(220px, 38%);
+      max-height:96px;
+      border-width:2px;
+      border-radius:12px;
+    }
+    .dnd-question-card .dnd-guide-text{font-size:13px; line-height:1.35;}
+    .dnd-question-card .dnd-layout{
+      grid-template-columns:minmax(0, 1fr) minmax(220px, .82fr);
+      gap:14px;
+      align-items:start;
+      margin-bottom:14px;
+    }
+    .dnd-question-card .dnd-right{min-width:0; gap:8px;}
+    .dnd-question-card .scene-box{
+      min-height:190px;
+      padding:14px;
+      border-radius:18px;
+    }
+    .dnd-question-card .scene-robot{font-size:52px;}
+    .dnd-question-card .scene-right{gap:10px;}
+    .dnd-question-card .scene-switch,
+    .dnd-question-card .scene-lamp{
+      padding:8px 10px;
+      border-radius:12px;
+      font-size:11px;
+    }
+    .dnd-question-card .switch-btn{width:28px; height:46px; border-radius:8px;}
+    .dnd-question-card .switch-btn::after{width:16px; height:20px; top:4px;}
+    .dnd-question-card .switch-btn.on::after{top:22px;}
+    .dnd-question-card .lamp-bulb{font-size:32px;}
+    .dnd-question-card .drag-source-pool{
+      padding:10px;
+      gap:8px;
+      border-width:2px;
+      border-radius:16px;
+    }
+    .dnd-question-card .drag-card{
+      padding:9px 11px;
+      border-width:2px;
+      border-bottom-width:4px;
+      border-radius:12px;
+      font-size:13px;
+      gap:8px;
+    }
+    .dnd-question-card .drag-card-icon{font-size:18px;}
+    .dnd-question-card .drop-slot{
+      min-height:52px;
+      padding:8px 10px;
+      border-width:2px;
+      border-radius:12px;
+      gap:8px;
+    }
+    .dnd-question-card .slot-number{
+      width:28px;
+      height:28px;
+      flex-basis:28px;
+      border-radius:8px;
+      font-size:14px;
+      border-bottom-width:2px;
+    }
+    .dnd-question-card .slot-content{font-size:12px;}
+    .dnd-question-card .slot-empty-hint{font-size:12px;}
+    .pattern-steps{
+      margin:14px 0 16px !important;
+      padding:10px 12px !important;
+      border-radius:18px !important;
+      gap:2px !important;
+      overflow-x:hidden !important;
+    }
+    .pattern-steps > div{
+      gap:3px !important;
+      flex:0 0 auto;
+    }
+    .pattern-steps > div > div:first-child{
+      min-width:28px !important;
+      height:28px !important;
+      padding:0 4px !important;
+      border-radius:8px !important;
+      font-size:15px !important;
+      border-width:2px !important;
+      box-shadow:0 2px 0 #93c5fd !important;
+    }
+    .pattern-steps > div > div:last-child{font-size:12px !important;}
+    input[type="text"]{
+      padding:13px 18px;
+      border-radius:15px;
+      font-size:16px;
+    }
+    .long-scroll{height:220px; padding:18px; border-radius:18px;}
+    .long-scroll p{font-size:15px;}
+    .score{font-size:72px;}
+    .emoji{font-size:68px;}
+    #master_timer_ui{top:14px !important; right:14px !important;}
+    .timer-pill{font-size:15px; padding:5px 10px; border-radius:8px;}
+
+    .quiz-grid-layout {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      gap: 24px;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .quiz-col-left,
+    .quiz-col-right {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      max-width: 100%;
+    }
+    .quiz-col-right {
+      justify-content: flex-start;
+      flex: 1;
+    }
+    .quiz-col-right > *,
+    .quiz-col-left > * {
+      max-width: 100%;
+    }
+    .quiz-col-right .option-grid,
+    .quiz-col-right .sequence-board {
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+    .quiz-col-right .option {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    .pattern-steps {
+      max-width: 100%;
+      min-width: 0;
+      flex-wrap: nowrap !important;
+      white-space: nowrap;
+    }
+    .debug-question-layout{
+      display:grid;
+      grid-template-columns:minmax(280px, 0.9fr) minmax(360px, 1.1fr);
+      gap:32px;
+      align-items:start;
+      margin-top:6px;
+    }
+    .debug-question-right{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+    .debug-question-right .option-grid{
+      margin-top:0;
+    }
+    
+    @media (min-width: 960px) {
+      .quiz-grid-layout {
+        flex-direction: row;
+        gap: 56px;
+        align-items: stretch;
+      }
+      .quiz-col-left {
+        flex: 0 1 40%;
+      }
+      .quiz-col-right {
+        flex: 1 1 0;
+      }
+    }
+    @media (max-width: 959px) {
+      .debug-question-layout{
+        grid-template-columns:1fr;
+      }
+    }
+
+    /* Extra compact typography: roughly halves the oversized test text. */
+    .landing-title{font-size:clamp(22px, 2.4vw, 32px) !important;}
+    .landing-form-title{font-size:26px !important;}
+    .landing-form-subtitle{font-size:12px !important;}
+    .landing-label{font-size:12px !important;}
+    #phase_school .k-select-trigger,
+    #phase_school #otherName{font-size:13px !important; min-height:44px !important; padding:11px 15px !important;}
+    #phase_school .k-option{font-size:12px !important; padding:10px 13px !important;}
+    #phase_school .k-search-box input{font-size:12px !important; padding:9px 11px !important;}
+    .landing-start-btn{font-size:15px !important; min-height:48px !important; border-radius:16px !important;}
+    .landing-mini-note,
+    .landing-visual-footer-kicker{font-size:10px !important;}
+    .landing-visual-footer-text{font-size:12px !important;}
+    .landing-badge-star{font-size:42px !important;}
+
+    .master-intro h2,
+    .card h2{font-size:clamp(16px, 1.8vw, 21px) !important;}
+    .master-intro p,
+    .desc{font-size:11px !important;}
+    .title{font-size:clamp(12px, 1.4vw, 16px) !important;}
+    .muted{font-size:11px !important;}
+    .badge{font-size:10px !important; padding:5px 9px !important; margin-bottom:9px !important; border-radius:9px !important;}
+    .prompt{font-size:11px !important; padding:10px 12px !important; margin-bottom:12px !important; border-radius:11px !important;}
+    .option,
+    .seq-item{font-size:11px !important; min-height:54px !important; padding:9px 12px !important; border-radius:11px !important; gap:8px !important;}
+    .opt-tag,
+    .seq-order{width:28px !important; height:28px !important; flex-basis:28px !important; font-size:12px !important; border-radius:8px !important;}
+    .btn{font-size:11px !important; padding:8px 13px !important; border-radius:11px !important;}
+    .pill{font-size:10px !important; padding:5px 8px !important;}
+    .timer-pill{font-size:11px !important; padding:4px 8px !important;}
+    .helper,
+    .status,
+    .formula,
+    .formula .block,
+    input[type="text"],
+    .k-select-trigger,
+    .k-option,
+    .slot-content,
+    .slot-empty-hint,
+    .drag-card,
+    .dnd-guide-text,
+    .picked{font-size:11px !important;}
+    .score{font-size:52px !important;}
+    .emoji{font-size:52px !important;}
+    .overlay-box p{font-size:12px !important;}
+    .overlay-box .big{font-size:40px !important;}
+
+        body { background-color: #f1f5f9; padding: 0; margin: 0; overflow-x: hidden; font-family: 'Nunito', system-ui, sans-serif; }
+        .header { background: #fff; padding: 20px; text-align: center; border-bottom: 4px solid var(--secondary); display: flex; justify-content: space-between; align-items: center; z-index: 100; position: relative; }
+        .header h1 { margin: 0; font-size: 24px; color: var(--primary); }
+        .slide-container { position: relative; width: 100vw; height: calc(100vh - 84px); overflow: hidden; }
+        .slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: none; padding: 20px; box-sizing: border-box; overflow-y: auto; background: #f8fafc; }
+        .slide.active { display: flex; flex-direction: column; }
+        .split { display: flex; gap: 32px; width: 100%; max-width: 1500px; margin: 0 auto; align-items: flex-start; }
+        .col { flex: 1; min-width: 0; background: rgba(255,255,255,0.7); padding: 24px; border-radius: 32px; border: 4px dashed var(--secondary); box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .col-title { text-align: center; font-weight: 900; font-size: 22px; margin-bottom: 24px; color: var(--primary); background: #fff; padding: 12px; border-radius: 16px; border: 3px solid var(--secondary); box-shadow: 0 4px 0 var(--secondary-dark); }
+        .controls { display: flex; gap: 12px; }
+        .btn-nav { padding: 12px 24px; font-size: 18px; font-weight: 900; background: var(--primary); color: #fff; border: 3px solid var(--primary-dark); border-bottom-width: 6px; border-radius: 16px; cursor: pointer; transition: all 0.1s; }
+        .btn-nav:disabled { background: #cbd5e1; border-color: #94a3b8; color: #64748b; cursor: not-allowed; transform: none !important; border-bottom-width: 6px !important; margin-top: 0 !important; }
+        .btn-nav:active:not(:disabled) { transform: translateY(4px); border-bottom-width: 2px; margin-top: 4px; }
+        
+        /* Fixes for cards within the viewer */
+        .card { min-height: auto !important; margin: 0 !important; width: 100% !important; box-sizing: border-box; pointer-events: none; }
+        .card * { pointer-events: none !important; } /* Prevent clicking buttons inside the preview */
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="btn-nav" id="prevBtn" onclick="prevSlide()">&#8592; Sebelumnya</button>
+        <div>
+            <h1 id="slideTitle">Perbandingan Soal (Hanya yang Berbeda)</h1>
+            <div style="font-weight:900; color:var(--muted); margin-top: 8px; font-size: 18px;" id="slideCounter"></div>
+        </div>
+        <button class="btn-nav" id="nextBtn" onclick="nextSlide()">Selanjutnya &#8594;</button>
+    </div>
+    
+    <div class="slide-container">
+
+        <div class="slide active" id="slide-0">
+            <div style="text-align:center; margin-bottom: 24px;">
+                <span style="background: var(--accent); color: #fff; padding: 8px 24px; border-radius: 999px; font-weight: 900; font-size: 20px; border: 3px solid #d97706;">Pilar 1 (Logika Pemrograman) - Soal 21</span>
+            </div>
+            <div class="split">
+                <div class="col">
+                    <div class="col-title">Day 1 (Original)</div>
+                    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-anim">
+          <h2>Pintu Rahasia 🚪</h2>
+          <p class="desc">Kode if-else bikin aturan otomatis di game!</p>
+          <div class="prompt">Baca aturan kode di bawah dulu, lalu lihat skenarionya — apa yang bakal terjadi?</div>
+          <div style="background:#f8fafc; border:3px solid #cbd5e1; border-bottom-width:5px; border-radius:20px; padding:16px 20px; margin-bottom:14px; font-size:15px; font-weight:800; display:flex; flex-direction:column; gap:10px;">
+  <div style="background:#fef08a; border:2px solid #facc15; border-bottom:4px solid #eab308; padding:8px 14px; border-radius:12px; color:#854d0e; width:fit-content;">🚩 Ketika tombol ditekan</div>
+  <div style="display:flex; gap:10px; align-items:flex-start; padding-left:8px;">
+    <div style="background:#7c3aed; color:#fff; font-size:12px; font-weight:900; padding:4px 10px; border-radius:8px; white-space:nowrap; margin-top:2px;">JIKA</div>
+    <div style="display:flex; flex-direction:column; gap:8px; flex:1;">
+      <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+        <div style="background:#dcfce7; border:2px solid #86efac; border-bottom:3px solid #4ade80; padding:6px 12px; border-radius:10px; color:#166534;">🔑 bawa kunci</div>
+        <div style="background:#e0e7ff; border:2px solid #a5b4fc; border-bottom:3px solid #818cf8; padding:6px 12px; border-radius:10px; color:#3730a3;">DAN</div>
+        <div style="background:#dcfce7; border:2px solid #86efac; border-bottom:3px solid #4ade80; padding:6px 12px; border-radius:10px; color:#166534;">tekan 🟢 hijau</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; padding-left:4px;">
+        <div style="color:#94a3b8; font-size:18px;">↳</div>
+        <div style="background:#d1fae5; border:2px solid #34d399; border-bottom:3px solid #059669; padding:6px 14px; border-radius:10px; color:#065f46; font-weight:900;">🚪✅ Pintu terbuka!</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex; gap:10px; align-items:center; padding-left:8px;">
+    <div style="background:#ef4444; color:#fff; font-size:12px; font-weight:900; padding:4px 10px; border-radius:8px; white-space:nowrap;">LAIN</div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="color:#94a3b8; font-size:18px;">↳</div>
+      <div style="background:#fee2e2; border:2px solid #fca5a5; border-bottom:3px solid #f87171; padding:6px 14px; border-radius:10px; color:#991b1b; font-weight:900;">🔒 Pintu tetap terkunci</div>
+    </div>
+  </div>
+</div>
+          <div class="option-grid">
+            
+          </div>
+        </div>
+    </div>
+    
+                </div>
+                <div class="col">
+                    <div class="col-title">Day 2 (Baru)</div>
+                    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-anim">
+          <h2>Portal Rahasia 🚪</h2>
+          <p class="desc">Kode if-else bikin aturan otomatis di game!</p>
+          <div class="prompt">Baca aturan kode di bawah dulu, lalu lihat skenarionya — apa yang bakal terjadi?</div>
+          <div style="background:#f8fafc; border:3px solid #cbd5e1; border-bottom-width:5px; border-radius:20px; padding:16px 20px; margin-bottom:14px; font-size:15px; font-weight:800; display:flex; flex-direction:column; gap:10px;">
+  <div style="background:#fef08a; border:2px solid #facc15; border-bottom:4px solid #eab308; padding:8px 14px; border-radius:12px; color:#854d0e; width:fit-content;">🚩 Ketika tombol ditekan</div>
+  <div style="display:flex; gap:10px; align-items:flex-start; padding-left:8px;">
+    <div style="background:#7c3aed; color:#fff; font-size:12px; font-weight:900; padding:4px 10px; border-radius:8px; white-space:nowrap; margin-top:2px;">JIKA</div>
+    <div style="display:flex; flex-direction:column; gap:8px; flex:1;">
+      <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center;">
+        <div style="background:#dcfce7; border:2px solid #86efac; border-bottom:3px solid #4ade80; padding:6px 12px; border-radius:10px; color:#166534;">🪪 bawa kartu akses</div>
+        <div style="background:#e0e7ff; border:2px solid #a5b4fc; border-bottom:3px solid #818cf8; padding:6px 12px; border-radius:10px; color:#3730a3;">DAN</div>
+        <div style="background:#dbeafe; border:2px solid #93c5fd; border-bottom:3px solid #60a5fa; padding:6px 12px; border-radius:10px; color:#1e40af;">tekan 🔵 biru</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:8px; padding-left:4px;">
+        <div style="color:#94a3b8; font-size:18px;">↳</div>
+        <div style="background:#d1fae5; border:2px solid #34d399; border-bottom:3px solid #059669; padding:6px 14px; border-radius:10px; color:#065f46; font-weight:900;">🚪✅ Portal terbuka!</div>
+      </div>
+    </div>
+  </div>
+  <div style="display:flex; gap:10px; align-items:center; padding-left:8px;">
+    <div style="background:#ef4444; color:#fff; font-size:12px; font-weight:900; padding:4px 10px; border-radius:8px; white-space:nowrap;">LAIN</div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <div style="color:#94a3b8; font-size:18px;">↳</div>
+      <div style="background:#fee2e2; border:2px solid #fca5a5; border-bottom:3px solid #f87171; padding:6px 14px; border-radius:10px; color:#991b1b; font-weight:900;">🔒 Portal tetap tertutup</div>
+    </div>
+  </div>
+</div>
+          <div class="option-grid">
+            
+          </div>
+        </div>
+    </div>
+    
+                </div>
+            </div>
+        </div>
+    
+        <div class="slide " id="slide-1">
+            <div style="text-align:center; margin-bottom: 24px;">
+                <span style="background: var(--accent); color: #fff; padding: 8px 24px; border-radius: 999px; font-weight: 900; font-size: 20px; border: 3px solid #d97706;">Pilar 1 (Logika Pemrograman) - Soal 31</span>
+            </div>
+            <div class="split">
+                <div class="col">
+                    <div class="col-title">Day 1 (Original)</div>
+                    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-anim">
+          <h2>Lari Paling Cepat 🚀</h2>
+          <p class="desc">Temuin jalan pintas tanpa nabrak dinding!</p>
+          <div class="prompt">Ada dinding hitam (⬛) di tengah peta. <strong>Dinding hitam tidak bisa ditembus atau dilewati.</strong> Biar robot (🤖) <strong>paling cepat</strong> nyampe ke kado (🎁), dia harus milih jalan mana?</div>
+          
+          <div class="option-grid">
+            
+          </div>
+        </div>
+    </div>
+    
+                </div>
+                <div class="col">
+                    <div class="col-title">Day 2 (Baru)</div>
+                    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-anim">
+          <h2>Misi Ambil Berlian 💎</h2>
+          <p class="desc">Pilih rute yang benar tanpa menabrak tembok.</p>
+          <div class="prompt">Ada dinding hitam (⬛) di peta. <strong>Dinding hitam tidak bisa ditembus atau dilewati.</strong> Biar robot (🤖) <strong>paling cepat</strong> nyampe ke berlian (💎), dia harus milih jalan mana?</div>
+          
+          <div class="option-grid">
+            
+          </div>
+        </div>
+    </div>
+    
+                </div>
+            </div>
+        </div>
+    
+        <div class="slide " id="slide-2">
+            <div style="text-align:center; margin-bottom: 24px;">
+                <span style="background: var(--accent); color: #fff; padding: 8px 24px; border-radius: 999px; font-weight: 900; font-size: 20px; border: 3px solid #d97706;">Pilar 1 (Logika Pemrograman) - Soal 46</span>
+            </div>
+            <div class="split">
+                <div class="col">
+                    <div class="col-title">Day 1 (Original)</div>
+                    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-anim">
+          <h2>Hitung Skor Game-mu! 💯</h2>
+          <p class="desc">Saatnya berhitung skor ala programmer game.</p>
+          <div class="prompt">Dapat ⭐ = <strong>+10 poin</strong>. Kena musuh 👾 = <strong>dikurang 5 poin</strong>. Berapa poin total kotak di bawah ini?</div>
+          <div style="background:#fff; border:4px dashed var(--secondary-dark); border-radius:24px; padding:22px 18px; display:flex; flex-direction:column; gap:14px; margin:18px 0; align-items:center; box-shadow: inset 0 0 0 4px #f8fafc;">
+           <div style="display:flex; gap:12px; flex-wrap:nowrap; justify-content:center; align-items:center; width:100%;">
+              <div style="background:var(--primary-light); padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid var(--primary-border); border-bottom-width:7px; animation: pop 1s infinite alternate;">⭐</div>
+              <div style="background:var(--primary-light); padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid var(--primary-border); border-bottom-width:7px; animation: pop 1s infinite alternate; animation-delay: 0.2s;">⭐</div>
+              <div style="background:#fee2e2; padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid #ef4444; border-bottom-width:7px;">👾</div>
+           </div>
+           <div style="font-weight:900; color:var(--text); font-size:24px; margin-top:8px; background:#fef3c7; padding:8px 20px; border-radius:100px; border:3px solid #f59e0b; text-align:center;">Total Skor = ... ?</div>
+        </div>
+          <div class="option-grid">
+            
+          </div>
+        </div>
+    </div>
+    
+                </div>
+                <div class="col">
+                    <div class="col-title">Day 2 (Baru)</div>
+                    
+    <div class="card" style="margin-bottom: 20px;">
+        <div class="card-anim">
+          <h2>Hitung Skor Petualangan 🎮</h2>
+          <p class="desc">Saatnya berhitung skor ala programmer game.</p>
+          <div class="prompt">Dapat ⭐ = <strong>+10 poin</strong>. Dapat 💎 = <strong>+20 poin</strong>. Kena musuh 👾 = <strong>dikurang 5 poin</strong>. Berapa poin total kotak di bawah ini?</div>
+          <div style="background:#fff; border:4px dashed var(--secondary-dark); border-radius:24px; padding:22px 18px; display:flex; flex-direction:column; gap:14px; margin:18px 0; align-items:center; box-shadow: inset 0 0 0 4px #f8fafc;">
+           <div style="display:flex; gap:12px; flex-wrap:nowrap; justify-content:center; align-items:center; width:100%;">
+              <div style="background:var(--primary-light); padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid var(--primary-border); border-bottom-width:7px; animation: pop 1s infinite alternate;">⭐</div>
+              <div style="background:var(--primary-light); padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid var(--primary-border); border-bottom-width:7px; animation: pop 1s infinite alternate; animation-delay: 0.2s;">⭐</div>
+              <div style="background:#ecfeff; padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid #06b6d4; border-bottom-width:7px; animation: pop 1s infinite alternate; animation-delay: 0.4s;">💎</div>
+              <div style="background:#fee2e2; padding:12px 14px; border-radius:18px; font-size:44px; border:4px solid #ef4444; border-bottom-width:7px;">👾</div>
+           </div>
+           <div style="font-weight:900; color:var(--text); font-size:24px; margin-top:8px; background:#fef3c7; padding:8px 20px; border-radius:100px; border:3px solid #f59e0b; text-align:center;">Total Skor = ... ?</div>
+        </div>
+          <div class="option-grid">
+            
+          </div>
+        </div>
+    </div>
+    
+                </div>
+            </div>
+        </div>
+    
+        <div class="slide " id="slide-3">
+            <div style="text-align:center; margin-bottom: 24px;">
+                <span style="background: var(--accent); color: #fff; padding: 8px 24px; border-radius: 999px; font-weight: 900; font-size: 20px; border: 3px solid #d97706;">Pilar 2 (Literasi Digital) - Soal 5</span>
+            </div>
+            <div class="split">
+                <div class="col">
+                    <div class="col-title">Day 1 (Original)</div>
+                    <div class='card'><div class="card-anim"><div class="badge">&#128187; Level 5 &mdash; Login Komputer</div><h2>Login ke Komputer! &#128272;</h2><p class="desc">Untuk masuk ke komputer sekolah kamu harus mengetik username dan password dengan <strong>PERSIS BENAR</strong> — huruf besar, angka, dan simbol harus tepat!</p><div style="background:#1e293b;border-radius:20px;padding:20px 24px;margin-bottom:20px;border:3px solid #334155;border-bottom:6px solid #0f172a;box-shadow:0 8px 24px rgba(0,0,0,0.2);"><div style="text-align:center;margin-bottom:16px;"><div style="font-size:48px;">&#128187;</div><p style="color:#94a3b8;font-weight:900;font-size:13px;margin:4px 0 0;letter-spacing:2px;">KALANANTI SEKOLAH KOMPUTER</p></div><div style="margin-bottom:14px;"><label style="color:#94a3b8;font-size:13px;font-weight:900;display:block;margin-bottom:6px;letter-spacing:1px;">&#128100; USERNAME</label><div style="position:relative;"><input type="text" id="q5user" value="" oninput="stateP2.answers.q5.user=this.value; updateNextBtnP2()" onpaste="blockPasteP2(this)" placeholder="Ketik username..." autocomplete="off" spellcheck="false" style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid #22c55e#ef4444#475569;font-size:18px;font-weight:800;background:#0f172a;color:#f1f5f9;outline:none;"></div><div style="margin-top:6px;font-size:13px;font-weight:800;color:#64748b;">Target: <span style="font-family:monospace;background:#0f172a;color:#fbbf24;padding:3px 10px;border-radius:6px;letter-spacing:1px;"></span></div></div><div style="margin-bottom:8px;"><label style="color:#94a3b8;font-size:13px;font-weight:900;display:block;margin-bottom:6px;letter-spacing:1px;">&#128272; PASSWORD</label><div style="position:relative;"><input type="text" id="q5pass" value="" oninput="stateP2.answers.q5.pass=this.value; updateNextBtnP2()" onpaste="blockPasteP2(this)" placeholder="Ketik password..." autocomplete="off" spellcheck="false" style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid #22c55e#ef4444#475569;font-size:18px;font-weight:800;background:#0f172a;color:#f1f5f9;outline:none;font-family:monospace;letter-spacing:2px;"></div><div style="margin-top:6px;font-size:13px;font-weight:800;color:#64748b;">Target: <span style="font-family:monospace;background:#0f172a;color:#fbbf24;padding:3px 10px;border-radius:6px;letter-spacing:1px;"></span></div></div><div style="margin-top:12px;text-align:center;padding:12px;background:rgba(34,197,94,0.15);border-radius:12px;border:2px solid #22c55e;"><span style="color:#22c55e;font-size:18px;font-weight:900;">&#127481; Login Berhasil! Selamat datang, Petualang!</span></div><p style="color:#ef4444;font-size:13px;font-weight:800;margin:12px 0 0;text-align:center;">&#128274; Tombol Lanjut akan terbuka jika username DAN password sudah benar semua!</p><div style="margin-top:10px;padding:10px 14px;background:#fef3c7;border:2px solid #f59e0b;border-radius:12px;text-align:center;"><span style="font-size:14px;font-weight:900;color:#92400e;">⚠️ PENTING: Pastikan setiap karakter SAMA PERSIS dengan target! Huruf besar (A) dan kecil (a) itu BERBEDA. Perhatikan juga angka dan simbol spesialnya ya!</span></div></div></div></div>
+                </div>
+                <div class="col">
+                    <div class="col-title">Day 2 (Baru)</div>
+                    <div class='card'><div class="card-anim"><div class="badge">&#128187; Level 5 &mdash; Latihan Ketik Tepat</div><h2>Ketik Teks dengan Tepat! &#9000;&#65039;</h2><p class="desc">Latihan ini hanya simulasi mengetik. Tugasmu adalah menyalin dua teks contoh dengan <strong>PERSIS BENAR</strong> — huruf besar, angka, dan simbol harus tepat!</p><div style="background:#1e293b;border-radius:20px;padding:20px 24px;margin-bottom:20px;border:3px solid #334155;border-bottom:6px solid #0f172a;box-shadow:0 8px 24px rgba(0,0,0,0.2);"><div style="text-align:center;margin-bottom:16px;"><div style="font-size:48px;">&#128187;</div><p style="color:#94a3b8;font-weight:900;font-size:13px;margin:4px 0 0;letter-spacing:2px;">KALANANTI LATIHAN MENGETIK</p></div><div style="margin-bottom:14px;"><label style="color:#94a3b8;font-size:13px;font-weight:900;display:block;margin-bottom:6px;letter-spacing:1px;">&#9000;&#65039; TEKS CONTOH 1</label><div style="position:relative;"><input type="text" id="q5user" value="" oninput="stateP2.answers.q5.user=this.value; updateNextBtnP2()" onpaste="blockPasteP2(this)" placeholder="Ketik teks contoh 1..." autocomplete="off" spellcheck="false" style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid #22c55e#ef4444#475569;font-size:18px;font-weight:800;background:#0f172a;color:#f1f5f9;outline:none;"></div><div style="margin-top:6px;font-size:13px;font-weight:800;color:#64748b;">Target: <span style="font-family:monospace;background:#0f172a;color:#fbbf24;padding:3px 10px;border-radius:6px;letter-spacing:1px;"></span></div></div><div style="margin-bottom:8px;"><label style="color:#94a3b8;font-size:13px;font-weight:900;display:block;margin-bottom:6px;letter-spacing:1px;">&#9000;&#65039; TEKS CONTOH 2</label><div style="position:relative;"><input type="text" id="q5pass" value="" oninput="stateP2.answers.q5.pass=this.value; updateNextBtnP2()" onpaste="blockPasteP2(this)" placeholder="Ketik teks contoh 2..." autocomplete="off" spellcheck="false" style="width:100%;padding:14px 16px;border-radius:12px;border:2px solid #22c55e#ef4444#475569;font-size:18px;font-weight:800;background:#0f172a;color:#f1f5f9;outline:none;font-family:monospace;letter-spacing:2px;"></div><div style="margin-top:6px;font-size:13px;font-weight:800;color:#64748b;">Target: <span style="font-family:monospace;background:#0f172a;color:#fbbf24;padding:3px 10px;border-radius:6px;letter-spacing:1px;"></span></div></div><div style="margin-top:12px;text-align:center;padding:12px;background:rgba(34,197,94,0.15);border-radius:12px;border:2px solid #22c55e;"><span style="color:#22c55e;font-size:18px;font-weight:900;">&#9989; Latihan selesai! Dua teks sudah tepat.</span></div><p style="color:#ef4444;font-size:13px;font-weight:800;margin:12px 0 0;text-align:center;">Tombol Lanjut akan terbuka jika kedua teks contoh sudah diketik benar semua.</p><div style="margin-top:10px;padding:10px 14px;background:#fef3c7;border:2px solid #f59e0b;border-radius:12px;text-align:center;"><span style="font-size:14px;font-weight:900;color:#92400e;">⚠️ PENTING: Pastikan setiap karakter SAMA PERSIS dengan target! Huruf besar (A) dan kecil (a) itu BERBEDA. Perhatikan juga angka dan simbol spesialnya ya!</span></div></div></div></div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="slide " id="slide-4">
+            <div style="text-align:center; margin-bottom: 24px;">
+                <span style="background: var(--accent); color: #fff; padding: 8px 24px; border-radius: 999px; font-weight: 900; font-size: 20px; border: 3px solid #d97706;">Pilar 2 (Literasi Digital) - Soal 8</span>
+            </div>
+            <div class="split">
+                <div class="col">
+                    <div class="col-title">Day 1 (Original)</div>
+                    <div class='card'><div class="card-anim"><div class="badge">&#127760; Level 8 &mdash; Navigasi Browser</div><h2>Internetnya Macet! &#128548;</h2><p class="desc">Wah, halaman web error dan tidak mau terbuka! Tombol mana yang harus ditekan untuk memperbaikinya?</p><div style="background:#fff3cd;border:3px solid #ffc107;border-bottom:6px solid #e0a800;border-radius:20px;padding:20px;margin-bottom:20px;text-align:center;"><div style="font-size:48px;margin-bottom:8px;">&#9888;&#65039;</div><strong style="font-size:18px;">Err! Halaman ini tidak bisa diakses.</strong><br><span style="color:#856404;font-size:15px;">ERR_CONNECTION_TIMED_OUT</span></div><div class="prompt">Misi: Pilih ikon mana yang harus diklik untuk <strong>me-Refresh (memuat ulang)</strong> halamannya!</div><div class="option-grid"></div></div></div>
+                </div>
+                <div class="col">
+                    <div class="col-title">Day 2 (Baru)</div>
+                    <div class='card'><div class="card-anim"><div class="badge">&#127760; Level 8 &mdash; Navigasi Browser</div><h2>Salah Masuk Halaman! &#128064;</h2><p class="desc">Kamu tidak sengaja membuka halaman yang salah. Tombol mana yang harus ditekan untuk kembali ke halaman sebelumnya?</p><div style="background:#fff3cd;border:3px solid #ffc107;border-bottom:6px solid #e0a800;border-radius:20px;padding:20px;margin-bottom:20px;text-align:center;"><div style="font-size:48px;margin-bottom:8px;">&#128269;</div><strong style="font-size:18px;">Kamu sedang berada di halaman hasil pencarian yang salah.</strong><br><span style="color:#856404;font-size:15px;">Kembali ke halaman sebelumnya untuk memilih tautan yang benar.</span></div><div class="prompt">Misi: Pilih ikon mana yang harus diklik untuk <strong>kembali ke halaman sebelumnya</strong>!</div><div class="option-grid"></div></div></div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="slide " id="slide-5">
+            <div style="text-align:center; margin-bottom: 24px;">
+                <span style="background: var(--accent); color: #fff; padding: 8px 24px; border-radius: 999px; font-weight: 900; font-size: 20px; border: 3px solid #d97706;">Pilar 2 (Literasi Digital) - Soal 9</span>
+            </div>
+            <div class="split">
+                <div class="col">
+                    <div class="col-title">Day 1 (Original)</div>
+                    <div class='card'><div class="card-anim"><div class="badge">&#128421;&#65039; Level 9 &mdash; Kontrol Jendela</div><h2>Selesai Coding, Tutup Jendela! &#128682;</h2><p class="desc">Setelah selesai, kamu perlu menutup jendela aplikasi. Kenali tombol-tombol di pojok atas browser!</p><div style="background:#1e293b;border-radius:20px;padding:16px 20px;margin-bottom:20px;"><div style="display:flex;gap:10px;margin-bottom:12px;"><div style="width:14px;height:14px;border-radius:50%;background:#ef4444;"></div><div style="width:14px;height:14px;border-radius:50%;background:#f59e0b;"></div><div style="width:14px;height:14px;border-radius:50%;background:#22c55e;"></div><span style="color:#94a3b8;font-size:13px;margin-left:8px;">Scratch Editor &mdash; scratch.mit.edu</span></div><div style="background:#f8fafc;border-radius:12px;padding:12px;font-size:15px;color:#334155;font-weight:700;">Proyek Scratch kamu terbuka di sini...</div></div><div class="prompt">Misi: Pilih tombol mana yang harus ditekan untuk <strong>menutup (Close)</strong> jendela aplikasi ini?</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:16px 0;"></div><div class="status">Pilihanmu: </div></div></div>
+                </div>
+                <div class="col">
+                    <div class="col-title">Day 2 (Baru)</div>
+                    <div class='card'><div class="card-anim"><div class="badge">&#128421;&#65039; Level 9 &mdash; Kontrol Jendela</div><h2>Sembunyikan Jendela Dulu! &#128421;&#65039;</h2><p class="desc">Kamu masih perlu membuka proyek ini nanti, jadi jangan ditutup. Kenali tombol untuk mengecilkan jendela sementara.</p><div style="background:#1e293b;border-radius:20px;padding:16px 20px;margin-bottom:20px;"><div style="display:flex;gap:10px;margin-bottom:12px;"><div style="width:14px;height:14px;border-radius:50%;background:#ef4444;"></div><div style="width:14px;height:14px;border-radius:50%;background:#f59e0b;"></div><div style="width:14px;height:14px;border-radius:50%;background:#22c55e;"></div><span style="color:#94a3b8;font-size:13px;margin-left:8px;">Scratch Editor &mdash; scratch.mit.edu</span></div><div style="background:#f8fafc;border-radius:12px;padding:12px;font-size:15px;color:#334155;font-weight:700;">Proyek Scratch masih perlu dipakai lagi nanti...</div></div><div class="prompt">Misi: Pilih tombol mana yang harus ditekan untuk <strong>mengecilkan / menyembunyikan sementara (Minimize)</strong> jendela aplikasi ini?</div><div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin:16px 0;"></div><div class="status">Pilihanmu: </div></div></div>
+                </div>
+            </div>
+        </div>
+    
+        <div class="slide " id="slide-6">
+            <div style="text-align:center; margin-bottom: 24px;">
+                <span style="background: var(--accent); color: #fff; padding: 8px 24px; border-radius: 999px; font-weight: 900; font-size: 20px; border: 3px solid #d97706;">Pilar 3 (Spasial HOTS) - Soal 2</span>
+            </div>
+            <div class="split">
+                <div class="col">
+                    <div class="col-title">Day 1 (Original)</div>
+                    <div class='card'><div class="card-anim"><div class="badge">🏴‍☠️ Level 2 &mdash; Algoritma Rute</div><h2>Peta Harta Karun! 🏴‍☠️</h2><p class="desc">Bantu pelaut menemukan rute ke Peti Emas tanpa menabrak rintangan (Batu/Buaya).</p><div class="prompt">Misi: Manakah <strong>urutan perintah</strong> (Kanan/Bawah) yang paling tepat untuk sampai ke peti emas?</div><div style="display:flex; flex-direction:column; align-items:center; gap:24px;"><div style="border:4px solid #b45309; border-radius:16px; overflow:hidden; width:260px; height:260px;"><img src="https://roboguru-forum-cdn.ruangguru.com//image/c19aa684-aabc-4c13-ac96-3bd583e849d3.png" alt="Peta Harta Karun" style="width:100%; height:100%; object-fit:contain; display:block;" /></div><div class="option-grid" style="width:100%;"><button class="option Aselected" onclick="stateP3.answers.q2=\; renderP3()" style="justify-content:center; font-size:24px; letter-spacing:4px;">➡️ ⬇️ ➡️ ⬇️ ⬇️ ➡️</button><button class="option Bselected" onclick="stateP3.answers.q2=\; renderP3()" style="justify-content:center; font-size:24px; letter-spacing:4px;">⬇️ ➡️ ➡️ ⬇️ ➡️ ⬇️</button><button class="option Cselected" onclick="stateP3.answers.q2=\; renderP3()" style="justify-content:center; font-size:24px; letter-spacing:4px;">➡️ ➡️ ⬇️ ⬇️ ➡️ ⬇️</button><button class="option Dselected" onclick="stateP3.answers.q2=\; renderP3()" style="justify-content:center; font-size:24px; letter-spacing:4px;">➡️ ⬇️ ⬇️ ➡️ ➡️ ⬇️</button></div></div></div></div>
+                </div>
+                <div class="col">
+                    <div class="col-title">Day 2 (Baru)</div>
+                    <div class='card'><div class="card-anim"><div class="badge">🥷🏼 Level 2 &mdash; Algoritma Rute</div><h2>Misi Ninja Apel Emas! 🥷🏼</h2><p class="desc">Ninja sedang menyusup ke taman rahasia untuk mengambil Apel Emas. Bantu dia memilih rute aman tanpa menabrak Batu atau Buaya.</p><div class="prompt">Misi: Manakah <strong>urutan perintah</strong> (Kanan/Bawah) yang paling tepat agar ninja sampai ke Apel Emas?</div><div style="display:flex; flex-direction:column; align-items:center; gap:24px;"><img src="https://roboguru-forum-cdn.ruangguru.com//image/2efac65e-aa62-4dc0-b7dd-94791b7289ac.png" alt="Peta misi ninja menuju Apel Emas" style="width:260px;height:260px;object-fit:contain;display:block;border:4px solid #b45309;border-radius:16px;background:#fff7ed;" /><div class="option-grid" style="width:100%;"><button class="option Aselected" onclick="stateP3.answers.q2=\; renderP3()" style="justify-content:center; font-size:24px; letter-spacing:4px;">➡️ ⬇️ ⬇️ ⬇️ ➡️ ➡️</button><button class="option Bselected" onclick="stateP3.answers.q2=\; renderP3()" style="justify-content:center; font-size:24px; letter-spacing:4px;">⬇️ ➡️ ➡️ ⬇️ ➡️ ⬇️</button><button class="option Cselected" onclick="stateP3.answers.q2=\; renderP3()" style="justify-content:center; font-size:24px; letter-spacing:4px;">➡️ ➡️ ⬇️ ⬇️ ➡️ ⬇️</button><button class="option Dselected" onclick="stateP3.answers.q2=\; renderP3()" style="justify-content:center; font-size:24px; letter-spacing:4px;">➡️ ⬇️ ⬇️ ➡️ ➡️ ⬇️</button></div></div></div></div>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+    
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 7;
+        
+        function updateUI() {
+            if(totalSlides === 0) return;
+            document.querySelectorAll('.slide').forEach((s, i) => {
+                s.classList.toggle('active', i === currentSlide);
+            });
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+            document.getElementById('slideCounter').innerText = "Slide " + (currentSlide + 1) + " dari " + totalSlides;
+            window.scrollTo(0,0);
+        }
+        
+        function prevSlide() {
+            if (currentSlide > 0) { currentSlide--; updateUI(); }
+        }
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) { currentSlide++; updateUI(); }
+        }
+        
+        document.addEventListener('keydown', (e) => {
+            if(e.key === 'ArrowRight') nextSlide();
+            if(e.key === 'ArrowLeft') prevSlide();
+        });
+        
+        updateUI();
+    </script>
+</body>
+</html>

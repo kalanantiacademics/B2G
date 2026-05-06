@@ -3395,18 +3395,31 @@
     </div>
 
     <div id="closeTomorrowOverlay" class="overlay" style="z-index:99999;">
-      <div class="overlay-box">
-        <div class="big">🛑</div>
-        <h1 style="">Maaf, Test Sudah Ditutup!</h1>
-        <p style="font-size:18px; margin-bottom:0;">Waktu pengerjaan test untuk hari ini sudah habis. Silakan lakukan test kembali besok tanggal 5 Mei dari jam 08:00 - 17:00 WIB.</p>
+      <div class="overlay-box" style="max-width:520px;">
+        <div class="big" style="font-size:64px; margin-bottom:12px;">🕐</div>
+        <h1 style="font-size:24px; margin:0 0 14px; line-height:1.4;">Sesi Hari Ini Sudah Berakhir</h1>
+        <p style="font-size:17px; font-weight:700; line-height:1.7; margin-bottom:12px; color:#fca5a5;">
+          Waktu pengerjaan untuk sesi ini sudah selesai.
+        </p>
+        <p style="font-size:15px; font-weight:800; color:#fff; background:rgba(255,255,255,0.15); border-radius:14px; padding:12px 18px; margin-bottom:0;">
+          📅 Kembali lagi besok<br>
+          <strong>Kamis, 7 Mei 2026 · 09:00 – 16:00 WIB</strong>
+        </p>
       </div>
     </div>
 
     <div id="closeFinalOverlay" class="overlay" style="z-index:99999;">
-      <div class="overlay-box">
-        <div class="big">🛑</div>
-        <h1 style="">Maaf, Test Sudah Ditutup!</h1>
-        <p style="font-size:18px; margin-bottom:0;">Mohon maaf, waktu test sudah selesai. Terima kasih atas minatnya, sampai jumpa di lain waktu!</p>
+      <div class="overlay-box" style="max-width:560px;">
+        <div class="big" style="font-size:72px; margin-bottom:12px;">🌟</div>
+        <h1 style="font-size:26px; margin:0 0 16px; line-height:1.4;">Screening Test Robotik<br>Telah Resmi Ditutup</h1>
+        <p style="font-size:17px; font-weight:700; line-height:1.7; margin-bottom:16px; color:#fca5a5;">
+          Terima kasih sudah menyempatkan waktu dan antusias mengikuti seleksi ini.<br>
+          Semua kerja keras yang sudah kamu lakukan hari ini tidak akan sia-sia! 💪
+        </p>
+        <p style="font-size:14px; font-weight:700; color:#fecaca; margin-bottom:0;">
+          Tunggu pengumuman hasil seleksi dari tim Ruangguru ya.<br>
+          Sampai jumpa di program Robotik for Student Dharmasraya 2026! 🤖
+        </p>
       </div>
     </div>
 
@@ -3427,7 +3440,7 @@
 
       <div
         style="margin-top:24px; padding:16px; background:rgba(255,255,255,0.1); border-radius:16px; font-size:14px; font-weight:800;">
-        🗓️ 04 - 05 Mei 2026 · 08:00 - 17:00 WIB
+        🗓️ 04–05 Mei 2026 · 08:00–17:00 WIB<br>🗓️ Susulan: 7 Mei 2026 · 09:00–16:00 WIB
       </div>
     </div>
 
@@ -3798,23 +3811,34 @@
     function checkTimeGate() {
       const now = new Date();
       const startDay1 = new Date('2026-05-04T08:00:00+07:00');
-      const endDay1 = new Date('2026-05-04T17:00:00+07:00');
+      const endDay1   = new Date('2026-05-04T17:00:00+07:00');
       const startDay2 = new Date('2026-05-05T08:00:00+07:00');
-      const endDay2 = new Date('2026-05-05T17:00:00+07:00');
+      const endDay2   = new Date('2026-05-05T17:00:00+07:00');
+      const startDay3 = new Date('2026-05-07T09:00:00+07:00');
+      const endDay3   = new Date('2026-05-07T16:00:00+07:00');
 
       if (masterState.phase !== 'school' && masterState.phase !== 'waiting') return;
 
+      // Belum mulai hari pertama — tampilkan countdown
       if (now < startDay1) {
         masterState.phase = 'waiting';
         updateWaitingTimer(startDay1);
         return;
       }
+      // Jeda antara hari 1 dan hari 2
       if (now > endDay1 && now < startDay2) {
         if (masterState.phase === 'waiting') masterState.phase = 'school';
         document.getElementById('closeTomorrowOverlay').classList.add('show');
         return;
       }
-      if (now > endDay2) {
+      // Jeda antara hari 2 dan sesi susulan (7 Mei)
+      if (now > endDay2 && now < startDay3) {
+        if (masterState.phase === 'waiting') masterState.phase = 'school';
+        document.getElementById('closeTomorrowOverlay').classList.add('show');
+        return;
+      }
+      // Setelah sesi susulan selesai — tutup permanen
+      if (now > endDay3) {
         document.getElementById('closeFinalOverlay').classList.add('show');
         return;
       }
